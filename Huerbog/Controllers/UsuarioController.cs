@@ -13,20 +13,15 @@ namespace Huerbog.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        
+
         [HttpGet]
         public ActionResult get()
         {
-            
+
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
             {
-                /*  var lst = (from d in u.Usuario
-                             select d).ToList();
-                      )
-                  return Ok(lst);*/
-
                 return Ok(u.Usuarios.ToList());
-            }   
+            }
         }
         [HttpPost]
         public ActionResult post([FromBody] Models.Request.CrudUsuario model)
@@ -39,7 +34,7 @@ namespace Huerbog.Controllers
                 oUsuar.Apellido = model.Apellido;
                 oUsuar.Contraseña = model.Contraseña;
                 u.Usuarios.Add(oUsuar);
-                u.SaveChanges();  
+                u.SaveChanges();
             }
             return Ok();
         }
@@ -59,6 +54,7 @@ namespace Huerbog.Controllers
             }
             return Ok();
         }
+
         
     }
 }
