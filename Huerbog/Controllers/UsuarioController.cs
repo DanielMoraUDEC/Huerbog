@@ -26,9 +26,21 @@ namespace Huerbog.Controllers
         [HttpPost]
         public ActionResult post([FromBody] Models.Request.CrudUsuario model)
         {
+            var existsMail = check_email(model.Correo);
+
+            var existsTelNumber = check_tel_number(model.Telefono); 
+
+            if (existsMail || existsTelNumber)
+            {
+                ModelState.AddModelError("existNumberOrMail", "El correo o el número de tel ya existe");
+
+                return Ok("El correo o el número de tel ya existe");
+            }
+
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
             {
                 Models.Usuario oUsuar = new Models.Usuario();
+
                 oUsuar.Nombre = model.Nombre;
                 oUsuar.Correo = model.Correo;
                 oUsuar.Apellido = model.Apellido;
@@ -42,19 +54,77 @@ namespace Huerbog.Controllers
         [HttpPut]
         public ActionResult put([FromBody] Models.Usuario model)
         {
-            using (Models.HUERBOGContext u = new Models.HUERBOGContext())
+            using (Models.HUERBOGContext db = new Models.HUERBOGContext())
             {
-                Models.Usuario oUsuar = new Models.Usuario();
-                oUsuar.Nombre = model.Nombre;
-                oUsuar.Correo = model.Correo;
-                oUsuar.Apellido = model.Apellido;
-                oUsuar.Contraseña = model.Contraseña;
-                u.Usuarios.Add(oUsuar);
-                u.SaveChanges();
+                Models.Usuario oUsuar = db.Usuarios.Find(model.IdusuarioReg);
+
+                if(model.Correo == oUsuar.Correo || model.Telefono == oUsuar.Telefono)
+                {
+                    
+                    oUsuar.Nombre = model.Nombre;
+                    oUsuar.Correo = model.Correo;
+                    oUsuar.Apellido = model.Apellido;
+                    oUsuar.Contraseña = model.Contraseña;
+                    db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var existsMail = check_email(model.Correo);
+
+                    var existsTelNumber = check_tel_number(model.Telefono);
+
+                    if (existsMail || existsTelNumber)
+                    {
+                        ModelState.AddModelError("existNumberOrMail", "El correo o el número de tel ya existe");
+
+                        return Ok("El correo o el número de tel ya existe");
+                    }
+
+                    oUsuar.Nombre = model.Nombre;
+                    oUsuar.Correo = model.Correo;
+                    oUsuar.Apellido = model.Apellido;
+                    oUsuar.Contraseña = model.Contraseña;
+                    db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
             return Ok();
         }
 
-        
+        [HttpDelete]
+        public ActionResult DeleteUser([FromBody] Models.Usuario user)
+        {
+            using(Models.HUERBOGContext db = new Models.HUERBOGContext())
+            {
+                var User = db.Usuarios.Find(user.IdusuarioReg);
+
+                db.Usuarios.Remove(User);
+                db.SaveChanges();
+            }
+
+            return Ok("Usuario eliminado");
+        }
+
+        [NonAction]
+        public bool check_email(string correo)
+        {
+            using(Models.HUERBOGContext db = new Models.HUERBOGContext())
+            {
+                var check = db.Usuarios.Where(x=>x.Correo == correo).FirstOrDefault();
+
+                return check != null;
+            }
+        }
+
+        public bool check_tel_number(string telefono)
+        {
+            using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+            {
+                var check = db.Usuarios.Where(x => x.Telefono == telefono).FirstOrDefault();
+
+                return check != null;
+            }
+        }
     }
 }
