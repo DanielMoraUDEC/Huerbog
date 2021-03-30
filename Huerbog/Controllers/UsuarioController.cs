@@ -45,7 +45,7 @@ namespace Huerbog.Controllers
         }
 
         [HttpPut]
-        public ActionResult put([FromBody] Models.Request.CrudUsuario model)
+        public ActionResult put([FromBody] Models.Usuario model)
         {
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
             {
@@ -59,6 +59,6 @@ namespace Huerbog.Controllers
             }
             return Ok();
         }
-
+        
     }
 }
