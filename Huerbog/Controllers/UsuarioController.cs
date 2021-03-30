@@ -15,7 +15,7 @@ namespace Huerbog.Controllers
     {
         
         [HttpGet]
-        public IActionResult get()
+        public ActionResult get()
         {
             
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
@@ -26,11 +26,39 @@ namespace Huerbog.Controllers
                   return Ok(lst);*/
 
                 return Ok(u.Usuarios.ToList());
-            }
-
-
-            
+            }   
         }
-        
+        [HttpPost]
+        public ActionResult post([FromBody] Models.Request.CrudUsuario model)
+        {
+            using (Models.HUERBOGContext u = new Models.HUERBOGContext())
+            {
+                Models.Usuario oUsuar = new Models.Usuario();
+                oUsuar.Nombre = model.Nombre;
+                oUsuar.Correo = model.Correo;
+                oUsuar.Apellido = model.Apellido;
+                oUsuar.Contraseña = model.Contraseña;
+                u.Usuarios.Add(oUsuar);
+                u.SaveChanges();  
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        public ActionResult put([FromBody] Models.Request.CrudUsuario model)
+        {
+            using (Models.HUERBOGContext u = new Models.HUERBOGContext())
+            {
+                Models.Usuario oUsuar = new Models.Usuario();
+                oUsuar.Nombre = model.Nombre;
+                oUsuar.Correo = model.Correo;
+                oUsuar.Apellido = model.Apellido;
+                oUsuar.Contraseña = model.Contraseña;
+                u.Usuarios.Add(oUsuar);
+                u.SaveChanges();
+            }
+            return Ok();
+        }
+
     }
 }
