@@ -17,12 +17,12 @@ namespace Huerbog.Controllers
         [HttpGet]
         public ActionResult get()
         {
-
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
             {
                 return Ok(u.Usuarios.ToList());
             }
         }
+        
         [HttpPost]
         public ActionResult post([FromBody] Models.Request.CrudUsuario model)
         {
@@ -106,7 +106,11 @@ namespace Huerbog.Controllers
             return Ok("Usuario eliminado");
         }
 
+        //Creación publicaciones
+        
+
         [NonAction]
+        //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
         public bool check_email(string correo)
         {
             using(Models.HUERBOGContext db = new Models.HUERBOGContext())
