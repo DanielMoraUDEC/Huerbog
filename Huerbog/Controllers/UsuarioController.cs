@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Huerbog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("Permitir")]
+
     public class UsuarioController : ControllerBase
     {
 
@@ -24,7 +27,7 @@ namespace Huerbog.Controllers
             }
         }
         [HttpPost]
-        public ActionResult post([FromBody] Models.Request.CrudUsuario model)
+        public ActionResult post([FromBody] Models.Usuario model)
         {
             var existsMail = check_email(model.Correo);
 
