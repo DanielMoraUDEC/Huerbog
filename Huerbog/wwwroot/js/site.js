@@ -5,7 +5,6 @@
 
 var url = "https://localhost:44325/api/Usuario";
 
-get();
 
 function get() {
     fetch(url).then(function (response) {

@@ -1,0 +1,64 @@
+﻿body {
+
+}
+
+h1 {
+    text-align: center;
+    color: lightsalmon;
+    font-size: 60px;
+    margin: 10px;
+}
+
+h2 {
+    color: ivory;
+}
+
+p {
+    color: ivory;
+    font-size: 20px;
+}
+
+li {
+    color: ivory;
+    font-size: 20px;
+}
+
+a {
+    color: ivory;
+}
+
+footer {
+    text-align: center;
+    font-size: 16px;
+    color: lightyellow;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    background: rgba(17, 2, 41, 0.972);
+    width: 100%;
+    margin: auto;
+}
+
+    .menu li a {
+        text-decoration: none;
+        padding: 15px;
+        display: block;
+    }
+
+    .menu li {
+        display: inline-block;
+        text-align: center;
+        width: 16.3%;
+    }
+
+        .menu li a:hover {
+            background: chocolate
+        }
+
+section {
+    display: inline-block;
+    align-items: center;
+    width: 49.5%;
+}
