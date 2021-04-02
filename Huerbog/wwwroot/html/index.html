@@ -2,22 +2,31 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Huerbog</title>
-    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../css/Style.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Layout</title>
+    <link rel="stylesheet" href="../../css/Style.css" />
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css" />
 
 </head>
 <body>
-
     <header>
-        <nav>
-            <ul class="menu">
-                <li> Huerbog </li>
-                <li> <a href="audio.html">Search</a> </li>
-                <li> <a href="audio2.html">login</a> </li>
-                <li> <a href="can1.html">Register</a> </li>
-            </ul>
-        </nav>
+        <div class="wrapper">
+            <div class="logo">Huerbog</div>
+
+            <nav>
+                
+                <a>
+                    <form action="" target="_blank">
+                        <input type="search" name="busquedacodigo" pattern="[A-Za-z0-9]{8,20}" title="Un código válido consiste en una cadena con 8 a 20 caracteres, cada uno de los cuales es una letra o un dígito" required>
+
+                        <input type="submit" value="Buscar">
+                    </form>
+                </a>
+                
+                <a href="">Login</a>
+                <a href="">Register</a>
+            </nav>
+        </div>
     </header>
 
     <section>
@@ -26,7 +35,7 @@
                 <h2>Huerbog</h2>
                 <p>
 
-             
+
 
                 </p>
                 <input type="button" value="Send" onclick="get();">
@@ -34,10 +43,12 @@
             <hr>
             <div id="divlista">
             </div>
-            <script src="../js/site.js"></script>
+
 
         </div>
     </section>
+    <script src="../js/site.js"></script>
 
+    <script src="../lib/jquery/site.js"></script>
 </body>
 </html>

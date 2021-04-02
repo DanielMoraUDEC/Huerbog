@@ -17,7 +17,7 @@ namespace Huerbog.Controllers
     public class UsuarioController : ControllerBase
     {
 
-        [HttpGet]
+       [HttpGet]
         public ActionResult get()
         {
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
