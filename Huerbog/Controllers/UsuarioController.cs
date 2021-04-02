@@ -29,7 +29,7 @@ namespace Huerbog.Controllers
         [HttpPost]
         public ActionResult post([FromBody] Models.Usuario model)
         {
-            var existsMail = check_email(model.Correo);
+           /* var existsMail = check_email(model.Correo);
 
             var existsTelNumber = check_tel_number(model.Telefono); 
 
@@ -39,7 +39,7 @@ namespace Huerbog.Controllers
 
                 return Ok("El correo o el número de tel ya existe");
             }
-
+           */
             using (Models.HUERBOGContext u = new Models.HUERBOGContext())
             {
                 Models.Usuario oUsuar = new Models.Usuario();

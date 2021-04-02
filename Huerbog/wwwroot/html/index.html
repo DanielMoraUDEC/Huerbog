@@ -11,10 +11,10 @@
 <body>
     <header>
         <div class="wrapper">
-            <div class="logo">Huerbog</div>
+            <div class="logo"><a href="../html/index.html">Huerbog</a></div>
 
             <nav>
-                
+
                 <a>
                     <form action="" target="_blank">
                         <input type="search" name="busquedacodigo" pattern="[A-Za-z0-9]{8,20}" title="Un código válido consiste en una cadena con 8 a 20 caracteres, cada uno de los cuales es una letra o un dígito" required>
@@ -22,33 +22,51 @@
                         <input type="submit" value="Buscar">
                     </form>
                 </a>
-                
-                <a href="">Login</a>
-                <a href="">Register</a>
+
+                <a href="">Ingresar</a>
+                <a href="../html/register.html">Registrar</a>
             </nav>
         </div>
     </header>
 
-    <section>
-        <div>
-            <form>
-                <h2>Huerbog</h2>
-                <p>
+
+        <div id="contenedor">
+            <article>
+                <section>
+                    <form>
+                        <h2>Huerbog</h2>
+                        <p>
 
 
 
-                </p>
-                <input type="button" value="Send" onclick="get();">
-            </form>
-            <hr>
-            <div id="divlista">
-            </div>
-
-
+                        </p>
+                        <input type="button" value="Send" onclick="get();">
+                    </form>
+                    <hr>
+                    <div id="divlista">
+                    </div>
+                </section>
+            </article>
+            <br>
+            <br>
+            <aside class="bloque-izquierda">
+                <section>
+                    <ol>
+                        <a href="../html/index.html"> <li>Inicio</li></a>
+                        <a href="../html/index.html"> <li>Categorias</li></a>
+                        <a href="../html/index.html"> <li>Mapa huertas</li></a>
+                    </ol>
+                </section>
+            </aside>
         </div>
-    </section>
-    <script src="../js/site.js"></script>
+        <footer>
+            Footer contiene el pie de página, pueden ir en ella enlaces, mapa del sitio, etc.
 
-    <script src="../lib/jquery/site.js"></script>
+
+        </footer>
+
+        <script src="../js/site.js"></script>
+
+        <script src="../lib/jquery/site.js"></script>
 </body>
 </html>

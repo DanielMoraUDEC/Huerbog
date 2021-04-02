@@ -19,3 +19,32 @@ function get() {
 
     })
 }
+
+function post() {
+
+    
+    fetch(url, {
+        method: "post",
+        body: JSON.stringify({
+            nombre: document.getElementById("nombre").value,
+            apellido: document.getElementById("apellido").value,
+            correo: document.getElementById("correo").value,
+            red: document.getElementById("red").value,
+            telefono: document.getElementById("telefono").value,
+            contraseña: document.getElementById("contraseña").value,    
+        }),
+        headers:{
+            'Accept': "application/json",
+            "Content-Type": "application/json"
+        }
+    }).then(function(response) {
+        if(response.ok) {
+            return response.text();
+        }else {
+            alert("Error al ejecutar");
+        }
+    }).then(function (data) {
+        console.log(data);
+        get();
+    })
+}

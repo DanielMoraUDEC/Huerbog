@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Layout</title>
+    <link rel="stylesheet" href="../../css/Style.css" />
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <div class="logo"><a href="../html/index.html">Huerbog</a></div>
+
+            <nav>
+
+                <a>
+                    <form action="" target="_blank">
+                        <input type="search" name="busquedacodigo" pattern="[A-Za-z0-9]{8,20}" title="Un código válido consiste en una cadena con 8 a 20 caracteres, cada uno de los cuales es una letra o un dígito" required>
+
+                        <input type="submit" value="Buscar">
+                    </form>
+                </a>
+
+                <a href="">Ingresar</a>
+                <a href="">Registrar</a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="contenedor">
+        <article>
+            <section>
+                <form id="register">
+                    <h2>Registrar</h2>
+
+                    <p>
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" id="nombre" placeholder="Escribe tu nombre" />
+                    </p>
+                    <p>
+                        <label>Apellido</label>
+                        <input type="text" name="apellido" id="apellido" placeholder="Escribe tu apellido" />
+                    </p>
+
+                    <p>
+                        <label>Email</label>
+                        <input type="email" name="correo" id="correo" placeholder="email" required />
+                    </p>
+                    <p>
+                        <label>Ubicación</label>
+                        <input type="text" name="Ubicación" id="ubicación" placeholder="Ubicación" />
+                    </p>
+                    <p>
+                        <label>Red(Opcional)</label>
+                        <input type="text" name="red" id="red" placeholder="Red" />
+                    </p>
+                    <p>
+                        <label>Teléfono</label>
+                        <input type="text" name="telefono" id="telefono" placeholder="Teléfono" />
+                    </p>
+                    <p>
+                        <label>Contraseña(Opcional)</label>
+                        <input type="password" name="contraseña" id="contraseña" placeholder="Contraseña" />
+                    </p>
+                    <p>
+                        <label>Confirmar contraseña(Opcional)</label>
+                        <input type="password" name="conContraseña" id="conContraseña" placeholder="Contraseña" />
+                    </p>
+
+                        <label>Tengo huerta</label>
+                        <input type="radio" name="tieneHuerta" id="tengoSi">
+
+
+                        <label>No tengo Huerta</label>
+                        <input type="radio" name="tieneHuerta" id="tengoNo">
+
+                        <label>Acepto términos y condiciones</label>
+                        <input type="checkbox" name="acepto" id="acepto">
+
+
+
+                    <input type="button" value="Registrar" onclick="post();">
+                </form>
+                <hr>
+                <div id="divlista">
+                </div>
+            </section>
+        </article>
+        <br>
+        <br>
+        <aside class="bloque-izquierda">
+            <section>
+                <ol>
+                    <a href="../html/index.html"> <li>Inicio</li></a>
+                    <a href="../html/index.html"> <li>Categorias</li></a>
+                    <a href="../html/index.html"> <li>Mapa huertas</li></a>
+                </ol>
+            </section>
+        </aside>
+    </div>
+    <footer>
+        Footer contiene el pie de página, pueden ir en ella enlaces, mapa del sitio, etc.
+
+
+    </footer>
+    <script src="../js/site.js"></script>
+
+    <script src="../lib/jquery/site.js"></script>
+</body>
+</html>
