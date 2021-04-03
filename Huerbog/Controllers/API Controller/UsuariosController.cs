@@ -9,6 +9,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Huerbog.Models.Request;
+using Huerbog.Models;
+using Newtonsoft.Json;
+using Huerbog.Utils;
+using System.Text;
 
 namespace Huerbog.Controllers
 {
@@ -20,9 +25,9 @@ namespace Huerbog.Controllers
             [HttpGet]
             public IActionResult get()
             {
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+                using (HUERBOGContext db = new HUERBOGContext())
                 {
-                    IList<Models.Usuario> u = null;
+                    IList<Usuario> u = null;
 
                     //var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
 
@@ -32,63 +37,60 @@ namespace Huerbog.Controllers
             }
 
             [HttpPost]
-            public IActionResult post([FromBody] Models.Request.UserHuertaModel model)
+            public IActionResult post([FromBody] UserHuertaModel model)
             {
-                var existsMail = check_email(model.Correo);
+                    using (HUERBOGContext db = new HUERBOGContext())
+                    {
+                        if (!(db.Usuarios.Any(x => x.Correo.Equals(model.Correo)) || db.Usuarios.Any(x => x.Telefono.Equals(model.Telefono))
+                        || db.TablaHuerta.Any(x => x.UbicacionHuerta.Equals(model.UbicacionHuerta))))
+                        {
+                            Usuario oUsuar = new Usuario();
 
-                var existsTelNumber = check_tel_number(model.Telefono);
+                            TablaHuertum tHuerta = new TablaHuertum();
 
-                //var existsUbicacion = check_ubicacionHuerta(model.UbicacionHuerta);
+                            oUsuar.Nombre = model.Nombre;
+                            oUsuar.Correo = model.Correo;
+                            oUsuar.Apellido = model.Apellido;
+                            oUsuar.Salt = Convert.ToBase64String(common.GetRandomSalt(16));
+                            oUsuar.Contraseña = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(model.Contraseña),
+                                                                Convert.FromBase64String(oUsuar.Salt)));
+                            oUsuar.Red = model.Red;
+                            oUsuar.Telefono = model.Telefono;
+                            tHuerta.UbicacionHuerta = model.UbicacionHuerta;
+                            tHuerta.DescHuerta = model.DescHuerta;
+                            tHuerta.AreaCultivo = model.AreaCultivo;
 
-                if (existsMail || existsTelNumber)
-                {
-                    ModelState.AddModelError("existNumberOrMail", "El correo, el número de tel o la ubicación de la huerta ya existe");
+                            var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
+                            var uApellido = new SqlParameter("@apellido", oUsuar.Apellido);
+                            var uCorreo = new SqlParameter("@correo", oUsuar.Correo);
+                            var uSalt = new SqlParameter("@salt", oUsuar.Salt);
+                            var uContraseña = new SqlParameter("@contraseña", oUsuar.Contraseña);
+                            var uRed = new SqlParameter("@red", oUsuar.Red);
+                            var uTelefono = new SqlParameter("@telefono", oUsuar.Telefono);
+                            var hUbicacionHuerta = new SqlParameter("@ubicacionHuerta", tHuerta.UbicacionHuerta);
+                            var hDescHuerta = new SqlParameter("@descHuerta", tHuerta.DescHuerta);
+                            var hAreaCultivo = new SqlParameter("@areaCultivo", tHuerta.AreaCultivo);
 
-                    return Ok("El correo, el número de tel o la ubicación de la huerta ya existe");
-                }
+                            db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, @red, @telefono," +
+                                "@ubicacionHuerta, @descHuerta, @areaCultivo",
+                                new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, uRed, uTelefono, hUbicacionHuerta, hDescHuerta, hAreaCultivo });
 
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
-                {
-                    Models.Usuario oUsuar = new Models.Usuario();
-
-                    Models.TablaHuertum tHuerta = new Models.TablaHuertum();
-
-                    oUsuar.Nombre = model.Nombre;
-                    oUsuar.Correo = model.Correo;
-                    oUsuar.Apellido = model.Apellido;
-                    oUsuar.Contraseña = model.Contraseña;
-                    oUsuar.Red = model.Red;
-                    oUsuar.Telefono = model.Telefono;
-                    tHuerta.UbicacionHuerta = model.UbicacionHuerta;
-                    tHuerta.DescHuerta = model.DescHuerta;
-                    tHuerta.AreaCultivo = model.AreaCultivo;
-
-                    var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
-                    var uApellido = new SqlParameter("@apellido", oUsuar.Apellido);
-                    var uCorreo = new SqlParameter("@correo", oUsuar.Correo);
-                    var uContraseña = new SqlParameter("@contraseña", oUsuar.Contraseña);
-                    var uRed = new SqlParameter("@red", oUsuar.Red);
-                    var uTelefono = new SqlParameter("@telefono", oUsuar.Telefono);
-                    var hUbicacionHuerta = new SqlParameter("@ubicacionHuerta", tHuerta.UbicacionHuerta);
-                    var hDescHuerta = new SqlParameter("@descHuerta", tHuerta.DescHuerta);
-                    var hAreaCultivo = new SqlParameter("@areaCultivo", tHuerta.AreaCultivo);
-
-                    db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @contraseña, @red, @telefono," +
-                        "@ubicacionHuerta, @descHuerta, @areaCultivo",
-                        new[] { uNombre, uApellido, uCorreo, uContraseña, uRed, uTelefono, hUbicacionHuerta, hDescHuerta, hAreaCultivo });
-
-                    db.SaveChanges();
-
-                }
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            return Ok("Ubicación de huerta, correo o teléfono ya existente");
+                        }
+                    }
                 return Ok();
             }
 
             [HttpPut]
-            public ActionResult put([FromBody] Models.Usuario model)
+            public ActionResult put([FromBody]Usuario model)
             {
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+                using (HUERBOGContext db = new HUERBOGContext())
                 {
-                    Models.Usuario oUsuar = db.Usuarios.Find(model.IdusuarioReg);
+                    Usuario oUsuar = db.Usuarios.Find(model.IdusuarioReg);
 
                     if (model.Correo == oUsuar.Correo || model.Telefono == oUsuar.Telefono)
                     {
@@ -125,9 +127,9 @@ namespace Huerbog.Controllers
             }
 
             [HttpDelete]
-            public ActionResult DeleteUser([FromBody] Models.Usuario user)
+            public ActionResult DeleteUser([FromBody] Usuario user)
             {
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+                using (HUERBOGContext db = new HUERBOGContext())
                 {
                     var User = db.Usuarios.Find(user.IdusuarioReg);
                     var userHuerta = db.TablaHuerta.Find(user.IdusuarioReg);
@@ -147,7 +149,7 @@ namespace Huerbog.Controllers
             //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
             public bool check_email(string correo)
             {
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+                using (HUERBOGContext db = new HUERBOGContext())
                 {
                     var check = db.Usuarios.Where(x => x.Correo == correo).FirstOrDefault();
 
@@ -157,7 +159,7 @@ namespace Huerbog.Controllers
 
             public bool check_tel_number(string telefono)
             {
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+                using (HUERBOGContext db = new HUERBOGContext())
                 {
                     var check = db.Usuarios.Where(x => x.Telefono == telefono).FirstOrDefault();
 
@@ -165,11 +167,11 @@ namespace Huerbog.Controllers
                 }
             }
 
-            public bool check_ubicacionHuerta(string ubicacion)
+            public bool check_ubicacionHuerta(string ubicacionHuerta)
             {
-                using (Models.HUERBOGContext db = new Models.HUERBOGContext())
+                using (HUERBOGContext db = new HUERBOGContext())
                 {
-                    var check = db.TablaHuerta.Where(x => x.UbicacionHuerta == ubicacion).FirstOrDefault();
+                    var check = db.TablaHuerta.Where(x => x.UbicacionHuerta == ubicacionHuerta).FirstOrDefault();
 
                     return check != null;
                 }

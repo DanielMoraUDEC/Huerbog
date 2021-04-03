@@ -32,6 +32,7 @@ namespace Huerbog
                         builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                     });
                 });
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +52,7 @@ namespace Huerbog
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors("Permitir");
@@ -61,6 +62,7 @@ namespace Huerbog
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
 
             

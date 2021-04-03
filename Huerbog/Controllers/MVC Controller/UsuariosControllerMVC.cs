@@ -9,6 +9,9 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Huerbog.Models.Request;
+using Huerbog.Models;
+
 
 namespace Huerbog.Controllers
 {
@@ -19,7 +22,7 @@ namespace Huerbog.Controllers
         {
             //IEnumerable<Models.Usuario> u = null;
 
-            Models.Usuario u = null;
+            Usuario u = null;
 
             using (var client = new HttpClient())
             {
@@ -33,7 +36,7 @@ namespace Huerbog.Controllers
 
                 if(result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<Models.Usuario>();
+                    var readTask = result.Content.ReadAsAsync<Usuario>();
                     
                     readTask.Wait();
 
@@ -58,12 +61,12 @@ namespace Huerbog.Controllers
         }
 
         [HttpPost]
-        public IActionResult post(Models.Request.UserHuertaModel model)
+        public IActionResult post(UserHuertaModel model)
         {
             HttpClient hc = new HttpClient();
             hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
 
-            var insertrec = hc.PostAsJsonAsync<Models.Request.UserHuertaModel>("Usuarios", model);
+            var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("Usuarios", model);
 
             insertrec.Wait();
 
@@ -74,6 +77,25 @@ namespace Huerbog.Controllers
 
             return View();
 
+        }
+
+        [HttpGet]
+        public IActionResult login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult login(Usuario model)
+        {
+            HttpClient hc = new HttpClient();
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Login");
+
+            var login = hc.PostAsJsonAsync<Usuario>("Login", model);
+
+            login.Wait();
+
+            return View();
         }
     }
 }
