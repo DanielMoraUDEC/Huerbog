@@ -1,3 +1,9 @@
+--1. Ir al Sql Server Managment Studio
+--2. En la DB HUERBOG expandir e ir a la carpeta Programmability
+--3. Dar click der. en la carpeta Stored Procedures > new > Stored Procedure
+--4. Copiar lo del archivo y pegar
+--5. Darle click en Execute o Ejecutar si lo tienen en español
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
