@@ -1,0 +1,31 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE UserAndHuertaInsert 
+	@nombre varchar(20),
+	@apellido varchar(20),
+	@correo varchar(100),
+	@contraseña varchar(50),
+	@red varchar(50),
+	@telefono varchar(13),
+	@ubicacionHuerta varchar(80),
+	@descHuerta varchar(150),
+	@areaCultivo float
+AS
+	declare @Id int
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	insert into usuario(nombre, apellido, correo, contraseña, red, telefono) values (@nombre, @apellido, @correo, @contraseña, @red, @telefono);
+	
+	set @Id = SCOPE_IDENTITY();
+
+	insert into tablaHuerta(ubicacionHuerta, descHuerta, areaCultivo, idUsuario) values (@ubicacionHuerta, @descHuerta, @areaCultivo, @Id);
+
+END
+GO
