@@ -1,0 +1,81 @@
+﻿@model Huerbog.Models.Request.UserHuertaModel
+
+@{
+    ViewData["Title"] = "post";
+}
+
+<h1>Registro de Usuario</h1>
+
+<h4>
+    Ingrese los datos en los campos señalados, si no es dueño o administrador de una huerta puede dejar los campos con
+    respecto a la huerta en blanco.
+</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <h2>
+                    <strong>@ViewBag.message</strong>
+                </h2>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contraseña" class="control-label"></label>
+                <input asp-for="Contraseña" class="form-control" />
+                <span asp-validation-for="Contraseña" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Red" class="control-label"></label>
+                <input asp-for="Red" class="form-control" />
+                <span asp-validation-for="Red" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telefono" class="control-label"></label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UbicacionHuerta" class="control-label"></label>
+                <input asp-for="UbicacionHuerta" class="form-control" />
+                <span asp-validation-for="UbicacionHuerta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DescHuerta" class="control-label"></label>
+                <input asp-for="DescHuerta" class="form-control" />
+                <span asp-validation-for="DescHuerta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AreaCultivo" class="control-label"></label>
+                <input asp-for="AreaCultivo" class="form-control" />
+                <span asp-validation-for="AreaCultivo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
