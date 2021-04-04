@@ -3,7 +3,7 @@
 
 // Write your JavaScript code.
 
-var url = "https://localhost:44325/api/Usuario";
+var url = "https://localhost:44325/api/Usuarios";
 
 
 function get() {
