@@ -27,7 +27,7 @@ namespace Huerbog.Controllers.API_Controller
                 Usuario user = db.Usuarios.Where(x => x.Correo.Equals(model.Correo)).FirstOrDefault();
                 //calcula la el hash de la contraseña de los datos del cliente y lo compara con la contraseña
                 //hash en el servidor con SALT
-                var client_post_hash_password = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(
+               var client_post_hash_password = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(
                                                                         model.Contraseña), Convert.FromBase64String(user.Salt)));
                 if(client_post_hash_password.Equals(user.Contraseña))
                 {

@@ -51,7 +51,7 @@ namespace Huerbog.Controllers
                             oUsuar.Nombre = model.Nombre;
                             oUsuar.Correo = model.Correo;
                             oUsuar.Apellido = model.Apellido;
-                            oUsuar.Salt = Convert.ToBase64String(common.GetRandomSalt(16));
+                           oUsuar.Salt = Convert.ToBase64String(common.GetRandomSalt(16));
                             oUsuar.Contraseña = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(model.Contraseña),
                                                                 Convert.FromBase64String(oUsuar.Salt)));
                             oUsuar.Red = model.Red;
