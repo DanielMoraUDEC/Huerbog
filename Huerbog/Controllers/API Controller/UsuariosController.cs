@@ -73,9 +73,15 @@ namespace Huerbog.Controllers
 
                             db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, @red, @telefono," +
                                 "@ubicacionHuerta, @descHuerta, @areaCultivo",
-                                new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, uRed, uTelefono, hUbicacionHuerta, hDescHuerta, hAreaCultivo });
+                            new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, uRed, uTelefono, hUbicacionHuerta, hDescHuerta, hAreaCultivo });
 
-                            db.SaveChanges();
+
+                            //solo brayan
+                            /*db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, " +
+                            "@ubicacionHuerta, @descHuerta, @areaCultivo, @red, @telefono",
+                                new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, hUbicacionHuerta, hDescHuerta, hAreaCultivo, uRed, uTelefono });*/
+
+                    db.SaveChanges();
                         }
                         else
                         {
