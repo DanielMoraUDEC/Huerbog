@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - Huerbog</title>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/estilos.css" />
+  
 
 </head>
 <body>
@@ -22,14 +22,14 @@
 
 
                     <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
 
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Login</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="post">Register</a>
@@ -39,12 +39,11 @@
             </div>
         </nav>
     </header>
-    <div class="sidenav">
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
-    </div>
+    <!--
+
+   
+
+    -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -58,6 +57,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/css/bootstrap.min.css"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
