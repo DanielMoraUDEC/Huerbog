@@ -2,17 +2,136 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <h1>Útlimas publicaciones</h1>
-    <div>
-        <a class ="float-right" asp-controller="UsuariosControllerMVC" asp-action="post">Registrar usuario</a>
-    </div>
-    <div>
 
-    </div>
-    <div>
-        <a class="float-right" asp-controller="UsuariosControllerMVC" asp-action="get">Iniciar sesión |</a>
+
+<link rel="stylesheet" href="~/css/estilos.css" />
+<!--
+     <div class="main mb-5">
+      <h1>útlimas publicaciones </h1>
+      <ul class="nav nav-tabs">
+          <li class="nav-item">
+              <a class="nav-link active" href="#">Todos</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">Ofrecimiento y solicitudes</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">Generales</a>
+          </li>
+      </ul>
+    falta div
+-->
+<!--Ariculos-->
+<div class="sidenav">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Home</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categories</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Orchards´map</a>
+</div>
+
+<div class="main">
+    <div class="container mb-5">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Todos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Ofrecimiento y solicitudes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Generales</a>
+            </li>
+        </ul>
+        <br>
+        <div class="row">
+            <div class="col-9">
+                <!--Un articulo-->
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <a href="#" class="lead text-center">Ubicación</a>
+                    </div>
+                    <div class="col-9">
+                        <a href="#"> <h3>Titulo</h3></a>
+                        <p>Las huertas caseras son pequeños espacios en el hogar (balcón, terraza, jardín) que albergan tierra en la que se pueden cultivar hortalizas y leguminosas. Se necesitan pocas herramientas y materiales para llevarlas a cabo</p>
+                        <a href="#">Contactarse</a>
+                    </div>
+                </div>
+                <!--Fin articulo-->
+                <!--Un articulo-->
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <a href="#" class="lead text-center">Ubicación</a>
+                    </div>
+                    <div class="col-9">
+                        <a href="#"> <h3>Titulo</h3></a>
+                        <p>Las huertas caseras son pequeños espacios en el hogar (balcón, terraza, jardín) que albergan tierra en la que se pueden cultivar hortalizas y leguminosas. Se necesitan pocas herramientas y materiales para llevarlas a cabo</p>
+                        <a href="#">Contactarse</a>
+                    </div>
+                </div>
+                <!--Fin articulo-->
+                <!--Un articulo-->
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <a href="#" class="lead text-center">Ubicación</a>
+                    </div>
+                    <div class="col-9">
+                        <a href="#"> <h3>Titulo</h3></a>
+                        <p>Las huertas caseras son pequeños espacios en el hogar (balcón, terraza, jardín) que albergan tierra en la que se pueden cultivar hortalizas y leguminosas. Se necesitan pocas herramientas y materiales para llevarlas a cabo</p>
+                        <a href="#">Contactarse</a>
+                    </div>
+                </div>
+                <!--Fin articulo-->
+                <!--Un articulo-->
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <a href="#" class="lead text-center">Ubicación</a>
+                    </div>
+                    <div class="col-9">
+                        <a href="#"> <h3>Titulo</h3></a>
+                        <p>Las huertas caseras son pequeños espacios en el hogar (balcón, terraza, jardín) que albergan tierra en la que se pueden cultivar hortalizas y leguminosas. Se necesitan pocas herramientas y materiales para llevarlas a cabo</p>
+                        <a href="#">Contactarse</a>
+                    </div>
+                </div>
+                <!--Fin articulo-->
+                <!--Un articulo-->
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <a href="#" class="lead text-center">Ubicación</a>
+                    </div>
+                    <div class="col-9">
+                        <a href="#"> <h3>Titulo</h3></a>
+                        <p>Las huertas caseras son pequeños espacios en el hogar (balcón, terraza, jardín) que albergan tierra en la que se pueden cultivar hortalizas y leguminosas. Se necesitan pocas herramientas y materiales para llevarlas a cabo</p>
+                        <a href="#">Contactarse</a>
+                    </div>
+                </div>
+                <!--Fin articulo-->
+            </div>
+            <!--aside-->
+            <div class="col-3">
+
+            </div>
+            <!--Fin aside-->
+        </div>
     </div>
 </div>
 
 
+
+
+
+<!--
+    <form>
+
+    <input type="button" value="Send" onclick="get();">
+</form>
+<hr>
+<div id="divlista">
+</div>
+<br>
+<br>
+<br>
+-->

@@ -32,86 +32,91 @@
 </head>
 
 <body>
-    <h1>Registro de Usuario</h1>
+    <div class="main">
+        <h1>Registro de Usuario</h1>
 
-    <h4>
-        Ingrese los datos en los campos señalados, si no es dueño o administrador de una huerta puede dejar los campos con
-        respecto a la huerta en blanco.
-    </h4>
-    <hr />
-    <div>
+        <h4>
+            Ingrese los datos en los campos señalados, si no es dueño o administrador de una huerta puede dejar los campos con
+            respecto a la huerta en blanco.
+        </h4>
+        <hr />
         <div>
-            <h2>
-                <strong>@ViewBag.message</strong>
-            </h2>
+            <div>
+                <h2>
+                    <strong>@ViewBag.message</strong>
+                </h2>
+            </div>
+            <div>
+                <form asp-action="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="column left; col-md-7">
+                        <div class="form-group">
+                            <label asp-for="Nombre" class="control-label"></label>
+                            <input asp-for="Nombre" class="form-control" required placeholder="Pepe" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Apellido" class="control-label"></label>
+                            <input asp-for="Apellido" class="form-control" required placeholder="Grillo" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Correo" class="control-label"></label>
+                            <input asp-for="Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="column middle; col-md-7">
+                        <div class="form-group">
+                            <label asp-for="Contraseña" class="control-label"></label>
+                            <input asp-for="Contraseña" class="form-control" type="password" required placeholder="Contraseña" />
+                            <span asp-validation-for="Contraseña" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Red" class="control-label"></label>
+                            <input asp-for="Red" class="form-control" placeholder="Ej: Huerteros de Bosa" />
+                            <span asp-validation-for="Red" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Telefono" class="control-label"></label>
+                            <input asp-for="Telefono" class="form-control" type="tel" required placeholder="3187126721" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="column right; col-md-7">
+                        <strong>Campos con respecto a la huerta</strong>
+                        <div class="form-group">
+                            <label>Ubicación de la huerta</label>
+                            <input asp-for="UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
+                            <span asp-validation-for="UbicacionHuerta" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción de la huerta</label>
+                            <input asp-for="DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
+                            <span asp-validation-for="DescHuerta" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Área del cultivo en la huerta</label>
+                            <input asp-for="AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
+                            <span asp-validation-for="AreaCultivo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <center>
+                        <div class="form-group">
+                            <input type="submit" value="Registrarse" class="btn btn-primary" />
+                        </div>
+                    </center>
+                </form>
+            </div>
         </div>
+
         <div>
-            <form asp-action="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="column left; col-md-7">
-                    <div class="form-group">
-                        <label asp-for="Nombre" class="control-label"></label>
-                        <input asp-for="Nombre" class="form-control" required placeholder="Pepe" />
-                        <span asp-validation-for="Nombre" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Apellido" class="control-label"></label>
-                        <input asp-for="Apellido" class="form-control" required placeholder="Grillo" />
-                        <span asp-validation-for="Apellido" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Correo" class="control-label"></label>
-                        <input asp-for="Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
-                        <span asp-validation-for="Correo" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="column middle; col-md-7">
-                    <div class="form-group">
-                        <label asp-for="Contraseña" class="control-label"></label>
-                        <input asp-for="Contraseña" class="form-control" type="password" required placeholder="Contraseña" />
-                        <span asp-validation-for="Contraseña" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Red" class="control-label"></label>
-                        <input asp-for="Red" class="form-control" placeholder="Ej: Huerteros de Bosa" />
-                        <span asp-validation-for="Red" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Telefono" class="control-label"></label>
-                        <input asp-for="Telefono" class="form-control" type="tel" required placeholder="3187126721" />
-                        <span asp-validation-for="Telefono" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="column right; col-md-7">
-                    <strong>Campos con respecto a la huerta</strong>
-                    <div class="form-group">
-                        <label>Ubicación de la huerta</label>
-                        <input asp-for="UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
-                        <span asp-validation-for="UbicacionHuerta" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Descripción de la huerta</label>
-                        <input asp-for="DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
-                        <span asp-validation-for="DescHuerta" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Área del cultivo en la huerta</label>
-                        <input asp-for="AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
-                        <span asp-validation-for="AreaCultivo" class="text-danger"></span>
-                    </div>
-                </div>
-                <center>
-                    <div class="form-group">
-                        <input type="submit" value="Registrarse" class="btn btn-primary" />
-                    </div>
-                </center>
-            </form>
+            <a asp-controller="Home" asp-action="Index">Regresar</a>
+            <br>
+            <br>
+            <br>
         </div>
-    </div>
-
-    <div>
-        <a asp-controller="Home" asp-action="Index">Regresar</a>
     </div>
 </body>
 
