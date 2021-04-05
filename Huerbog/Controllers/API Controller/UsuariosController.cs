@@ -96,8 +96,9 @@ namespace Huerbog.Controllers
 
                     //solo brayan
                     /*db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, " +
-                    "@ubicacionHuerta, @descHuerta, @areaCultivo, @red, @telefono",
-                        new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, hUbicacionHuerta, hDescHuerta, hAreaCultivo, uRed, uTelefono });*/
+                    "@ubicacionHuerta, @descHuerta, @areaCultivo, @red, @telefono, @IsMailConfirmed, @ActivationCode",
+                        new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, hUbicacionHuerta, hDescHuerta, hAreaCultivo, uRed, uTelefono, 
+                    IsMailConfirmed, ActivationCode});*/
 
                     db.SaveChanges();
 
