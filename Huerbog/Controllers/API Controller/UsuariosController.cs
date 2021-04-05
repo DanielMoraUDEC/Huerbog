@@ -14,167 +14,218 @@ using Huerbog.Models;
 using Newtonsoft.Json;
 using Huerbog.Utils;
 using System.Text;
+using System.Net.Mail;
+using System.Net;
 
 namespace Huerbog.Controllers
 {
-        [Route("api/[controller]")]
-        [ApiController]
-        [EnableCors("Permitir")]
-        public class UsuariosController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    [EnableCors("Permitir")]
+    public class UsuariosController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult get()
         {
-            [HttpGet]
-            public IActionResult get()
+            using (HUERBOGContext db = new HUERBOGContext())
             {
-                using (HUERBOGContext db = new HUERBOGContext())
+                IList<Usuario> u = null;
+
+                //var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
+
+                u = db.Usuarios.ToList<Models.Usuario>();
+                return Ok(u);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult post([FromBody] UserHuertaModel model)
+        {
+            var message = "";
+
+            #region generar código de activación
+            model.ActivationCode = Guid.NewGuid();
+            #endregion
+
+            #region
+            model.IsMailConfirmed = false;
+            #endregion
+
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                if (!(db.Usuarios.Any(x => x.Correo.Equals(model.Correo)) || db.Usuarios.Any(x => x.Telefono.Equals(model.Telefono))
+                || db.TablaHuerta.Any(x => x.UbicacionHuerta.Equals(model.UbicacionHuerta))))
                 {
-                    IList<Usuario> u = null;
+                    Usuario oUsuar = new Usuario();
 
-                    //var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
+                    TablaHuertum tHuerta = new TablaHuertum();
 
-                    u = db.Usuarios.ToList<Models.Usuario>();
-                    return Ok(u);
+                    oUsuar.Nombre = model.Nombre;
+                    oUsuar.Correo = model.Correo;
+                    oUsuar.Apellido = model.Apellido;
+                    oUsuar.Salt = Convert.ToBase64String(common.GetRandomSalt(16));
+                    oUsuar.Contraseña = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(model.Contraseña),
+                                                        Convert.FromBase64String(oUsuar.Salt)));
+                    oUsuar.Red = model.Red;
+                    oUsuar.Telefono = model.Telefono;
+                    oUsuar.ActivationCode = model.ActivationCode;
+                    oUsuar.IsMailConfirmed = model.IsMailConfirmed;
+                    tHuerta.UbicacionHuerta = model.UbicacionHuerta;
+                    tHuerta.DescHuerta = model.DescHuerta;
+                    tHuerta.AreaCultivo = model.AreaCultivo;
+
+                    var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
+                    var uApellido = new SqlParameter("@apellido", oUsuar.Apellido);
+                    var uCorreo = new SqlParameter("@correo", oUsuar.Correo);
+                    var uSalt = new SqlParameter("@salt", oUsuar.Salt);
+                    var uContraseña = new SqlParameter("@contraseña", oUsuar.Contraseña);
+                    var uRed = new SqlParameter("@red", oUsuar.Red);
+                    var uTelefono = new SqlParameter("@telefono", oUsuar.Telefono);
+                    var uIsMailConfirmed = new SqlParameter("@IsMailConfirmed", model.IsMailConfirmed);
+                    var uActivationCode = new SqlParameter("@ActivationCode", oUsuar.ActivationCode);
+                    var hUbicacionHuerta = new SqlParameter("@ubicacionHuerta", tHuerta.UbicacionHuerta);
+                    var hDescHuerta = new SqlParameter("@descHuerta", tHuerta.DescHuerta);
+                    var hAreaCultivo = new SqlParameter("@areaCultivo", tHuerta.AreaCultivo);
+
+
+
+                    db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, @red, @telefono," +
+                        "@IsMailConfirmed, @ActivationCode, @ubicacionHuerta, @descHuerta, @areaCultivo",
+                    new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, uRed, uTelefono, uIsMailConfirmed, uActivationCode, hUbicacionHuerta, hDescHuerta, hAreaCultivo });
+
+                    db.SaveChanges();
+
+                    SendVerificationLinkEmail(model.Correo, model.ActivationCode.ToString());
+
+                    message = "Registro completado satisfactoriamente, el link de activación ha sido enviado a su correo" + model.Correo;
+
+
+                }
+                else
+                {
+                    return Ok("Ubicación de huerta, correo o teléfono ya existente");
                 }
             }
+            return Ok();
+        }
 
-            [HttpPost]
-            public IActionResult post([FromBody] UserHuertaModel model)
+        [HttpPut]
+        public ActionResult put([FromBody] Usuario model)
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
             {
-                    using (HUERBOGContext db = new HUERBOGContext())
-                    {
-                        if (!(db.Usuarios.Any(x => x.Correo.Equals(model.Correo)) || db.Usuarios.Any(x => x.Telefono.Equals(model.Telefono))
-                        || db.TablaHuerta.Any(x => x.UbicacionHuerta.Equals(model.UbicacionHuerta))))
-                        {
-                            Usuario oUsuar = new Usuario();
+                Usuario oUsuar = db.Usuarios.Find(model.IdusuarioReg);
 
-                            TablaHuertum tHuerta = new TablaHuertum();
-
-                            oUsuar.Nombre = model.Nombre;
-                            oUsuar.Correo = model.Correo;
-                            oUsuar.Apellido = model.Apellido;
-                            oUsuar.Salt = Convert.ToBase64String(common.GetRandomSalt(16));
-                            oUsuar.Contraseña = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(model.Contraseña),
-                                                                Convert.FromBase64String(oUsuar.Salt)));
-                            oUsuar.Red = model.Red;
-                            oUsuar.Telefono = model.Telefono;
-                            tHuerta.UbicacionHuerta = model.UbicacionHuerta;
-                            tHuerta.DescHuerta = model.DescHuerta;
-                            tHuerta.AreaCultivo = model.AreaCultivo;
-
-                            var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
-                            var uApellido = new SqlParameter("@apellido", oUsuar.Apellido);
-                            var uCorreo = new SqlParameter("@correo", oUsuar.Correo);
-                            var uSalt = new SqlParameter("@salt", oUsuar.Salt);
-                            var uContraseña = new SqlParameter("@contraseña", oUsuar.Contraseña);
-                            var uRed = new SqlParameter("@red", oUsuar.Red);
-                            var uTelefono = new SqlParameter("@telefono", oUsuar.Telefono);
-                            var hUbicacionHuerta = new SqlParameter("@ubicacionHuerta", tHuerta.UbicacionHuerta);
-                            var hDescHuerta = new SqlParameter("@descHuerta", tHuerta.DescHuerta);
-                            var hAreaCultivo = new SqlParameter("@areaCultivo", tHuerta.AreaCultivo);
-
-                            db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, @red, @telefono," +
-                                "@ubicacionHuerta, @descHuerta, @areaCultivo",
-                                new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, uRed, uTelefono, hUbicacionHuerta, hDescHuerta, hAreaCultivo });
-
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            return Ok("Ubicación de huerta, correo o teléfono ya existente");
-                        }
-                    }
-                return Ok();
-            }
-
-            [HttpPut]
-            public ActionResult put([FromBody]Usuario model)
-            {
-                using (HUERBOGContext db = new HUERBOGContext())
+                if (model.Correo == oUsuar.Correo || model.Telefono == oUsuar.Telefono)
                 {
-                    Usuario oUsuar = db.Usuarios.Find(model.IdusuarioReg);
 
-                    if (model.Correo == oUsuar.Correo || model.Telefono == oUsuar.Telefono)
-                    {
-
-                        oUsuar.Nombre = model.Nombre;
-                        oUsuar.Correo = model.Correo;
-                        oUsuar.Apellido = model.Apellido;
-                        oUsuar.Contraseña = model.Contraseña;
-                        db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        var existsMail = check_email(model.Correo);
-
-                        var existsTelNumber = check_tel_number(model.Telefono);
-
-                        if (existsMail || existsTelNumber)
-                        {
-                            ModelState.AddModelError("existNumberOrMail", "El correo o el número de tel ya existe");
-
-                            return Ok("El correo o el número de tel ya existe");
-                        }
-
-                        oUsuar.Nombre = model.Nombre;
-                        oUsuar.Correo = model.Correo;
-                        oUsuar.Apellido = model.Apellido;
-                        oUsuar.Contraseña = model.Contraseña;
-                        db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-                return Ok();
-            }
-
-            [HttpDelete]
-            public ActionResult DeleteUser([FromBody] Usuario user)
-            {
-                using (HUERBOGContext db = new HUERBOGContext())
-                {
-                    var User = db.Usuarios.Find(user.IdusuarioReg);
-                    var userHuerta = db.TablaHuerta.Find(user.IdusuarioReg);
-
-                    db.TablaHuerta.Remove(userHuerta);
-                    db.Usuarios.Remove(User);
+                    oUsuar.Nombre = model.Nombre;
+                    oUsuar.Correo = model.Correo;
+                    oUsuar.Apellido = model.Apellido;
+                    oUsuar.Contraseña = model.Contraseña;
+                    db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     db.SaveChanges();
                 }
-
-                return Ok("Usuario eliminado");
-            }
-
-            //Creación publicaciones
-
-
-            [NonAction]
-            //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
-            public bool check_email(string correo)
-            {
-                using (HUERBOGContext db = new HUERBOGContext())
+                else
                 {
-                    var check = db.Usuarios.Where(x => x.Correo == correo).FirstOrDefault();
+                    var existsMail = check_email(model.Correo);
 
-                    return check != null;
+                    var existsTelNumber = check_tel_number(model.Telefono);
+
+                    if (existsMail || existsTelNumber)
+                    {
+                        ModelState.AddModelError("existNumberOrMail", "El correo o el número de tel ya existe");
+
+                        return Ok("El correo o el número de tel ya existe");
+                    }
+
+                    oUsuar.Nombre = model.Nombre;
+                    oUsuar.Correo = model.Correo;
+                    oUsuar.Apellido = model.Apellido;
+                    oUsuar.Contraseña = model.Contraseña;
+                    db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    db.SaveChanges();
                 }
             }
+            return Ok();
+        }
 
-            public bool check_tel_number(string telefono)
+        [HttpDelete]
+        public ActionResult DeleteUser([FromBody] Usuario user)
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
             {
-                using (HUERBOGContext db = new HUERBOGContext())
-                {
-                    var check = db.Usuarios.Where(x => x.Telefono == telefono).FirstOrDefault();
+                var User = db.Usuarios.Find(user.IdusuarioReg);
+                var userHuerta = db.TablaHuerta.Find(user.IdusuarioReg);
 
-                    return check != null;
-                }
+                db.TablaHuerta.Remove(userHuerta);
+                db.Usuarios.Remove(User);
+                db.SaveChanges();
             }
 
-            public bool check_ubicacionHuerta(string ubicacionHuerta)
-            {
-                using (HUERBOGContext db = new HUERBOGContext())
-                {
-                    var check = db.TablaHuerta.Where(x => x.UbicacionHuerta == ubicacionHuerta).FirstOrDefault();
+            return Ok("Usuario eliminado");
+        }
 
-                    return check != null;
-                }
+        //Creación publicaciones
+
+
+        [NonAction]
+        //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
+        public bool check_email(string correo)
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                var check = db.Usuarios.Where(x => x.Correo == correo).FirstOrDefault();
+
+                return check != null;
             }
+        }
+
+        public bool check_tel_number(string telefono)
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                var check = db.Usuarios.Where(x => x.Telefono == telefono).FirstOrDefault();
+
+                return check != null;
+            }
+        }
+
+        public void SendVerificationLinkEmail(string emailID, string ActivationCode)
+        {
+            var verifyUrl = "/Usuarios/VerifyAccount/" + ActivationCode;
+            var link = Request.Host + verifyUrl;
+
+            var fromEmail = new MailAddress("pepgrillo420@gmail.com");
+            var fromEmailPass = "Bareta420";
+            var toEmail = new MailAddress(emailID);
+            string subject = "Su cuenta ha sido exitosamente activada";
+
+            string body = "<br/><br/>Gracias por registrarse en la página, ahora tiene acceso a más funciones" +
+                " como publicar información general o publicar información con respecto a solicitudes u ofrecimientos" +
+                " de servicios o productos, recuerde publicar contenido con respecto a las huertas y mantenerse apegado" +
+                "a las normas de la comunidad. Por favor haga click en el link de abajo para terminar de verificar su cuenta " +
+                "<br/><br/><a href='https//"+link+"'>"+link+"</a>";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, fromEmailPass)
+            };
+
+            using (var message = new MailMessage(fromEmail, toEmail)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            })
+
+                smtp.Send(message);
+        }
+
     }
 }
