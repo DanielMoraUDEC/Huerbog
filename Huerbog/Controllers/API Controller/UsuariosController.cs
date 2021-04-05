@@ -24,14 +24,14 @@ namespace Huerbog.Controllers
     [EnableCors("Permitir")]
     public class UsuariosController : ControllerBase
     {
-        [HttpGet]
+       [HttpGet]
         public IActionResult get()
         {
             using (HUERBOGContext db = new HUERBOGContext())
             {
                 IList<Usuario> u = null;
 
-                //var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
+                var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
 
                 u = db.Usuarios.ToList<Models.Usuario>();
                 return Ok(u);
@@ -96,9 +96,8 @@ namespace Huerbog.Controllers
 
                     //solo brayan
                     /*db.Database.ExecuteSqlRaw("Exec UserAndHuertaInsert @nombre, @apellido, @correo, @salt, @contraseña, " +
-                    "@ubicacionHuerta, @descHuerta, @areaCultivo, @red, @telefono, @IsMailConfirmed, @ActivationCode",
-                        new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, hUbicacionHuerta, hDescHuerta, hAreaCultivo, uRed, uTelefono, 
-                    IsMailConfirmed, ActivationCode});*/
+                    "@ubicacionHuerta, @descHuerta, @areaCultivo, @red, @telefono",
+                        new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, hUbicacionHuerta, hDescHuerta, hAreaCultivo, uRed, uTelefono })*/
 
                     db.SaveChanges();
 

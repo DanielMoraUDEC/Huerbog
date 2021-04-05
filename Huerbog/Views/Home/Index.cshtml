@@ -23,14 +23,14 @@
 -->
 <!--Ariculos-->
 <div class="sidenav">
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Home</a>
-    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categories</a>
-    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Orchards´map</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Inicio</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categorias</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Mapa huertas</a>
 </div>
 
 <div class="main">
     <div class="container mb-5">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs col-12 col-md-9">
             <li class="nav-item">
                 <a class="nav-link active" href="#">Todos</a>
             </li>
@@ -43,7 +43,7 @@
         </ul>
         <br>
         <div class="row">
-            <div class="col-9">
+            <div class="col-12 col-md-9">
                 <!--Un articulo-->
                 <div class="row mb-4">
                     <div class="col-3">
@@ -109,6 +109,19 @@
                     </div>
                 </div>
                 <!--Fin articulo-->
+                <!--Barra números-->
+                
+                <div class="btn-toolbar d-flex justify-content-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        <a asp-controller="Home" asp-action="index"> <button type="button" class="btn btn-primary active">Inicio</button> </a>
+                        <button type="button" class="btn btn-primary">2</button>
+                        <button type="button" class="btn btn-primary">3</button>
+                        <button type="button" class="btn btn-primary">4</button>
+                        <button type="button" class="btn btn-primary">Final</button>
+                    </div>
+                </div>
+                
+
             </div>
             <!--aside-->
             <div class="col-3">
