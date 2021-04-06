@@ -1,39 +1,36 @@
-﻿@model Huerbog.Models.Request.UserHuertaModel
+﻿@model Huerbog.Models.Usuario
 @{
     ViewData["Title"] = "login";
 }
 
 
 
-    <div class="main">
+<div class="main">
+    <form asp-action="login" class="form-horizontal" role="form">
+        <center>
+            <h1 class="display-4">Ingresar</h1>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
-
-        <form asp-action="post" class="form-horizontal" role="form">
-            <center>
-                <h1 class="display-4">Ingresar</h1>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="column left; col-md-3">
-
-                    <div class="form-group">
-                        <label asp-for="Correo" class="control-label"></label>
-                        <input asp-for="Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
-                        <span asp-validation-for="Correo" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="column middle; col-md-3">
-                    <div class="form-group">
-                        <label asp-for="Contraseña" class="control-label"></label>
-                        <input asp-for="Contraseña" class="form-control" type="password" required placeholder="Contraseña" />
-                        <span asp-validation-for="Contraseña" class="text-danger"></span>
-                    </div>
-
-                </div>
+            <div class="column left; col-md-3">
 
                 <div class="form-group">
-                    <input type="submit" value="Registrarse" class="btn btn-primary" asp-controller="Home2" asp-action="IndexRegistrado" />
+                    <label asp-for="Correo" class="control-label"></label>
+                    <input asp-for="Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
                 </div>
-            </center>
-        </form>
-    </div>
+            </div>
+            <div class="column middle; col-md-3">
+                <div class="form-group">
+                    <label asp-for="Contraseña" class="control-label"></label>
+                    <input asp-for="Contraseña" class="form-control" type="password" required placeholder="Contraseña" />
+                    <span asp-validation-for="Contraseña" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Iniciar sesión" class="btn btn-primary"/>
+            </div>
+        </center>
+    </form>
+</div>

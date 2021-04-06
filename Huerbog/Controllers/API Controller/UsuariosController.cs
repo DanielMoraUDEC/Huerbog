@@ -16,6 +16,7 @@ using Huerbog.Utils;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
+using Huerbog.Models.Login;
 
 //Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
 
@@ -138,17 +139,17 @@ namespace Huerbog.Controllers
                 {
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
 
-                    return Ok(user);
+                    return RedirectToAction("IndexRegistrado", "Home2");
                 }
                 else
                 {
-                    return Ok("Contraseña incorrecta");
+                    return RedirectToAction("Index", "Home");
                 }
 
             }
             else
             {
-                return Ok("Usuario no encontrado");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -211,7 +212,7 @@ namespace Huerbog.Controllers
         }
 
         //Creación publicaciones
-
+        
 
         [NonAction]
         //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool

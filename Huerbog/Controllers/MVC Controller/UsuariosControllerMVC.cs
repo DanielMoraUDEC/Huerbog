@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Huerbog.Models.Request;
 using Huerbog.Models;
+using Huerbog.Models.Login;
 
 
 namespace Huerbog.Controllers
@@ -89,13 +90,20 @@ namespace Huerbog.Controllers
         public IActionResult login(Usuario model)
         {
             HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("https://localhost:44325/api/Login");
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
 
             var login = hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);
 
             login.Wait();
 
-            return RedirectToAction("");
+            using(HUERBOGContext db = new HUERBOGContext())
+            {
+                var id = db.Usuarios.Where(x => x.Correo == model.Correo).FirstOrDefault();
+
+                ViewBag.name = id.Nombre;
+            }
+
+            return RedirectToAction("IndexRegistrado", "Home2");
         }
     }
 }
