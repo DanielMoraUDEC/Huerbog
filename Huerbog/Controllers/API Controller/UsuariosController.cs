@@ -26,7 +26,9 @@ namespace Huerbog.Controllers
     [EnableCors("Permitir")]
     public class UsuariosController : ControllerBase
     {
-       [HttpGet]
+        HUERBOGContext db = new HUERBOGContext();
+
+        [HttpGet]
         public IActionResult get()
         {
             using (HUERBOGContext db = new HUERBOGContext())
@@ -41,6 +43,7 @@ namespace Huerbog.Controllers
         }
 
         [HttpPost]
+        [Route("post")]
         public IActionResult post([FromBody] UserHuertaModel model)
         {
             var message = "";
@@ -106,6 +109,11 @@ namespace Huerbog.Controllers
                     SendVerificationLinkEmail(model.Correo, model.ActivationCode.ToString());
 
                     message = "Registro completado satisfactoriamente, el link de activación ha sido enviado a su correo" + model.Correo;
+
+                    var id = db.Usuarios.Where(x => x.Correo == model.Correo).FirstOrDefault();
+
+                    HttpContext.Session.SetInt32("User", id.IdusuarioReg);
+
                 }
                 else
                 {
@@ -113,6 +121,35 @@ namespace Huerbog.Controllers
                 }
             }
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult login([FromBody] Usuario model)
+        {
+            if (db.Usuarios.Any(x => x.Correo.Equals(model.Correo)))
+            {
+                Usuario user = db.Usuarios.Where(x => x.Correo.Equals(model.Correo)).FirstOrDefault();
+                //calcula la el hash de la contraseña de los datos del cliente y lo compara con la contraseña
+                //hash en el servidor con SALT
+                var client_post_hash_password = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(
+                                                                         model.Contraseña), Convert.FromBase64String(user.Salt)));
+                if (client_post_hash_password.Equals(user.Contraseña))
+                {
+                    HttpContext.Session.SetInt32("User", user.IdusuarioReg);
+
+                    return Ok(user);
+                }
+                else
+                {
+                    return Ok("Contraseña incorrecta");
+                }
+
+            }
+            else
+            {
+                return Ok("Usuario no encontrado");
+            }
         }
 
         [HttpPut]
@@ -151,6 +188,7 @@ namespace Huerbog.Controllers
                     oUsuar.Contraseña = model.Contraseña;
                     db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     db.SaveChanges();
+                    
                 }
             }
             return Ok();

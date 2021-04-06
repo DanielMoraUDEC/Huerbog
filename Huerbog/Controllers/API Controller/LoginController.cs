@@ -9,6 +9,7 @@ using Huerbog.Models.Request;
 using Huerbog.Models;
 using Huerbog.Utils;
 using System.Text;
+using Microsoft.AspNetCore.Session;
 
 namespace Huerbog.Controllers.API_Controller
 {
@@ -31,6 +32,8 @@ namespace Huerbog.Controllers.API_Controller
                                                                         model.Contraseña), Convert.FromBase64String(user.Salt)));
                 if(client_post_hash_password.Equals(user.Contraseña))
                 {
+                    HttpContext.Session.SetInt32("User", user.IdusuarioReg);
+
                     return Ok(user);
                 }
                 else

@@ -66,7 +66,7 @@ namespace Huerbog.Controllers
             HttpClient hc = new HttpClient();
             hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
 
-            var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("Usuarios", model);
+            var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("Usuarios/post", model);
 
             insertrec.Wait();
 
@@ -91,11 +91,11 @@ namespace Huerbog.Controllers
             HttpClient hc = new HttpClient();
             hc.BaseAddress = new Uri("https://localhost:44325/api/Login");
 
-            var login = hc.PostAsJsonAsync<Usuario>("Login", model);
+            var login = hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);
 
             login.Wait();
 
-            return View();
+            return RedirectToAction("");
         }
     }
 }
