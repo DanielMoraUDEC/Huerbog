@@ -104,7 +104,7 @@
                     </div>
                     <center>
                         <div class="form-group">
-                            <input type="submit" value="Registrarse" class="btn btn-primary" asp-controller="UsuariosControllerMVC" asp-action="Login"/>
+                            <input type="submit" value="Registrarse" class="btn btn-primary" onclick="mensaje();" asp-controller="UsuariosControllerMVC" asp-action="login"/>
                         </div>
                     </center>
                 </form>
@@ -118,7 +118,10 @@
             <br>
         </div>
     </div>
+    <script src="../js/site.js"></script>
 </body>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
