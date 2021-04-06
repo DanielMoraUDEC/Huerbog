@@ -212,7 +212,15 @@ namespace Huerbog.Controllers
         }
 
         //Creación publicaciones
-        
+        [HttpPost]
+        public IActionResult createPost([FromBody] Foro model)
+        {
+            var userId = HttpContext.Session.GetInt32("User");
+
+
+
+            return Ok();
+        }
 
         [NonAction]
         //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool

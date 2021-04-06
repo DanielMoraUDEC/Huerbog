@@ -76,7 +76,7 @@ namespace Huerbog.Controllers
 
             ModelState.Clear();
 
-            return View();
+            return RedirectToAction("Index", "Home");
 
         }
 
@@ -98,12 +98,14 @@ namespace Huerbog.Controllers
 
             using(HUERBOGContext db = new HUERBOGContext())
             {
+                var name = "";
+
                 var id = db.Usuarios.Where(x => x.Correo == model.Correo).FirstOrDefault();
 
                 ViewBag.name = id.Nombre;
             }
 
-            return RedirectToAction("IndexRegistrado", "Home2");
+            return View();
         }
     }
 }
