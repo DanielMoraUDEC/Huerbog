@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Huerbog</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  
+
+</head>
+<body>
+    <header>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home2" asp-action="Index">
+                <img src="~/Imagenes/logo.jpg" alt="" width="30" height="24"> Huerbog
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+           <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <div class="navbar-nav ml-auto ">
+
+                   <a class="nav-link active" aria-current="page" asp-area="" asp-controller="#" asp-action="publicar">Publicar</a>
+                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                       <li class="nav-item dropdown">
+                           <a class="nav-link dropdown-toggle active mr-3" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               Menú
+                           </a>
+                           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                               <li><a class="dropdown-item" href="#">Perfil</a></li>
+                               <li><a class="dropdown-item" href="#">Cerrar secion</a></li>
+
+                           </ul>
+                       </li>
+                   </ul>
+                   <form class="d-flex mr-4">
+                       <input class="form-control me-2 mr-2" type="search" placeholder="Search" aria-label="Search" required>
+                       <button class="btn btn-outline-success" type="submit">Search</button>
+                   </form>
+               </div>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - Huerbog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/css/bootstrap.min.css"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
