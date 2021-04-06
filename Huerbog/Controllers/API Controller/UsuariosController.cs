@@ -17,6 +17,8 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 
+//Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
 namespace Huerbog.Controllers
 {
     [Route("api/[controller]")]
