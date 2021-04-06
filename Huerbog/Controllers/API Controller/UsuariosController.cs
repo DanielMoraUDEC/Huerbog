@@ -16,7 +16,7 @@ using Huerbog.Utils;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
-using Huerbog.Models.Login;
+
 
 //Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
 
