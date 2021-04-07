@@ -16,6 +16,7 @@ using Huerbog.Utils;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
+using System.IO;
 
 
 //Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
@@ -223,6 +224,7 @@ namespace Huerbog.Controllers
 
         //Creación publicaciones
         [HttpPost]
+        [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)
         {
             var userId = HttpContext.Session.GetInt32("User");
@@ -233,18 +235,20 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.UrlForo = model.UrlForo;
+            foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
             foro.IdUsuario = userId;
+            foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
             var descPost = new SqlParameter("@descPost", foro.DescPost);
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-            var urlForo = new SqlParameter("@urlForo", foro.UrlForo);
+            var urlImg = new SqlParameter("@urlForo", foro.UrlImg);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
             var contenido = new SqlParameter("@contenido", tema.Contenido);
+            var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
 
-            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @fechaPublicacion, @descPost,@tituloPost,@urlForo, @idUsuario" +
-                "@contenido", new[] {descPost, tituloPost, urlForo, idUsuario, contenido });
+            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @fechaPublicacion, @descPost,@tituloPost,@urlImg, @idUsuario" +
+                "@contenido, @idCatPublFK", new[] {descPost, tituloPost, urlImg, idUsuario, contenido, idCatPublFK });
 
             db.SaveChanges();
 

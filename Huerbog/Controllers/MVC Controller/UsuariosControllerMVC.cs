@@ -102,5 +102,23 @@ namespace Huerbog.Controllers
             return RedirectToAction("IndexRegistrado", "Home2");
         }
 
+        [HttpGet]
+        public IActionResult createPost()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult createPost(ForoTemaModel model)
+        {
+            HttpClient hc = new HttpClient();
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+
+            var userPost = hc.PostAsJsonAsync<ForoTemaModel>("Usuarios/createPost", model);
+
+            userPost.Wait();
+
+            return RedirectToAction("IndexRegistrado", "Home2");
+        }
     }
 }
