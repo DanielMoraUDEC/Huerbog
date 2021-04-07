@@ -139,7 +139,7 @@ namespace Huerbog.Controllers
                 {
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
 
-                    return Ok(1);
+                    return Ok(user);
                 }
                 else
                 {
@@ -223,11 +223,30 @@ namespace Huerbog.Controllers
 
         //Creación publicaciones
         [HttpPost]
-        public IActionResult createPost([FromBody] Foro model)
+        public IActionResult createPost([FromBody] ForoTemaModel model)
         {
             var userId = HttpContext.Session.GetInt32("User");
 
+            Foro foro = new Foro();
 
+            Tema tema = new Tema();
+
+            foro.DescPost = model.DescPost;
+            foro.TituloPost = model.TituloPost;
+            foro.UrlForo = model.UrlForo;
+            foro.IdUsuario = userId;
+            tema.Contenido = model.Contenido;
+
+            var descPost = new SqlParameter("@descPost", foro.DescPost);
+            var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
+            var urlForo = new SqlParameter("@urlForo", foro.UrlForo);
+            var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
+            var contenido = new SqlParameter("@contenido", tema.Contenido);
+
+            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @fechaPublicacion, @descPost,@tituloPost,@urlForo, @idUsuario" +
+                "@contenido", new[] {descPost, tituloPost, urlForo, idUsuario, contenido });
+
+            db.SaveChanges();
 
             return Ok();
         }
