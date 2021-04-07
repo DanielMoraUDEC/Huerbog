@@ -139,19 +139,29 @@ namespace Huerbog.Controllers
                 {
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
 
-                    return RedirectToAction("IndexRegistrado", "Home2");
+                    return Ok(1);
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return  Ok(0);
                 }
 
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return Ok(-1);
             }
         }
+
+        [HttpGet]
+        [Route("getId")]
+        public IActionResult getId()
+        {
+            var UserId = HttpContext.Session.GetInt32("User");
+
+            return Ok(UserId);
+        }
+
 
         [HttpPut]
         public ActionResult put([FromBody] Usuario model)

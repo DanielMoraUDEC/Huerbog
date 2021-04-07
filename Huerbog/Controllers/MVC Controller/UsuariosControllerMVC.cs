@@ -94,18 +94,14 @@ namespace Huerbog.Controllers
 
             var login = hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);
 
+            var userId = hc.GetFromJsonAsync<Usuario>("Usuarios/getId");
+
             login.Wait();
 
-            using(HUERBOGContext db = new HUERBOGContext())
-            {
-                var name = "";
+            ViewBag.Id = userId;
 
-                var id = db.Usuarios.Where(x => x.Correo == model.Correo).FirstOrDefault();
-
-                ViewBag.name = id.Nombre;
-            }
-
-            return View();
+            return RedirectToAction("IndexRegistrado", "Home2");
         }
+
     }
 }
