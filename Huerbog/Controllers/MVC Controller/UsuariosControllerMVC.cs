@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Huerbog.Models.Request;
 using Huerbog.Models;
-using Huerbog.Models.Login;
 
 
 namespace Huerbog.Controllers
