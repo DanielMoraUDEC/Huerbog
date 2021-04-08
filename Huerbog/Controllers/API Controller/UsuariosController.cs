@@ -32,33 +32,31 @@ namespace Huerbog.Controllers
         HUERBOGContext db = new HUERBOGContext();
 
         [HttpGet]
+        [Route("get")]
         public IActionResult get()
         {
             using (HUERBOGContext db = new HUERBOGContext())
             {
-                IList<Usuario> u = null;
+                /*IList<Usuario> u = null;
 
                 var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
-
+                
                 u = db.Usuarios.ToList<Models.Usuario>();
-                return Ok(u);
+                */
+
+                return Ok(db.Usuarios.ToList<Usuario>());
             }
         }
 
        
           [HttpGet]
           [Route("getForo")]
-          
          public IActionResult getForo()
          {
-             using (HUERBOGContext db = new HUERBOGContext())
-             {
-                 IList<Foro> u = null;
-
-                 var userHuertaList = db.Foros.FromSqlRaw("Exec UserAndHuertaSelect");
-
-                 u = db.Foros.ToList<Models.Foro>();
-                 return Ok(u);
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                
+                return Ok(db.Foros.ToList<Foro>());
              }
          }
        
@@ -160,6 +158,7 @@ namespace Huerbog.Controllers
                 {
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
 
+
                     return Ok(user);
                 }
                 else
@@ -244,8 +243,6 @@ namespace Huerbog.Controllers
 
         //Creación publicaciones
 
-  
-
         [HttpPost]
         [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)
@@ -259,18 +256,18 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = userId;
+            foro.IdUsuario = 3;
             foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
             var descPost = new SqlParameter("@descPost", foro.DescPost);
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-            var urlImg = new SqlParameter("@urlForo", foro.UrlImg);
+            var urlImg = new SqlParameter("@urlImg", foro.UrlImg);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
             var contenido = new SqlParameter("@contenido", tema.Contenido);
             var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
 
-            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @fechaPublicacion, @descPost,@tituloPost,@urlImg, @idUsuario" +
+            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @urlImg, @idUsuario," +
                 "@contenido, @idCatPublFK", new[] {descPost, tituloPost, urlImg, idUsuario, contenido, idCatPublFK });
 
             db.SaveChanges();
