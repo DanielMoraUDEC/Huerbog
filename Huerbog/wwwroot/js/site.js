@@ -6,43 +6,20 @@
 var url = "https://localhost:44325/api/Usuarios";
 var url1 = "https://localhost:44325/api/Foro";
 
-
-/*function get() {
-    fetch(url).then(function (response) {
-        return response.json();
-    }).then(function (data) {
-        document.getElementById("divlista").innerHTML = "";
-        for (i = 0; i < data.length; i++) {
-            let divElement = document.createElement("div");
-            divElement.innerHTML = data[i].nombre;
-            document.getElementById("divlista").appendChild(divElement);
-        }
-
-    })
-}*/
+get();
 
 getForo();
 
 function get() {
-    /*fetch(url).then(function (response) {
-        return response.json();
-    }).then(function (data) {
-        document.getElementById("divlista").innerHTML = "";
-        for (i = 0; i < data.length; i++) {
-            let divElement = document.createElement("div");
-            divElement.innerHTML = data[i].correo;
-            document.getElementById("divlista").appendChild(divElement);
-        }
-
-    })*/
+    
     fetch(url).then(function (response) {
         return response.json();
     }).then(function (data) {
-        document.getElementById("divlista").innerHTML = "";
+        document.getElementById("divCorreo").innerHTML = "";
         
-        let divElement = document.createElement("div");
-        divElement.innerHTML = data[0].tituloPost;
-            document.getElementById("divlista").appendChild(divElement);
+        let divCorreo = document.createElement("div");
+        divCorreo.innerHTML = data[1].correo;
+            document.getElementById("divCorreo").appendChild(divCorreo);
         
 
     })
