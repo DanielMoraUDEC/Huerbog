@@ -223,6 +223,10 @@ namespace Huerbog.Controllers
         }
 
         //Creación publicaciones
+
+       
+
+
         [HttpPost]
         [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)

@@ -1,10 +1,13 @@
-﻿@{
+﻿
+@model Huerbog.Models.Request.ForoTemaModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 
 
 <link rel="stylesheet" href="~/css/estilos.css" />
+<!--  <script src="~/js/site.js"></script> -->
 <!--
      <div class="main mb-5">
       <h1>útlimas publicaciones </h1>
@@ -51,7 +54,9 @@
                         <a href="#" class="lead text-center">Ubicación</a>
                     </div>
                     <div class="col-9">
-                        <a href="#"> <h3>Titulo</h3></a>
+                        <div id="divlista">
+                            <a href="#"></a>
+                        </div>
                         <p>Las huertas caseras son pequeños espacios en el hogar (balcón, terraza, jardín) que albergan tierra en la que se pueden cultivar hortalizas y leguminosas. Se necesitan pocas herramientas y materiales para llevarlas a cabo</p>
                         <a href="#">Contactarse</a>
                     </div>
@@ -110,7 +115,7 @@
                 </div>
                 <!--Fin articulo-->
                 <!--Barra números-->
-                
+
                 <div class="btn-toolbar d-flex justify-content-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group me-2" role="group" aria-label="First group">
                         <a asp-controller="Home" asp-action="index"> <button type="button" class="btn btn-primary active">Inicio</button> </a>
@@ -120,7 +125,7 @@
                         <button type="button" class="btn btn-primary">Final</button>
                     </div>
                 </div>
-                
+
 
             </div>
             <!--aside-->
@@ -131,6 +136,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

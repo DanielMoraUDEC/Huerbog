@@ -6,6 +6,22 @@
 var url = "https://localhost:44325/api/Usuarios";
 
 
+/*function get() {
+    fetch(url).then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        document.getElementById("divlista").innerHTML = "";
+        for (i = 0; i < data.length; i++) {
+            let divElement = document.createElement("div");
+            divElement.innerHTML = data[i].nombre;
+            document.getElementById("divlista").appendChild(divElement);
+        }
+
+    })
+}*/
+
+get();
+
 function get() {
     fetch(url).then(function (response) {
         return response.json();
@@ -18,6 +34,7 @@ function get() {
         }
 
     })
+
 }
 
 function post() {
