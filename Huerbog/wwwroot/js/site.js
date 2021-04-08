@@ -10,6 +10,9 @@ get();
 
 getForo();
 
+
+
+
 function get() {
     
     fetch(url).then(function (response) {
