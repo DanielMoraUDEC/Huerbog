@@ -3,7 +3,7 @@
 
 // Write your JavaScript code.
 
-var url = "https://localhost:44325/api/Usuarios";
+var url = "https://localhost:44325/api/Usuarios/get";
 var url1 = "https://localhost:44325/api/Usuarios/getForo";
 
 get();
@@ -14,14 +14,13 @@ getForo();
 
 
 function get() {
-    
     fetch(url).then(function (response) {
         return response.json();
     }).then(function (data) {
         document.getElementById("divCorreo").innerHTML = "";
         
         let divCorreo = document.createElement("div");
-        divCorreo.innerHTML = data[0].correo;
+        divCorreo.innerHTML = data[1].correo;
             document.getElementById("divCorreo").appendChild(divCorreo);
         
 

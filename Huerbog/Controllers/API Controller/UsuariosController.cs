@@ -32,25 +32,23 @@ namespace Huerbog.Controllers
         HUERBOGContext db = new HUERBOGContext();
 
         [HttpGet]
+        [Route("get")]
         public IActionResult get()
         {
             using (HUERBOGContext db = new HUERBOGContext())
             {
-                IList<Usuario> u = null;
-                u = db.Usuarios.ToList<Models.Usuario>();
-                return Ok(u);
+                return Ok(db.Usuarios.ToList<Usuario>());
             }
         }
 
        
           [HttpGet]
           [Route("getForo")]
-          
          public IActionResult getForo()
          {
              using (HUERBOGContext db = new HUERBOGContext())
              {
-                 return Ok(db.Foros.ToList< Models.Foro > ());
+                 return Ok(db.Foros.ToList<Models.Foro>());
              }
          }
        
@@ -87,8 +85,8 @@ namespace Huerbog.Controllers
                                                         Convert.FromBase64String(oUsuar.Salt)));
                     oUsuar.Red = model.Red;
                     oUsuar.Telefono = model.Telefono;
-                    oUsuar.ActivationCode = (Guid)model.ActivationCode;
-                    oUsuar.IsMailConfirmed = (bool)model.IsMailConfirmed;
+                    oUsuar.ActivationCode = model.ActivationCode;
+                    oUsuar.IsMailConfirmed = model.IsMailConfirmed;
                     tHuerta.UbicacionHuerta = model.UbicacionHuerta;
                     tHuerta.DescHuerta = model.DescHuerta;
                     tHuerta.AreaCultivo = model.AreaCultivo;
@@ -151,6 +149,7 @@ namespace Huerbog.Controllers
                 if (client_post_hash_password.Equals(user.Contraseña))
                 {
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
+
 
                     return Ok(user);
                 }
@@ -236,8 +235,6 @@ namespace Huerbog.Controllers
 
         //Creación publicaciones
 
-  
-
         [HttpPost]
         [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)
@@ -251,18 +248,18 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = userId;
-            foro.IdCatPublFk = (int?)model.IdCatPublFk;
+            foro.IdUsuario = 3;
+            foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
             var descPost = new SqlParameter("@descPost", foro.DescPost);
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-            var urlImg = new SqlParameter("@urlForo", foro.UrlImg);
+            var urlImg = new SqlParameter("@urlImg", foro.UrlImg);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
             var contenido = new SqlParameter("@contenido", tema.Contenido);
             var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
 
-            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @fechaPublicacion, @descPost,@tituloPost,@urlImg, @idUsuario" +
+            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @urlImg, @idUsuario," +
                 "@contenido, @idCatPublFK", new[] {descPost, tituloPost, urlImg, idUsuario, contenido, idCatPublFK });
 
             db.SaveChanges();

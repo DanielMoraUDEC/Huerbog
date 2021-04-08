@@ -114,8 +114,6 @@ namespace Huerbog.Controllers
             HttpClient hc = new HttpClient();
             hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
 
-
-
             var userPost = hc.PostAsJsonAsync<ForoTemaModel>("Usuarios/createPost", model);
 
             userPost.Wait();
