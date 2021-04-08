@@ -37,13 +37,6 @@ namespace Huerbog.Controllers
         {
             using (HUERBOGContext db = new HUERBOGContext())
             {
-                IList<Usuario> u = null;
-
-                var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
-
-                u = db.Usuarios.ToList<Models.Usuario>();
-                */
-
                 return Ok(db.Usuarios.ToList<Usuario>());
             }
         }
@@ -55,12 +48,7 @@ namespace Huerbog.Controllers
          {
              using (HUERBOGContext db = new HUERBOGContext())
              {
-                 IList<Foro> u = null;
-
-                 var userHuertaList = db.Foros.FromSqlRaw("Exec UserAndHuertaSelect");
-
-                 u = db.Foros.ToList<Models.Foro>();
-                 return Ok(u);
+                 return Ok(db.Foros.ToList<Models.Foro>());
              }
          }
        
