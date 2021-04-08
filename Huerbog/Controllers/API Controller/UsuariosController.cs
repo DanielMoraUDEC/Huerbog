@@ -87,8 +87,8 @@ namespace Huerbog.Controllers
                                                         Convert.FromBase64String(oUsuar.Salt)));
                     oUsuar.Red = model.Red;
                     oUsuar.Telefono = model.Telefono;
-                    oUsuar.ActivationCode = model.ActivationCode;
-                    oUsuar.IsMailConfirmed = model.IsMailConfirmed;
+                    oUsuar.ActivationCode = (Guid)model.ActivationCode;
+                    oUsuar.IsMailConfirmed = (bool)model.IsMailConfirmed;
                     tHuerta.UbicacionHuerta = model.UbicacionHuerta;
                     tHuerta.DescHuerta = model.DescHuerta;
                     tHuerta.AreaCultivo = model.AreaCultivo;
@@ -252,7 +252,7 @@ namespace Huerbog.Controllers
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
             foro.IdUsuario = userId;
-            foro.IdCatPublFk = model.IdCatPublFk;
+            foro.IdCatPublFk = (int?)model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
             var descPost = new SqlParameter("@descPost", foro.DescPost);
