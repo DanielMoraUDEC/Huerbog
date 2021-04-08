@@ -18,6 +18,7 @@ using System.Net.Mail;
 using System.Net;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Huerbog.Models.Login;
 
 
 //Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
@@ -41,17 +42,17 @@ namespace Huerbog.Controllers
             }
         }
 
-       
-          [HttpGet]
-          [Route("getForo")]
-         public IActionResult getForo()
-         {
-             using (HUERBOGContext db = new HUERBOGContext())
-             {
-                 return Ok(db.Foros.ToList<Models.Foro>());
-             }
-         }
-       
+
+        [HttpGet]
+        [Route("getForo")]
+        public IActionResult getForo()
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                return Ok(db.Foros.ToList<Foro>());
+            }
+        }
+
 
 
         [HttpPost]
@@ -135,6 +136,8 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
+        int idUserLog = 0;
+
         [HttpPost]
         [Route("login")]
         public IActionResult login([FromBody] Usuario model)
@@ -148,20 +151,25 @@ namespace Huerbog.Controllers
                                                                          model.Contraseña), Convert.FromBase64String(user.Salt)));
                 if (client_post_hash_password.Equals(user.Contraseña))
                 {
+                    UserLogin u = new UserLogin();
+
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
 
+                    var idLog = db.Usuarios.Where(x => x.Correo == user.Correo).FirstOrDefault();
+
+                    u.idLog = idLog.IdusuarioReg;
 
                     return Ok(user);
                 }
                 else
                 {
-                    return  Ok(0);
+                    return Ok("Contreseña incorrecta");
                 }
 
             }
             else
             {
-                return Ok(-1);
+                return Ok("Usuario no encontrado, puede registrarse");
             }
         }
 
@@ -211,7 +219,7 @@ namespace Huerbog.Controllers
                     oUsuar.Contraseña = model.Contraseña;
                     db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     db.SaveChanges();
-                    
+
                 }
             }
             return Ok();
@@ -248,7 +256,7 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = 3;
+            foro.IdUsuario = idUserLog;
             foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
@@ -260,7 +268,7 @@ namespace Huerbog.Controllers
             var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
 
             db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @urlImg, @idUsuario," +
-                "@contenido, @idCatPublFK", new[] {descPost, tituloPost, urlImg, idUsuario, contenido, idCatPublFK });
+                "@contenido, @idCatPublFK", new[] { descPost, tituloPost, urlImg, idUsuario, contenido, idCatPublFK });
 
             db.SaveChanges();
 

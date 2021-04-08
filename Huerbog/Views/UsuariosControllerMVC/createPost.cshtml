@@ -36,7 +36,8 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Categoría de la publicación</label>
-                <input asp-for="IdCatPublFk" class="form-control"/>
+                <input type="radio" asp-for="IdCatPublFk" value="1"/>General
+                <input type="radio" asp-for="IdCatPublFk" value="2"/>Comercio
                 <span asp-validation-for="IdCatPublFk" class="text-danger"></span>
             </div>
             <div class="form-group">
