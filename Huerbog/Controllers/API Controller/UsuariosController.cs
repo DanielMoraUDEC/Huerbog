@@ -37,10 +37,10 @@ namespace Huerbog.Controllers
         {
             using (HUERBOGContext db = new HUERBOGContext())
             {
-                /*IList<Usuario> u = null;
+                IList<Usuario> u = null;
 
                 var userHuertaList = db.Usuarios.FromSqlRaw("Exec UserAndHuertaSelect");
-                
+
                 u = db.Usuarios.ToList<Models.Usuario>();
                 */
 
@@ -53,10 +53,14 @@ namespace Huerbog.Controllers
           [Route("getForo")]
          public IActionResult getForo()
          {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                
-                return Ok(db.Foros.ToList<Foro>());
+             using (HUERBOGContext db = new HUERBOGContext())
+             {
+                 IList<Foro> u = null;
+
+                 var userHuertaList = db.Foros.FromSqlRaw("Exec UserAndHuertaSelect");
+
+                 u = db.Foros.ToList<Models.Foro>();
+                 return Ok(u);
              }
          }
        
