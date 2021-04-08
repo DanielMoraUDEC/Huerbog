@@ -17,6 +17,7 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 //Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
@@ -312,5 +313,11 @@ namespace Huerbog.Controllers
 
                 smtp.Send(message);
         }
+
+        public List<SelectListItem> selCatPubl { get; } = new List<SelectListItem>
+        {
+            new SelectListItem {Value = "1", Text = "Publicación general"},
+            new SelectListItem {Value = "2", Text = "Publicación de comercio"},
+        };
     }
 }
