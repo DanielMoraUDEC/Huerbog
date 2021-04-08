@@ -45,6 +45,24 @@ namespace Huerbog.Controllers
             }
         }
 
+        //GET FORO
+
+      /*  [HttpGet]
+        public IActionResult getForo()
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                IList<Foro> u = null;
+
+                var userHuertaList = db.Foros.FromSqlRaw("Exec UserAndHuertaSelect");
+
+                u = db.Foros.ToList<Models.Foro>();
+                return Ok(u);
+            }
+        }
+      */
+
+
         [HttpPost]
         [Route("post")]
         public IActionResult post([FromBody] UserHuertaModel model)
@@ -225,8 +243,7 @@ namespace Huerbog.Controllers
 
         //Creación publicaciones
 
-       
-
+  
 
         [HttpPost]
         [Route("createPost")]

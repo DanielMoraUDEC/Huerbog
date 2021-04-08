@@ -4,6 +4,7 @@
 // Write your JavaScript code.
 
 var url = "https://localhost:44325/api/Usuarios";
+var url1 = "https://localhost:44325/api/Foro";
 
 
 /*function get() {
@@ -20,18 +21,50 @@ var url = "https://localhost:44325/api/Usuarios";
     })
 }*/
 
-get();
+getForo();
 
 function get() {
-    fetch(url).then(function (response) {
+    /*fetch(url).then(function (response) {
         return response.json();
     }).then(function (data) {
         document.getElementById("divlista").innerHTML = "";
         for (i = 0; i < data.length; i++) {
             let divElement = document.createElement("div");
-            divElement.innerHTML = data[i].nombre;
+            divElement.innerHTML = data[i].correo;
             document.getElementById("divlista").appendChild(divElement);
         }
+
+    })*/
+    fetch(url).then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        document.getElementById("divlista").innerHTML = "";
+        
+        let divElement = document.createElement("div");
+        divElement.innerHTML = data[0].tituloPost;
+            document.getElementById("divlista").appendChild(divElement);
+        
+
+    })
+}
+
+
+function getForo() {
+    fetch(url1).then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        document.getElementById("divTitulo").innerHTML = "";
+        document.getElementById("divDescripcion").innerHTML = "";
+
+        let divTitulo = document.createElement("div");
+        let divDescripcion = document.createElement("div");
+
+        divTitulo.innerHTML = data[1].tituloPost;
+        divDescripcion.innerHTML = data[1].descPost;
+
+        document.getElementById("divTitulo").appendChild(divTitulo);
+        document.getElementById("divDescripcion").appendChild(divDescripcion);
+
 
     })
 
