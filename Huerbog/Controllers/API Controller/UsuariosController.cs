@@ -45,7 +45,22 @@ namespace Huerbog.Controllers
             }
         }
 
-        //GET FORO
+       
+          [HttpGet]
+          [Route("getForo")]
+          
+         public IActionResult getForo()
+         {
+             using (HUERBOGContext db = new HUERBOGContext())
+             {
+                 IList<Foro> u = null;
+
+                 var userHuertaList = db.Foros.FromSqlRaw("Exec UserAndHuertaSelect");
+
+                 u = db.Foros.ToList<Models.Foro>();
+                 return Ok(u);
+             }
+         }
        
 
 

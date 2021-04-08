@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 var url = "https://localhost:44325/api/Usuarios";
-var url1 = "https://localhost:44325/api/Foro";
+var url1 = "https://localhost:44325/api/Usuarios/getForo";
 
 get();
 
@@ -18,7 +18,7 @@ function get() {
         document.getElementById("divCorreo").innerHTML = "";
         
         let divCorreo = document.createElement("div");
-        divCorreo.innerHTML = data[1].correo;
+        divCorreo.innerHTML = data[0].correo;
             document.getElementById("divCorreo").appendChild(divCorreo);
         
 
@@ -36,8 +36,8 @@ function getForo() {
         let divTitulo = document.createElement("div");
         let divDescripcion = document.createElement("div");
 
-        divTitulo.innerHTML = data[1].tituloPost;
-        divDescripcion.innerHTML = data[1].descPost;
+        divTitulo.innerHTML = data[0].tituloPost;
+        divDescripcion.innerHTML = data[0].descPost;
 
         document.getElementById("divTitulo").appendChild(divTitulo);
         document.getElementById("divDescripcion").appendChild(divDescripcion);
@@ -79,3 +79,4 @@ function post() {
 function mensaje() {
     confirm("El link de activación ha sido enviado a su correo, Confirmelo por favor.");
 }
+
