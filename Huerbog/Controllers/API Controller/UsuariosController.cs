@@ -249,7 +249,7 @@ namespace Huerbog.Controllers
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
             foro.IdUsuario = 3;
-            foro.IdCatPublFk = model.IdCatPublFk;
+            foro.IdCatPublFk = (int?)model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
             var descPost = new SqlParameter("@descPost", foro.DescPost);
