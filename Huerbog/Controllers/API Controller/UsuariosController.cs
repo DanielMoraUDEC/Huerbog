@@ -32,6 +32,8 @@ namespace Huerbog.Controllers
     {
         HUERBOGContext db = new HUERBOGContext();
 
+        UserLogin u = new UserLogin();
+
         [HttpGet]
         [Route("get")]
         public IActionResult get()
@@ -42,7 +44,6 @@ namespace Huerbog.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("getForo")]
         public IActionResult getForo()
@@ -52,8 +53,6 @@ namespace Huerbog.Controllers
                 return Ok(db.Foros.ToList<Foro>());
             }
         }
-
-
 
         [HttpPost]
         [Route("post")]
@@ -136,8 +135,6 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
-        int idUserLog = 0;
-
         [HttpPost]
         [Route("login")]
         public IActionResult login([FromBody] Usuario model)
@@ -151,13 +148,11 @@ namespace Huerbog.Controllers
                                                                          model.Contraseña), Convert.FromBase64String(user.Salt)));
                 if (client_post_hash_password.Equals(user.Contraseña))
                 {
-                    UserLogin u = new UserLogin();
-
                     HttpContext.Session.SetInt32("User", user.IdusuarioReg);
 
-                    var idLog = db.Usuarios.Where(x => x.Correo == user.Correo).FirstOrDefault();
+                    var idLogTemp = db.Usuarios.Where(x => x.Correo == user.Correo).FirstOrDefault();
 
-                    u.idLog = idLog.IdusuarioReg;
+                    u.idLog = idLogTemp.IdusuarioReg;
 
                     return Ok(user);
                 }
@@ -172,16 +167,6 @@ namespace Huerbog.Controllers
                 return Ok("Usuario no encontrado, puede registrarse");
             }
         }
-
-        [HttpGet]
-        [Route("getId")]
-        public IActionResult getId()
-        {
-            var UserId = HttpContext.Session.GetInt32("User");
-
-            return Ok(UserId);
-        }
-
 
         [HttpPut]
         public ActionResult put([FromBody] Usuario model)
@@ -251,12 +236,12 @@ namespace Huerbog.Controllers
 
             Foro foro = new Foro();
 
-            Tema tema = new Tema();
+            Tema tema = new Tema(); 
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = idUserLog;
+            foro.IdUsuario = 1;
             foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
@@ -275,8 +260,10 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
-        [NonAction]
+
         //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
+
+        [NonAction]
         public bool check_email(string correo)
         {
             using (HUERBOGContext db = new HUERBOGContext())

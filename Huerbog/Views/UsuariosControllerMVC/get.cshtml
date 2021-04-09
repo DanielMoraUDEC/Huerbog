@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Huerbog.Models.Usuario>
+
+@{
+    ViewData["Title"] = "get";
+}
+
+<h1>get</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contraseña)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantPublicacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reputacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantSolicitudes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Red)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsMailConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivationCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RolesNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contraseña)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantPublicacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reputacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantSolicitudes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Red)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsMailConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivationCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RolesNavigation.Idroles)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdusuarioReg">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdusuarioReg">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdusuarioReg">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
