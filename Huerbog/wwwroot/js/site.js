@@ -20,7 +20,7 @@ function get() {
         document.getElementById("divCorreo").innerHTML = "";
         
         let divCorreo = document.createElement("div");
-        divCorreo.innerHTML = data[1].correo;
+        divCorreo.innerHTML = data[0].correo;
             document.getElementById("divCorreo").appendChild(divCorreo);
         
 

@@ -256,7 +256,7 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = idUserLog;
+            foro.IdUsuario = 1;
             foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
