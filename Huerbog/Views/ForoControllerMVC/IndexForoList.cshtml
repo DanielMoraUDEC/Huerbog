@@ -1,35 +1,16 @@
-﻿
+﻿@model IEnumerable<Huerbog.Models.ForoList.ForoListModel>
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "IndexForoList";
 }
 
-
-
 <link rel="stylesheet" href="~/css/estilos.css" />
-<!--  <script src="~/js/site.js"></script> -->
-<!--
-     <div class="main mb-5">
-      <h1>útlimas publicaciones </h1>
-      <ul class="nav nav-tabs">
-          <li class="nav-item">
-              <a class="nav-link active" href="#">Todos</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="#">Ofrecimiento y solicitudes</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="#">Generales</a>
-          </li>
-      </ul>
-    falta div
--->
-<!--Ariculos-->
+
 <div class="sidenav">
     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Inicio</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categorias</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Mapa huertas</a>
 </div>
-
 
 <div class="main">
     <div class="container mb-5">
@@ -49,22 +30,34 @@
             <div class="col-12 col-md-9">
                 <!--Un articulo-->
                 <div class="row mb-4">
-                    <div class="col-3">
-                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
-                        <a href="#" class="lead text-center">Ubicación</a>
-                    </div>
-                    <div class="col-9">
 
-                        <a class="h3" href="#" id="divTitulo"></a>
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-3">
+                            <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                            <a href="#" class="lead text-center">Ubicación</a>
 
-                        <p id="divDescripcion"></p>
+                        </div>
 
-                        <a href="mailto:">Contactarse: <label id="divCorreo"></label></a>
-                    </div>
+                        <div class="col-9">
+                            <!--titulo post-->
+                            <a class="h3" href="#" id="divTitulo">
+                                @Html.DisplayFor(modelItem => item.TituloPost)
+                            </a>
+
+                            <!--descripcion post-->
+                            <p id="divDescripcion">
+                                @Html.DisplayFor(modelItem => item.DescPost)
+                            </p>
+
+                            <!--correo-->
+                            <a href="mailto:">Contactarse: <label id="divCorreo"></label></a>
+                        </div>
+
+                    }
+
                 </div>
                 <!--Fin articulo-->
-               
-                
                 <!--Barra números-->
 
                 <div class="btn-toolbar d-flex justify-content-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
@@ -87,22 +80,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-<!--
-    <form>
-
-    <input type="button" value="Send" onclick="get();">
-</form>
-<hr>
-<div id="divlista">
-</div>
-<br>
-<br>
-<br>
--->

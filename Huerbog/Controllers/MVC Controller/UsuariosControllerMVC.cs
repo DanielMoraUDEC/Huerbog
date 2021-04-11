@@ -120,5 +120,6 @@ namespace Huerbog.Controllers
 
             return RedirectToAction("IndexRegistrado", "Home2");
         }
+
     }
 }

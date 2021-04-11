@@ -44,16 +44,6 @@ namespace Huerbog.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getForo")]
-        public IActionResult getForo()
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                return Ok(db.Foros.ToList<Foro>());
-            }
-        }
-
         [HttpPost]
         [Route("post")]
         public IActionResult post([FromBody] UserHuertaModel model)
@@ -226,7 +216,17 @@ namespace Huerbog.Controllers
             return Ok("Usuario eliminado");
         }
 
-        //Creación publicaciones
+        //Métodos referentes a publicaciones
+
+        [HttpGet]
+        [Route("getForo")]
+        public IActionResult getForo()
+        {
+            using (HUERBOGContext db = new HUERBOGContext())
+            {
+                return Ok(db.Foros.ToList<Foro>());
+            }
+        }
 
         [HttpPost]
         [Route("createPost")]
@@ -259,7 +259,6 @@ namespace Huerbog.Controllers
 
             return Ok();
         }
-
 
         //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
 
@@ -320,10 +319,5 @@ namespace Huerbog.Controllers
                 smtp.Send(message);
         }
 
-        public List<SelectListItem> selCatPubl { get; } = new List<SelectListItem>
-        {
-            new SelectListItem {Value = "1", Text = "Publicación general"},
-            new SelectListItem {Value = "2", Text = "Publicación de comercio"},
-        };
     }
 }
