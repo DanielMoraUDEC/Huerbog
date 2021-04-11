@@ -117,7 +117,7 @@ namespace Huerbog.Controllers
             var userPost = hc.PostAsJsonAsync<ForoTemaModel>("Usuarios/createPost", model);
 
             userPost.Wait();
-
+            //metodo
             return RedirectToAction("IndexRegistrado", "Home2");
         }
 
