@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<Huerbog.Models.ForoList.ForoListModel>
 
 @{
-    ViewData["Title"] = "IndexForoList";
+    ViewData["Title"] = "IndexForoListUserLog";
+    Layout = "_LayoutRegistrado";
 }
 
 <link rel="stylesheet" href="~/css/estilos.css" />
 
 <div class="sidenav">
-    <a class="nav-link text-dark" asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Inicio</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categorias</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Mapa huertas</a>
 </div>
@@ -51,14 +52,13 @@
                                 @Html.DisplayFor(modelItem => item.DescPost)
                             </p>
 
-                            <!--fecha publicacion-->
                             <a>
                                 Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
                             </a>
 
                             <a>
                                 <div>
-                                    Categoria de publicación: 
+                                    Categoria de publicación:
                                     <div>
                                         @if (item.IdCatPublFk == 1)
                                         {
@@ -75,7 +75,6 @@
                                     </div>
                                 </div>
                             </a>
-
                             <!--correo-->
                             <a href="mailto:">Contactarse: <label id="divCorreo"></label></a>
                         </div>
@@ -104,3 +103,4 @@
         </div>
     </div>
 </div>
+

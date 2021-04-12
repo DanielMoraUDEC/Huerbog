@@ -64,7 +64,7 @@ namespace Huerbog
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=ForoControllerMVC}/{action=IndexForoList}/{id?}");
                 endpoints.MapRazorPages();
             });
 

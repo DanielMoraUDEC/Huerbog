@@ -56,6 +56,38 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(foroList);
         }
 
+        [HttpGet]
+        public IActionResult IndexForoListUserLog()
+        {
+            IEnumerable<ForoListModel> foroList = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
+
+                var responseTask = client.GetAsync("Foro/foroList");
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                    readTask.Wait();
+
+                    foroList = readTask.Result;
+                }
+                else
+                {
+                    foroList = Enumerable.Empty<ForoListModel>();
+
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(foroList);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

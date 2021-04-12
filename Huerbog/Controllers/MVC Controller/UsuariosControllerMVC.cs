@@ -99,7 +99,7 @@ namespace Huerbog.Controllers
 
             ViewBag.Id = userId;
 
-            return RedirectToAction("IndexRegistrado", "Home2");
+            return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
         }
 
         [HttpGet]
