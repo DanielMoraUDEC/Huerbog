@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Images\**" />
     <Compile Remove="Views\Foro\**" />
+    <Content Remove="Images\**" />
     <Content Remove="Views\Foro\**" />
+    <EmbeddedResource Remove="Images\**" />
     <EmbeddedResource Remove="Views\Foro\**" />
+    <None Remove="Images\**" />
     <None Remove="Views\Foro\**" />
   </ItemGroup>
 
@@ -29,10 +33,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Images\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
