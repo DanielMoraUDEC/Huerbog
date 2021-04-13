@@ -218,7 +218,7 @@ namespace Huerbog.Controllers
 
         //Métodos referentes a publicaciones
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("getForo")]
         public IActionResult getForo()
         {
@@ -226,7 +226,7 @@ namespace Huerbog.Controllers
             {
                 return Ok(db.Foros.ToList<Foro>());
             }
-        }
+        }*/
 
         [HttpPost]
         [Route("createPost")]

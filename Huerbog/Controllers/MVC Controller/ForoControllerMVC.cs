@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Huerbog.Models;
 using Huerbog.Models.ForoList;
 using System.Net.Http;
+using Huerbog.Models.ForoView;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -86,6 +87,37 @@ namespace Huerbog.Controllers.MVC_Controller
             }
 
             return View(foroList);
+        }
+
+        [HttpGet]
+        public IActionResult verPost(int Id)
+        {
+            ContentForoModel foroModel = new ContentForoModel();
+
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
+
+                var responseTask = client.GetAsync("Foro/verPost/" + Id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if(result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<ContentForoModel>();
+                    readTask.Wait();
+
+                    foroModel = readTask.Result;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(foroModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

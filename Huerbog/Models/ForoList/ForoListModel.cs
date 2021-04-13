@@ -10,7 +10,7 @@ namespace Huerbog.Models.ForoList
     {
         public int IdUser { get; set; }
         [Key]
-        public int IdPost { get; set; }
+        public int? IdPost { get; set; }
         public DateTime? FechaPublicacion { get; set; }
         public string DescPost { get; set; }
         public string TituloPost { get; set; }

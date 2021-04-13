@@ -70,12 +70,9 @@ namespace Huerbog.Controllers
 
             insertrec.Wait();
 
-            ViewBag.message = "Usuario registrado correctamente";
-
-
             ModelState.Clear();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("IndexForoList", "ForoControllerMVC");
 
         }
 

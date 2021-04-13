@@ -1,0 +1,102 @@
+﻿@model Huerbog.Models.ForoView.ContentForoModel
+
+@{
+    ViewData["Title"] = "verPost";
+}
+
+<h1>verPost</h1>
+
+<h4>ContentForoModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="verPost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reputacion" class="control-label"></label>
+                <input asp-for="Reputacion" class="form-control" />
+                <span asp-validation-for="Reputacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Red" class="control-label"></label>
+                <input asp-for="Red" class="form-control" />
+                <span asp-validation-for="Red" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="IdPost" />
+            <div class="form-group">
+                <label asp-for="FechaPublicacion" class="control-label"></label>
+                <input asp-for="FechaPublicacion" class="form-control" />
+                <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TituloPost" class="control-label"></label>
+                <input asp-for="TituloPost" class="form-control" />
+                <span asp-validation-for="TituloPost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DescPost" class="control-label"></label>
+                <input asp-for="DescPost" class="form-control" />
+                <span asp-validation-for="DescPost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UrlImg" class="control-label"></label>
+                <input asp-for="UrlImg" class="form-control" />
+                <span asp-validation-for="UrlImg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reacciones" class="control-label"></label>
+                <input asp-for="Reacciones" class="form-control" />
+                <span asp-validation-for="Reacciones" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>Categoría de publicación</strong></label>
+                <div>
+                    @if(Model.IdCatPublFk == 1)
+                    {
+                        <div>
+                            General
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            Comercio
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contenido" class="control-label"></label>
+                <input asp-for="Contenido" class="form-control" />
+                <span asp-validation-for="Contenido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

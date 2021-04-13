@@ -40,26 +40,38 @@ namespace Huerbog.Controllers.API_Controller
 
         //ver publicación seleccionada
         [HttpGet]
-        [Route("verPost/{idPost}")]
-        public IActionResult verPost(int idPost)
+        [Route("verPost/{IdPost}")]
+        public IActionResult verPost(int IdPost)
         {
-            ForoTemaModel foro = new ForoTemaModel();
+            ContentForoModel foro = new ContentForoModel();
 
-            var foroInfo = db.Foros.Where(x=>x.IdPost == idPost).FirstOrDefault();
+            var foroInfo = db.Foros.Where(x => x.IdPost == IdPost).FirstOrDefault();
 
-            foro.Idtema = foroInfo.IdPost;
+            var foroContent = db.Temas.Where(x => x.IdForo == IdPost).FirstOrDefault();
 
+            var foroUser = db.Usuarios.Where(x => x.IdusuarioReg == foroInfo.IdUsuario).FirstOrDefault();
+
+            //DATOS USUARIO
+            foro.IdusuarioReg = foroUser.IdusuarioReg;
+            foro.Nombre = foroUser.Nombre;
+            foro.Apellido = foroUser.Apellido;
+            foro.Correo = foroUser.Correo;
+            foro.Reputacion = foroUser.Reputacion;
+            foro.Red = foroUser.Red;
+
+            //DATOS PUBLICACIONES DE USUARIO
             foro.IdPost = foroInfo.IdPost;
-
-            var foroContent = db.Temas.Where(x=>x.IdForo == foro.Idtema).FirstOrDefault();
-
-            foro.TituloPost = foroInfo.TituloPost;
-
-            foro.DescPost = foroInfo.DescPost;
-
             foro.FechaPublicacion = foroInfo.FechaPublicacion;
+            foro.DescPost = foroInfo.DescPost;
+            foro.TituloPost = foroInfo.TituloPost;
+            foro.UrlImg = foroInfo.UrlImg;
+            foro.IdUsuario = foroInfo.IdUsuario;
+            foro.IdCatPublFk = foroInfo.IdCatPublFk;
 
+            //DATOS CONTENIDO DE PUBLICACIÓN
+            foro.Idtema = foroContent.Idtema;
             foro.Contenido = foroContent.Contenido;
+            foro.IdForo = foroContent.IdForo;
 
             return Ok(foro);
         }

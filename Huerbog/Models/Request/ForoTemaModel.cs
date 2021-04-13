@@ -12,7 +12,6 @@ namespace Huerbog.Models.Request
         public ForoTemaModel()
         {
             Temas = new HashSet<Tema>();
-
         }
 
         [Key]
