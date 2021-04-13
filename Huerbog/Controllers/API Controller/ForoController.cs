@@ -31,7 +31,8 @@ namespace Huerbog.Controllers.API_Controller
                 FechaPublicacion = s.FechaPublicacion,
                 DescPost = s.DescPost,
                 TituloPost = s.TituloPost,
-                IdCatPublFk = s.IdCatPublFk
+                IdCatPublFk = s.IdCatPublFk,
+               
             }
             ).ToList<ForoListModel>();
 

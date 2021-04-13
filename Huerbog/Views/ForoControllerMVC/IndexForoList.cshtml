@@ -42,12 +42,10 @@
 
                         <div class="col-9">
                             <!--titulo post-->
-                            <div class="h3" id="divTitulo">
+                            <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
                                 @Html.DisplayFor(modelItem => item.TituloPost)
-                                <div class="form-group">
-                                    <a asp-action="verPost" asp-route-id="@item.IdPost">Ver publicación</a>
-                                </div>
-                            </div>
+
+                            </a>
 
                             <!--descripcion post-->
                             <p id="divDescripcion">
