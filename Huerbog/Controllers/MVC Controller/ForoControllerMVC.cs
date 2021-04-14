@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Huerbog.Models;
+//using Huerbog.Models;
 using Huerbog.Models.ForoList;
 using System.Net.Http;
 using Huerbog.Models.ForoView;
