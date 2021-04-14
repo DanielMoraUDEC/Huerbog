@@ -23,7 +23,7 @@
 
                 <div class="form-group text-center">
                     <label asp-for="TituloPost" class="control-label">
-                        <input asp-for="TituloPost" class="p-3 h1 border-0 text-center" />
+                        <input asp-for="TituloPost" class="p-3 h1 border-0 text-centet" readonly="readonly"/>
                     </label>
 
                     <span asp-validation-for="TituloPost" class="text-danger"></span>
@@ -33,12 +33,12 @@
                     <div class="form-group col-8">
                         <!--Descripción-->
                         <label asp-for="Contenido" class="control-label h2">Descripción:</label>
-                        <textarea rows="4" asp-for="Contenido" class="form-control border-0"></textarea>
+                        <textarea rows="4" asp-for="Contenido" class="form-control border-0" readonly="readonly"></textarea>
                         <span asp-validation-for="Contenido" class="text-danger"></span>
 
                         <!--Publicado-->
                         <label asp-for="FechaPublicacion" class="control-label">Publicado</label>
-                        <input asp-for="FechaPublicacion" class="form-control border-0" />
+                        <input asp-for="FechaPublicacion" class="form-control border-0" readonly="readonly"/>
                         <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
                         <!--Reacciones-->
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
@@ -53,7 +53,7 @@
                         <img asp-for="UrlImg" src="~/Imagenes/1.jpg" alt="" class="img-fluid">
                         <!--Reputación-->
                         <label asp-for="Reputacion" class="control-label">Reputación de 1 a 5</label>
-                        <input asp-for="Reputacion" class="form-control" />
+                        <input asp-for="Reputacion" class="form-control"  readonly="readonly"/>
                         <span asp-validation-for="Reputacion" class="text-danger"></span>
                     </div>
 
@@ -63,13 +63,13 @@
                 <div class="row">
                     <div class="form-group col-6">
                         <label asp-for="Nombre" class="control-label"></label>
-                        <input asp-for="Nombre" class="form-control" />
+                        <input asp-for="Nombre" class="form-control" readonly="readonly" />
                         <span asp-validation-for="Nombre" class="text-danger"></span>
                     </div>
 
                     <div class="form-group col-6">
                         <label asp-for="Apellido" class="control-label"></label>
-                        <input asp-for="Apellido" class="form-control" />
+                        <input asp-for="Apellido" class="form-control" readonly="readonly" />
                         <span asp-validation-for="Apellido" class="text-danger"></span>
                     </div>
                 </div>
@@ -77,13 +77,13 @@
                 <div class="row">
                     <div class="form-group col-6">
                         <label asp-for="Correo" class="control-label"></label>
-                        <input asp-for="Correo" class="form-control" />
+                        <input asp-for="Correo" class="form-control" readonly="readonly" />
                         <span asp-validation-for="Correo" class="text-danger"></span>
                     </div>
 
                     <div class="form-group col-6">
                         <label asp-for="Red" class="control-label"></label>
-                        <input asp-for="Red" class="form-control" />
+                        <input asp-for="Red" class="form-control" readonly="readonly"/>
                         <span asp-validation-for="Red" class="text-danger"></span>
                     </div>
                 </div>
@@ -129,9 +129,4 @@
     }
 </div>
 
-<<<<<<< HEAD
-=======
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
->>>>>>> 8dac57127634b3831be17ec80be175829571b5bf
+
