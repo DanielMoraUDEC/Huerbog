@@ -115,7 +115,7 @@ namespace Huerbog.Controllers
 
             userPost.Wait();
             //metodo
-            return RedirectToAction("IndexRegistrado", "Home2");
+            return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
         }
 
     }
