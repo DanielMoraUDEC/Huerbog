@@ -2,98 +2,131 @@
 
 @{
     ViewData["Title"] = "verPost";
+
 }
+<link rel="stylesheet" href="~/css/estilos.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="verPost">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Reputacion" class="control-label"></label>
-                <input asp-for="Reputacion" class="form-control" />
-                <span asp-validation-for="Reputacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Red" class="control-label"></label>
-                <input asp-for="Red" class="form-control" />
-                <span asp-validation-for="Red" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="IdPost" />
-            <div class="form-group">
-                <label asp-for="FechaPublicacion" class="control-label"></label>
-                <input asp-for="FechaPublicacion" class="form-control" />
-                <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TituloPost" class="control-label"></label>
-                <input asp-for="TituloPost" class="form-control" />
-                <span asp-validation-for="TituloPost" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DescPost" class="control-label"></label>
-                <input asp-for="DescPost" class="form-control" />
-                <span asp-validation-for="DescPost" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UrlImg" class="control-label"></label>
-                <input asp-for="UrlImg" class="form-control" />
-                <span asp-validation-for="UrlImg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Reacciones" class="control-label"></label>
-                <input asp-for="Reacciones" class="form-control" />
-                <span asp-validation-for="Reacciones" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label><strong>Categoría de publicación</strong></label>
-                <div>
-                    @if(Model.IdCatPublFk == 1)
-                    {
-                        <div>
-                            General
-                        </div>
-                    }
-                    else
-                    {
-                        <div>
-                            Comercio
-                        </div>
-                    }
+
+<div class="sidenav">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Inicio</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categorias</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Mapa huertas</a>
+</div>
+
+<div class="main">
+    <div class="row">
+        <div class="col-12 col-md-9">
+            <form asp-action="verPost">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group text-center">
+                    <label asp-for="TituloPost" class="control-label">
+                        <input asp-for="TituloPost" class="p-3 h1 border-0 text-centet" readonly="readonly"/>
+                    </label>
+
+                    <span asp-validation-for="TituloPost" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contenido" class="control-label"></label>
-                <input asp-for="Contenido" class="form-control" />
-                <span asp-validation-for="Contenido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                <hr />
+                <div class="row">
+                    <div class="form-group col-8">
+                        <!--Descripción-->
+                        <label asp-for="Contenido" class="control-label h2">Descripción:</label>
+                        <textarea rows="4" asp-for="Contenido" class="form-control border-0" readonly="readonly"></textarea>
+                        <span asp-validation-for="Contenido" class="text-danger"></span>
+
+                        <!--Publicado-->
+                        <label asp-for="FechaPublicacion" class="control-label">Publicado</label>
+                        <input asp-for="FechaPublicacion" class="form-control border-0" readonly="readonly"/>
+                        <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
+                        <!--Reacciones-->
+                        <span asp-validation-for="Reacciones" class="text-danger"></span>
+                        <button asp-for="Reacciones" class="fas fa-thumbs-up"></button>
+                        <button asp-for="Reacciones" class="fas fa-thumbs-down"></button>
+
+
+                    </div>
+                    <div class="form-group col-4">
+                        <!--Imagen-->
+                        
+                        <img asp-for="UrlImg" src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <!--Reputación-->
+                        <label asp-for="Reputacion" class="control-label">Reputación de 1 a 5</label>
+                        <input asp-for="Reputacion" class="form-control"  readonly="readonly"/>
+                        <span asp-validation-for="Reputacion" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <h2>Descripción del Huertero</h2>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control" readonly="readonly" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label asp-for="Apellido" class="control-label"></label>
+                        <input asp-for="Apellido" class="form-control" readonly="readonly" />
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label asp-for="Correo" class="control-label"></label>
+                        <input asp-for="Correo" class="form-control" readonly="readonly" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label asp-for="Red" class="control-label"></label>
+                        <input asp-for="Red" class="form-control" readonly="readonly"/>
+                        <span asp-validation-for="Red" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <input type="hidden" asp-for="IdPost" />
+
+
+                <!--
+         <div class="form-group">
+           <label><strong>Categoría de publicación</strong></label>
+           <div>
+               @if (Model.IdCatPublFk == 1)
+               {
+                   <div>
+                       General
+                   </div>
+               }
+               else
+               {
+                   <div>
+                       Comercio
+                   </div>
+               }
+           </div>
+       </div>
+
+        -->
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

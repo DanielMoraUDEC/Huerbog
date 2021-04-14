@@ -34,13 +34,13 @@
                         ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                        <div class="col-3">
-                            <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
-                            <a href="#" class="lead text-center">Ubicación</a>
+                    <div class="col-4">
+                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                        <a href="#" class="lead text-center">Ubicación</a>
+                        <br /><br />
+                    </div>
 
-                        </div>
-
-                        <div class="col-9">
+                        <div class="col-8">
                             <!--titulo post-->
                             <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
                                 @Html.DisplayFor(modelItem => item.TituloPost)
@@ -59,18 +59,18 @@
 
                             <a>
                                 <div>
-                                    Categoria de publicación: 
+
                                     <div>
                                         @if (item.IdCatPublFk == 1)
                                         {
                                             <div>
-                                                General
+                                                Categoria de publicación: General
                                             </div>
                                         }
                                         else
                                         {
                                             <div>
-                                                Comercio
+                                                Categoria de publicación: Comercio
                                             </div>
                                         }
                                     </div>
@@ -79,6 +79,7 @@
 
                             <!--correo-->
                             <a href="mailto:">Contactarse: <label id="divCorreo"></label></a>
+                            <br /><br />
                         </div>
                     }
                 </div>
