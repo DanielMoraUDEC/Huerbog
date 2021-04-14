@@ -32,7 +32,9 @@ namespace Huerbog.Controllers
     {
         HUERBOGContext db = new HUERBOGContext();
 
-        UserLogin u = new UserLogin();
+        //UserLogin u = new UserLogin();
+
+        const string SessionKeyId = "_Id";
 
         [HttpGet]
         [Route("get")]
@@ -129,6 +131,7 @@ namespace Huerbog.Controllers
         [Route("login")]
         public IActionResult login([FromBody] Usuario model)
         {
+
             if (db.Usuarios.Any(x => x.Correo.Equals(model.Correo)))
             {
                 Usuario user = db.Usuarios.Where(x => x.Correo.Equals(model.Correo)).FirstOrDefault();
@@ -138,11 +141,12 @@ namespace Huerbog.Controllers
                                                                          model.Contraseña), Convert.FromBase64String(user.Salt)));
                 if (client_post_hash_password.Equals(user.Contraseña))
                 {
-                    HttpContext.Session.SetInt32("User", user.IdusuarioReg);
+
+                    HttpContext.Session.SetInt32(SessionKeyId, user.IdusuarioReg);
 
                     var idLogTemp = db.Usuarios.Where(x => x.Correo == user.Correo).FirstOrDefault();
 
-                    u.idLog = idLogTemp.IdusuarioReg;
+                    //u.idLog = idLogTemp.IdusuarioReg;
 
                     return Ok(user);
                 }
@@ -232,7 +236,9 @@ namespace Huerbog.Controllers
         [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)
         {
-            var userId = HttpContext.Session.GetInt32("User");
+            var userId = db.Usuarios.Where(x => x.IdusuarioReg == model.IdUsuario).FirstOrDefault();
+
+            var u = HttpContext.Session.GetInt32(SessionKeyId);
 
             Foro foro = new Foro();
 
@@ -241,7 +247,7 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = 1;
+            foro.IdUsuario = u.Value;
             foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 

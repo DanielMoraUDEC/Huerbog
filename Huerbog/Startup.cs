@@ -33,6 +33,23 @@ namespace Huerbog
                         builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                     });
                 });
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddRazorPages();
             services.AddDistributedMemoryCache();
             services.AddSession();
