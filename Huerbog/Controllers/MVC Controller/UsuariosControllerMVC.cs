@@ -11,7 +11,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Huerbog.Models.Request;
 using Huerbog.Models;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Huerbog.Controllers
 {
@@ -99,6 +100,7 @@ namespace Huerbog.Controllers
             return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult createPost()
         {

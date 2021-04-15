@@ -19,6 +19,14 @@ using System.Net;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Huerbog.Models.Login;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 
 //Scaffold-DBContext "Server=DESKTOP-3GPQMK0;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
@@ -28,13 +36,17 @@ namespace Huerbog.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("Permitir")]
+    [Authorize]
     public class UsuariosController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();
 
-        //UserLogin u = new UserLogin();
+        private readonly IConfiguration config;
 
-        const string SessionKeyId = "_Id";
+        public UsuariosController(IConfiguration _config)
+        {
+            config = _config;
+        }
 
         [HttpGet]
         [Route("get")]
@@ -46,10 +58,16 @@ namespace Huerbog.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("post")]
-        public IActionResult post([FromBody] UserHuertaModel model)
+        public async Task<IActionResult> post([FromBody] UserHuertaModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var message = "";
 
             #region generar código de activación
@@ -60,12 +78,14 @@ namespace Huerbog.Controllers
             model.IsMailConfirmed = false;
             #endregion
 
+            Usuario oUsuar = new Usuario();
+
             using (HUERBOGContext db = new HUERBOGContext())
             {
                 if (!(db.Usuarios.Any(x => x.Correo.Equals(model.Correo)) || db.Usuarios.Any(x => x.Telefono.Equals(model.Telefono))
                 || db.TablaHuerta.Any(x => x.UbicacionHuerta.Equals(model.UbicacionHuerta))))
                 {
-                    Usuario oUsuar = new Usuario();
+
 
                     TablaHuertum tHuerta = new TablaHuertum();
 
@@ -108,15 +128,11 @@ namespace Huerbog.Controllers
                     "@ubicacionHuerta, @descHuerta, @areaCultivo, @red, @telefono",
                         new[] { uNombre, uApellido, uCorreo, uSalt, uContraseña, hUbicacionHuerta, hDescHuerta, hAreaCultivo, uRed, uTelefono })*/
 
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
 
                     SendVerificationLinkEmail(model.Correo, model.ActivationCode.ToString());
 
                     message = "Registro completado satisfactoriamente, el link de activación ha sido enviado a su correo" + model.Correo;
-
-                    var id = db.Usuarios.Where(x => x.Correo == model.Correo).FirstOrDefault();
-
-                    HttpContext.Session.SetInt32("User", id.IdusuarioReg);
 
                 }
                 else
@@ -124,42 +140,71 @@ namespace Huerbog.Controllers
                     return Ok("Ubicación de huerta, correo o teléfono ya existente");
                 }
             }
+
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        public IActionResult login([FromBody] Usuario model)
+        public async Task<IActionResult> login([FromBody] Usuario model)
         {
-
-            if (db.Usuarios.Any(x => x.Correo.Equals(model.Correo)))
+            if(ModelState.IsValid)
             {
-                Usuario user = db.Usuarios.Where(x => x.Correo.Equals(model.Correo)).FirstOrDefault();
-                //calcula la el hash de la contraseña de los datos del cliente y lo compara con la contraseña
-                //hash en el servidor con SALT
-                var client_post_hash_password = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(
-                                                                         model.Contraseña), Convert.FromBase64String(user.Salt)));
-                if (client_post_hash_password.Equals(user.Contraseña))
+                if (db.Usuarios.Any(x => x.Correo.Equals(model.Correo)))
                 {
 
-                    HttpContext.Session.SetInt32(SessionKeyId, user.IdusuarioReg);
+                    Usuario user = db.Usuarios.Where(x => x.Correo.Equals(model.Correo)).FirstOrDefault();
 
-                    var idLogTemp = db.Usuarios.Where(x => x.Correo == user.Correo).FirstOrDefault();
+                    //calcula la el hash de la contraseña de los datos del cliente y lo compara con la contraseña
+                    //hash en el servidor con SALT
+                    var client_post_hash_password = Convert.ToBase64String(common.SaltHashPassword(Encoding.ASCII.GetBytes(
+                                                                             model.Contraseña), Convert.FromBase64String(user.Salt)));
 
-                    //u.idLog = idLogTemp.IdusuarioReg;
+                    if (client_post_hash_password.Equals(user.Contraseña))
+                    {
+                        var SecretKey = config.GetValue<string>("SecretKey");
+                        var key = Encoding.ASCII.GetBytes(SecretKey);
 
-                    return Ok(user);
+                        var claims = new ClaimsIdentity();
+                        claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, model.Correo));
+
+                        var tokenDesc = new SecurityTokenDescriptor
+                        {
+                            Subject = claims,
+                            Expires = DateTime.UtcNow.AddHours(4),
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                        };
+
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var createdToken = tokenHandler.CreateToken(tokenDesc);
+
+                        string bearer_token = tokenHandler.WriteToken(createdToken);
+                        return Ok(bearer_token);
+                    }
+                    else
+                    {
+                        return Ok("Contraseña incorrecta");
+                    }
+
                 }
                 else
                 {
-                    return Ok("Contreseña incorrecta");
+                    return Ok("Usuario no encontrado, puede registrarse");
                 }
-
             }
             else
             {
-                return Ok("Usuario no encontrado, puede registrarse");
+                return Ok(ModelState);
             }
+        }
+
+        [HttpGet]
+        [Route("getCurrUser")]
+        public IActionResult getCurrUser()
+        {
+            var r = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+            return Ok(r == null ? "" : r.Value);
         }
 
         [HttpPut]
@@ -232,13 +277,11 @@ namespace Huerbog.Controllers
             }
         }*/
 
+        
         [HttpPost]
         [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)
         {
-            var userId = db.Usuarios.Where(x => x.IdusuarioReg == model.IdUsuario).FirstOrDefault();
-
-            var u = HttpContext.Session.GetInt32(SessionKeyId);
 
             Foro foro = new Foro();
 
@@ -247,7 +290,7 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = u.Value;
+            foro.IdUsuario = 1;
             foro.IdCatPublFk = model.IdCatPublFk;
             tema.Contenido = model.Contenido;
 
