@@ -100,7 +100,7 @@ namespace Huerbog.Controllers
             return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult createPost()
         {

@@ -36,7 +36,7 @@ namespace Huerbog.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("Permitir")]
-    [Authorize]
+    //[Authorize]
     public class UsuariosController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();
