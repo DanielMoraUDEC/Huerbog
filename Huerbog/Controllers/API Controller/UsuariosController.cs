@@ -207,6 +207,21 @@ namespace Huerbog.Controllers
             return Ok(r == null ? "" : r.Value);
         }
 
+        [HttpGet]
+        [Route("userVerification/{id}")]
+        public IActionResult userVerification(string id)
+        {
+            var v = db.Usuarios.Where(a => a.ActivationCode == new Guid(id)).FirstOrDefault();
+
+            if(v != null)
+            {
+                v.IsMailConfirmed = true;
+                db.SaveChanges();
+            }
+
+            return Ok();
+        }
+
         [HttpPut]
         public ActionResult put([FromBody] Usuario model)
         {
@@ -334,7 +349,7 @@ namespace Huerbog.Controllers
 
         public void SendVerificationLinkEmail(string emailID, string ActivationCode)
         {
-            var verifyUrl = "/Usuarios/VerifyAccount/" + ActivationCode;
+            var verifyUrl = "/UsuariosControllerMVC/userVerification/" + ActivationCode;
             var link = Request.Host + verifyUrl;
 
             var fromEmail = new MailAddress("pepgrillo420@gmail.com");
@@ -346,7 +361,7 @@ namespace Huerbog.Controllers
                 " como publicar información general o publicar información con respecto a solicitudes u ofrecimientos" +
                 " de servicios o productos, recuerde publicar contenido con respecto a las huertas y mantenerse apegado" +
                 "a las normas de la comunidad. Por favor haga click en el link de abajo para terminar de verificar su cuenta " +
-                "<br/><br/><a href='https//" + link + "'>" + link + "</a>";
+                "<br/><br/><a href='https://"+link+"'>"+link+"</a>";
 
             var smtp = new SmtpClient
             {

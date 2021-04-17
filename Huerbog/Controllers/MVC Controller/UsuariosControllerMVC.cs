@@ -89,15 +89,42 @@ namespace Huerbog.Controllers
             HttpClient hc = new HttpClient();
             hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
 
-            var login = hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);
-
-            var userId = hc.GetFromJsonAsync<Usuario>("Usuarios/getId");
+            var login = hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);   
 
             login.Wait();
 
-            ViewBag.Id = userId;
-
             return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+        }
+
+        [HttpGet]
+        public IActionResult userVerification(string id)
+        {
+            Usuario u = new Usuario();
+
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+
+                var responseTask = client.GetAsync("Usuarios/userVerification/" + id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<Usuario>();
+                    readTask.Wait();
+
+                    u = readTask.Result;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(u);
         }
 
         //[Authorize]
