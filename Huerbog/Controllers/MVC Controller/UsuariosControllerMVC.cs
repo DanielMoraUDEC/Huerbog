@@ -18,6 +18,7 @@ namespace Huerbog.Controllers
 {
     public class UsuariosControllerMVC : Controller
     {
+        //obtiene una lista de los usuarios registrados - no funciona
         [HttpGet]
         public ActionResult get()
         {
@@ -55,6 +56,7 @@ namespace Huerbog.Controllers
             return View(u);
         }
 
+        //registro de usuarios
         [HttpGet]
         public IActionResult post()
         {
@@ -77,6 +79,7 @@ namespace Huerbog.Controllers
 
         }
 
+        //login de usuarios
         [HttpGet]
         public IActionResult login()
         {
@@ -93,9 +96,18 @@ namespace Huerbog.Controllers
 
             login.Wait();
 
-            return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+            if(login.Result.IsSuccessStatusCode == true)
+            {
+                return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
+        //muestra la vista con el mensaje de usuario verificado
         [HttpGet]
         public IActionResult userVerification(string id)
         {
@@ -127,6 +139,7 @@ namespace Huerbog.Controllers
             return View(u);
         }
 
+        //creación de publicaciones
         //[Authorize]
         [HttpGet]
         public IActionResult createPost()

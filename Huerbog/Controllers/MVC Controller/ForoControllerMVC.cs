@@ -25,6 +25,7 @@ namespace Huerbog.Controllers.MVC_Controller
             _logger = logger;
         }
 
+        //página principal de la aplicación, muestra la lista de publicaciones hechas
         [HttpGet]
         public IActionResult IndexForoList()
         {
@@ -57,6 +58,7 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(foroList);
         }
 
+        //lo mismo que el anterior, pero solo cuando el usuario se logea
         [HttpGet]
         public IActionResult IndexForoListUserLog()
         {
@@ -89,6 +91,7 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(foroList);
         }
 
+        //para ver las publicaciones hechas
         [HttpGet]
         public IActionResult verPost(int Id)
         {

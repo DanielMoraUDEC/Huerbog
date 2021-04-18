@@ -48,6 +48,7 @@ namespace Huerbog.Controllers
             config = _config;
         }
 
+        //lista de usuarios registrados
         [HttpGet]
         [Route("get")]
         public IActionResult get()
@@ -58,6 +59,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //resgistro de usuarios
         [AllowAnonymous]
         [HttpPost]
         [Route("post")]
@@ -144,6 +146,7 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
+        //logeo de usuarios
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
@@ -184,13 +187,13 @@ namespace Huerbog.Controllers
                     }
                     else
                     {
-                        return Ok("Contraseña incorrecta");
+                        return Unauthorized();
                     }
 
                 }
                 else
                 {
-                    return Ok("Usuario no encontrado, puede registrarse");
+                    return NotFound();
                 }
             }
             else
@@ -199,6 +202,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //obtiene el token del usuario logeado actualmente
         [HttpGet]
         [Route("getCurrUser")]
         public IActionResult getCurrUser()
@@ -207,6 +211,7 @@ namespace Huerbog.Controllers
             return Ok(r == null ? "" : r.Value);
         }
 
+        //verifica el registro de un usuario
         [HttpGet]
         [Route("userVerification/{id}")]
         public IActionResult userVerification(string id)
@@ -222,64 +227,6 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public ActionResult put([FromBody] Usuario model)
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                Usuario oUsuar = db.Usuarios.Find(model.IdusuarioReg);
-
-                if (model.Correo == oUsuar.Correo || model.Telefono == oUsuar.Telefono)
-                {
-
-                    oUsuar.Nombre = model.Nombre;
-                    oUsuar.Correo = model.Correo;
-                    oUsuar.Apellido = model.Apellido;
-                    oUsuar.Contraseña = model.Contraseña;
-                    db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    var existsMail = check_email(model.Correo);
-
-                    var existsTelNumber = check_tel_number(model.Telefono);
-
-                    if (existsMail || existsTelNumber)
-                    {
-                        ModelState.AddModelError("existNumberOrMail", "El correo o el número de tel ya existe");
-
-                        return Ok("El correo o el número de tel ya existe");
-                    }
-
-                    oUsuar.Nombre = model.Nombre;
-                    oUsuar.Correo = model.Correo;
-                    oUsuar.Apellido = model.Apellido;
-                    oUsuar.Contraseña = model.Contraseña;
-                    db.Entry(oUsuar).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    db.SaveChanges();
-
-                }
-            }
-            return Ok();
-        }
-
-        [HttpDelete]
-        public ActionResult DeleteUser([FromBody] Usuario user)
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                var User = db.Usuarios.Find(user.IdusuarioReg);
-                var userHuerta = db.TablaHuerta.Find(user.IdusuarioReg);
-
-                db.TablaHuerta.Remove(userHuerta);
-                db.Usuarios.Remove(User);
-                db.SaveChanges();
-            }
-
-            return Ok("Usuario eliminado");
-        }
-
         //Métodos referentes a publicaciones
 
         /*[HttpGet]
@@ -292,7 +239,7 @@ namespace Huerbog.Controllers
             }
         }*/
 
-        
+        //crea una publicación
         [HttpPost]
         [Route("createPost")]
         public IActionResult createPost([FromBody] ForoTemaModel model)
@@ -324,29 +271,11 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
-        //métodos para verificar la existencia de un correo o núm. de teléfono, devuelve un bool
-
+      
+        //métodos para uso único de la clase actual
         [NonAction]
-        public bool check_email(string correo)
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                var check = db.Usuarios.Where(x => x.Correo == correo).FirstOrDefault();
 
-                return check != null;
-            }
-        }
-
-        public bool check_tel_number(string telefono)
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                var check = db.Usuarios.Where(x => x.Telefono == telefono).FirstOrDefault();
-
-                return check != null;
-            }
-        }
-
+        //envía el correo con un link de verificación de usuario
         public void SendVerificationLinkEmail(string emailID, string ActivationCode)
         {
             var verifyUrl = "/UsuariosControllerMVC/userVerification/" + ActivationCode;
