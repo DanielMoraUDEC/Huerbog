@@ -13,11 +13,14 @@ using Huerbog.Models.Request;
 using Huerbog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.IO;
+using System.Security.Claims;
 
 namespace Huerbog.Controllers
 {
     public class UsuariosControllerMVC : Controller
     {
+
         //obtiene una lista de los usuarios registrados - no funciona
         [HttpGet]
         public ActionResult get()
@@ -148,16 +151,39 @@ namespace Huerbog.Controllers
         }
 
         [HttpPost]
-        public IActionResult createPost(ForoTemaModel model)
+        public async Task<IActionResult> createPost(ForoTemaModel model)
         {
+            var formContent = new MultipartFormDataContent();
+
+            var fileName = Path.GetFileName(model.ContentFile.FileName);
+            var fileExt = Path.GetExtension(fileName);
+            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
+
+            formContent.Add(new StringContent(model.TituloPost), "TituloPost");
+            formContent.Add(new StringContent(model.DescPost), "DescPost");
+            formContent.Add(new StringContent(model.Contenido), "Contenido");
+            formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
+            formContent.Add(new StringContent(newFileName), "FileName");
+            formContent.Add(new StringContent(fileExt), "FileType");
+
+            formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
+
             HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-            var userPost = hc.PostAsJsonAsync<ForoTemaModel>("Usuarios/createPost", model);
+            //var userPost = hc.PostAsJsonAsync<ForoTemaModel>("Usuarios/createPost", model);
 
-            userPost.Wait();
-            //metodo
-            return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+            var userPost = await hc.PostAsync("createPost", formContent);
+
+
+            if(userPost.IsSuccessStatusCode == true)
+            {
+                return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+            }
+            else
+            {
+                return View();
+            }
         }
 
     }

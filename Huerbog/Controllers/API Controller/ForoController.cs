@@ -65,7 +65,7 @@ namespace Huerbog.Controllers.API_Controller
             foro.FechaPublicacion = foroInfo.FechaPublicacion;
             foro.DescPost = foroInfo.DescPost;
             foro.TituloPost = foroInfo.TituloPost;
-            foro.UrlImg = foroInfo.UrlImg;
+            
             foro.IdUsuario = foroInfo.IdUsuario;
             foro.IdCatPublFk = foroInfo.IdCatPublFk;
 

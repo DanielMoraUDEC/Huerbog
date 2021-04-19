@@ -169,8 +169,11 @@ namespace Huerbog.Controllers
                         var SecretKey = config.GetValue<string>("SecretKey");
                         var key = Encoding.ASCII.GetBytes(SecretKey);
 
-                        var claims = new ClaimsIdentity();
-                        claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, model.Correo));
+                        var claims = new ClaimsIdentity(new Claim[] 
+                        {
+                            new Claim(ClaimTypes.Name, user.Correo)
+                        });
+                        claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Correo));
 
                         var tokenDesc = new SecurityTokenDescriptor
                         {
@@ -183,6 +186,12 @@ namespace Huerbog.Controllers
                         var createdToken = tokenHandler.CreateToken(tokenDesc);
 
                         string bearer_token = tokenHandler.WriteToken(createdToken);
+
+                        using(var client = new HttpClient())
+                        {
+                            client.DefaultRequestHeaders.Add("Authorization", "Bearer" + bearer_token);
+                        }
+
                         return Ok(bearer_token);
                     }
                     else
@@ -242,33 +251,55 @@ namespace Huerbog.Controllers
         //crea una publicación
         [HttpPost]
         [Route("createPost")]
-        public IActionResult createPost([FromBody] ForoTemaModel model)
+        public async Task<IActionResult> createPost([FromForm]ForoTemaModel model)
         {
+            //var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            //var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+
+            var userMail = getCurrUser().ToString();
 
             Foro foro = new Foro();
 
-            Tema tema = new Tema(); 
+            Tema tema = new Tema();
+
+            //var user = db.Usuarios.Where(x => x.Correo.Equals(userId)).FirstOrDefault();
+
+            using(var target = new MemoryStream())
+            {
+                await model.ContentFile.CopyToAsync(target);
+                tema.ContentFile = target.ToArray();
+            }
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.UrlImg = "~\\Images" + "\\" + model.UrlImg;
-            foro.IdUsuario = 1;
-            foro.IdCatPublFk = model.IdCatPublFk;
+            foro.IdUsuario = 2;
+            foro.IdCatPublFk = (int) model.IdCatPublFk;
+            tema.FileName = model.FileName;
+            tema.FileType = model.FileType;
             tema.Contenido = model.Contenido;
 
             var descPost = new SqlParameter("@descPost", foro.DescPost);
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-            var urlImg = new SqlParameter("@urlImg", foro.UrlImg);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
             var contenido = new SqlParameter("@contenido", tema.Contenido);
             var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
+            var content_file = new SqlParameter("@content_file", tema.ContentFile);
+            var file_name_ = new SqlParameter("@file_name_", tema.FileName);
+            var FileType = new SqlParameter("@FileType", tema.FileType);
 
-            db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @urlImg, @idUsuario," +
-                "@contenido, @idCatPublFK", new[] { descPost, tituloPost, urlImg, idUsuario, contenido, idCatPublFK });
+            try
+            {
+                db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @idUsuario," +
+                "@contenido, @idCatPublFK, @content_file, @FileType, @file_name_", new[] { descPost,
+                    tituloPost, idUsuario, contenido, idCatPublFK, content_file, FileType, file_name_ });
 
-            db.SaveChanges();
+                db.SaveChanges();
 
-            return Ok();
+                return Ok();
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
       

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace Huerbog.Models.Request
             Temas = new HashSet<Tema>();
         }
 
+        //tabla Foro
         [Key]
         public int IdPost { get; set; }
         public DateTime? FechaPublicacion { get; set; }
@@ -21,15 +23,22 @@ namespace Huerbog.Models.Request
         public string DescPost { get; set; }
         public string TituloPost { get; set; }
         public bool? EliminarPost { get; set; }
-        public string UrlImg { get; set; }
         public int? Reacciones { get; set; }
         public int? IdUsuario { get; set; }
         public int? IdCatPublFk { get; set; }
+
+        //tabla tema
         public int? Idtema { get; set; }
         public string Contenido { get; set; }
         public int? IdForo { get; set; }
+        public IFormFile ContentFile { get; set; }
+        public string FileName { get; set; }
+        public string FileType { get; set; }
 
+        //tabla tema
         public virtual Foro IdForoNavigation { get; set; }
+
+        //tabla Foro 
         public virtual CategoriaPublicacione IdCatPublFkNavigation { get; set; }
         public virtual Usuario IdUsuarioNavigation { get; set; }
         public virtual ICollection<Tema> Temas { get; set; }
