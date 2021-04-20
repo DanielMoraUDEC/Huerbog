@@ -23,7 +23,7 @@
 
                 <div class="form-group text-center">
                     <label asp-for="TituloPost" class="control-label">
-                        <input asp-for="TituloPost" class="p-3 h1 border-0 text-centet" readonly="readonly"/>
+                        <input asp-for="TituloPost" class="p-3 h1 border-0 text-centet" readonly="readonly" />
                     </label>
 
                     <span asp-validation-for="TituloPost" class="text-danger"></span>
@@ -38,7 +38,7 @@
 
                         <!--Publicado-->
                         <label asp-for="FechaPublicacion" class="control-label">Publicado</label>
-                        <input asp-for="FechaPublicacion" class="form-control border-0" readonly="readonly"/>
+                        <input asp-for="FechaPublicacion" class="form-control border-0" readonly="readonly" />
                         <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
                         <!--Reacciones-->
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
@@ -54,12 +54,12 @@
                             var base64 = Convert.ToBase64String(Model.ContentFile);
                             var Image = String.Format("data:image/;base64,{0}", base64);
                         }
-                        
+
                         <img src="@Image" alt="" class="img-fluid">
 
                         <!--Reputación-->
                         <label asp-for="Reputacion" class="control-label">Reputación de 1 a 5</label>
-                        <input asp-for="Reputacion" class="form-control"  readonly="readonly"/>
+                        <input asp-for="Reputacion" class="form-control" readonly="readonly" />
                         <span asp-validation-for="Reputacion" class="text-danger"></span>
                     </div>
 
@@ -89,7 +89,7 @@
 
                     <div class="form-group col-6">
                         <label asp-for="Red" class="control-label"></label>
-                        <input asp-for="Red" class="form-control" readonly="readonly"/>
+                        <input asp-for="Red" class="form-control" readonly="readonly" />
                         <span asp-validation-for="Red" class="text-danger"></span>
                     </div>
                 </div>
@@ -99,25 +99,25 @@
 
 
                 <!--
-         <div class="form-group">
-           <label><strong>Categoría de publicación</strong></label>
-           <div>
-               @if (Model.IdCatPublFk == 1)
-               {
-                   <div>
-                       General
-                   </div>
-               }
-               else
-               {
-                   <div>
-                       Comercio
-                   </div>
-               }
-           </div>
-       </div>
+                  <div class="form-group">
+                    <label><strong>Categoría de publicación</strong></label>
+                    <div>
+                        @if (Model.IdCatPublFk == 1)
+                        {
+                            <div>
+                                General
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                Comercio
+                            </div>
+                        }
+                    </div>
+                </div>
 
-        -->
+                 -->
 
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -127,7 +127,7 @@
     </div>
 
     <div>
-        <a asp-action="IndexForoList">Regresar</a>
+        <a asp-action="IndexForoListUserLog">Regresar</a>
     </div>
 
     @section Scripts {

@@ -34,11 +34,6 @@
                         ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                        <div class="col-4">
-                            <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
-                            <br /><br />
-                        </div>
-
                         <div class="col-8">
                             <!--titulo post-->
                             <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
@@ -56,7 +51,7 @@
                                 Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
                             </a>
 
-                            <div class="col-8">
+                            <div>
                                 Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
                             </div>
                             

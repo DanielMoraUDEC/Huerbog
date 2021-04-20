@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Huerbog.Models.ForoList;
 using System.Net.Http;
 using Huerbog.Models.ForoView;
+using Newtonsoft.Json;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -93,7 +94,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
         //para ver las publicaciones hechas
         [HttpGet]
-        public IActionResult verPost(int Id)
+        public async Task<IActionResult> verPost(int Id)
         {
             ContentForoModel foroModel = new ContentForoModel();
 
@@ -109,10 +110,49 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if(result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<ContentForoModel>();
-                    readTask.Wait();
+                    //var readTask = result.Content.ReadAsAsync<ContentForoModel>();
+                    //readTask.Wait();
 
-                    foroModel = readTask.Result;
+                    var apiResp = await result.Content.ReadAsStringAsync();
+
+                    //foroModel = readTask.Result;
+
+                    foroModel = JsonConvert.DeserializeObject<ContentForoModel>(apiResp);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(foroModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> verPostUserLog(int Id)
+        {
+            ContentForoModel foroModel = new ContentForoModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
+
+                var responseTask = client.GetAsync("Foro/verPost/" + Id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    //var readTask = result.Content.ReadAsAsync<ContentForoModel>();
+                    //readTask.Wait();
+
+                    var apiResp = await result.Content.ReadAsStringAsync();
+
+                    //foroModel = readTask.Result;
+
+                    foroModel = JsonConvert.DeserializeObject<ContentForoModel>(apiResp);
                 }
                 else
                 {
