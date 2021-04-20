@@ -16,6 +16,14 @@ namespace Huerbog.Models.ForoList
         public string TituloPost { get; set; }
         public int? IdCatPublFk { get; set; }
         public Usuario usuario { get; set; }
-        
+
+
+        public string nombre { get; set; }
+        public string apellido { get; set; }
+        public string correo { get; set; }
+        public string telefono { get; set; }
+        public string mensaje { get; set; }
+
+
     }
 }

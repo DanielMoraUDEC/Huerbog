@@ -92,51 +92,76 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class=" align-items-center">
-                                            
-                                                <div class="form-group col-11">
-                                                    <label class="h5">Nombre:</label>
-                                                    <input type="text" id="nombre" class="form-control" />
-                                                </div>
+                                        <form asp-action="btnCorreo_Click">
+                                  
+
+                                            <div class=" align-items-center">
                                                 <div class="form-group col-11">
                                                     <label class="h5">Apellido:</label>
                                                     <input type="text" id="Apellido" class="form-control" />
                                                 </div>
 
-                                            <div class="form-group col-11">
-                                                <label class="h5">Correo:</label>
-                                                <input type="text" id="Correo" class="form-control" />
+                                                <div class="form-group col-11">
+                                                    <label class="h5">Correo:</label>
+                                                    <input type="text" id="Correo" class="form-control" />
+                                                </div>
+                                                <div class="form-group col-11">
+                                                    <label class="h5">Telefono:</label>
+                                                    <input type="text" id="telefono" class="form-control" />
+                                                </div>
+                                                <div class="form-group col-11">
+                                                    <label class="h5">Mensaje:</label>
+                                                    <textarea rows="4" type="text" id="mensaje" class="form-control"></textarea>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-11">
-                                                <label class="h5">Telefono:</label>
-                                                <input type="text" id="telefono" class="form-control" />
-                                            </div>
-                                            <div class="form-group col-11">
-                                                <label class="h5">Mensaje:</label>
-                                                <textarea rows="4" type="text" id="mensaje" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                           
 
-                                       
-                                        
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-primary">Enviar</button>
-                                        </div>
+                                            <div class="modal-footer form-group">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <input type="submit" value="Enviar" class="btn btn-primary" id="btnCorreo" runat="server" />
+                                            </div>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
+                            <script type="text/javascript">
 
+                                /*(function () {
+
+                                    $(function () {
+
+                                        $('#btnVentana').on('click', function () {
+                                            $('#mostrarModal').modal();
+                                        });
+                                    });
+
+                                }());*/
+
+                                var modal = document.getElementById('mostrarModal');
+                                var btn = document.getElementById('btnVentana');
+
+
+                                btn.onclick = function () {
+                                    modal.style.display = "block";
+                                }
+
+                                document.onclick = function (event) {
+                                    if (event.target == modal) {
+                                        modal.style.display = "none";
+                                    }
+                                }
+
+                            </script>
                             <!--correo-->
-                            <button type="button" class="btn-outline-dark" id="btnVentana">Contactarse  </button>
+                            <button type="button" class="btn-outline-dark" id="btnVentana">Contactarse</button>
                             <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label>
 
                             <!--fin correo-->
 
                             <br /><br />
                         </div>
-                    }
+                        
+                   }
                 </div>
                 <!--Fin articulo-->
                
@@ -162,23 +187,5 @@
     </div>
 </div>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-<script type="text/javascript">
-    
-    /*(function () {
 
-        $(function () {
-
-            $('#btnVentana').on('click', function () {
-                $('#mostrarModal').modal();
-            });
-        });
-
-    }());*/
-
-    $('#btnVentana').on('click', function () {
-        $('#mostrarModal').modal();
-    });
-
-</script>

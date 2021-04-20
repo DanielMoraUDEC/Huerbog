@@ -8,6 +8,8 @@ using Huerbog.Models.ForoList;
 using Huerbog.Models;
 using Huerbog.Models.Request;
 using Huerbog.Models.ForoView;
+using System.Net.Mail;
+using System.Net;
 
 namespace Huerbog.Controllers.API_Controller
 {
@@ -76,5 +78,33 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok(foro);
         }
+
+        [HttpPost]
+        protected ActionResult btnCorreo_Click(object sender, EventArgs e)
+        {
+            string body = "<body>" +
+                "<h1>titulo</h1>" +
+                "<p> mensaje del usuario con sus datos </p>" +
+                "<p> mensaje enviado desde Huertbog.com" +
+                "</body>";
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("danielmora_99@hotmail.com", "alexandra2209");
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("danielmora_99@hotmail.com", "Huertbog mensaje");
+            mail.To.Add(new MailAddress("danifeel99@gmail.com"));
+            mail.Subject = "Mensaje de un usuario Huertbog";
+            mail.IsBodyHtml = true;
+            mail.Body = body;
+
+            smtp.Send(mail);
+
+            return Ok();
+        }
+
     }
 }
