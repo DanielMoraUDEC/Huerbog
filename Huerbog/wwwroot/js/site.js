@@ -6,7 +6,7 @@
 var url = "https://localhost:44325/api/Usuarios/get";
 var url1 = "https://localhost:44325/api/Usuarios/getForo";
 
-get();
+/*get();
 
 getForo();
 
@@ -77,6 +77,8 @@ function post() {
         get();
     })
 }
+*/
+
 
 function mensaje() {
     confirm("El link de activación ha sido enviado a su correo, Confirmelo por favor.");

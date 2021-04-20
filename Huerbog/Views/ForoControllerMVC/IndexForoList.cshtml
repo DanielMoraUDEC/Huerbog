@@ -6,6 +6,8 @@
 
 <link rel="stylesheet" href="~/css/estilos.css" />
 
+
+
 <div class="sidenav">
     <a class="nav-link text-dark" asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categorias</a>
@@ -29,9 +31,9 @@
         <div class="row">
             <div class="col-12 col-md-9">
                 <!--Un articulo-->
-                <div class="row mb-4">
+                <div class="row">
                     <!--el foreach hace que lo de abajo se repita tantas veces como encuentre registros en la lista del modelo
-                        ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
+                    ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
                         <div class="col-8">
@@ -54,7 +56,7 @@
                             <div>
                                 Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
                             </div>
-                            
+
                             <a>
                                 <div>
 
@@ -75,18 +77,68 @@
                                 </div>
                             </a>
 
+                            <!-- Modal-->
+                            <div class="modal position-fixed" tabindex="-1" id="mostrarModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title">Contactarse</h2>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class=" align-items-center">
+                                            
+                                                <div class="form-group col-11">
+                                                    <label class="h5">Nombre:</label>
+                                                    <input type="text" id="nombre" class="form-control" />
+                                                </div>
+                                                <div class="form-group col-11">
+                                                    <label class="h5">Apellido:</label>
+                                                    <input type="text" id="Apellido" class="form-control" />
+                                                </div>
+
+                                            <div class="form-group col-11">
+                                                <label class="h5">Correo:</label>
+                                                <input type="text" id="Correo" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-11">
+                                                <label class="h5">Telefono:</label>
+                                                <input type="text" id="telefono" class="form-control" />
+                                            </div>
+                                            <div class="form-group col-11">
+                                                <label class="h5">Mensaje:</label>
+                                                <textarea rows="4" type="text" id="mensaje" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                           
+
+                                       
+                                        
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary">Enviar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!--correo-->
-                            <a href="mailto:">Contactarse: <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label></a>
+                            <button type="button" class="btn-outline-dark" id="btnVentana">Contactarse  </button>
+                            <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label>
+
+                            <!--fin correo-->
+
                             <br /><br />
                         </div>
                     }
                 </div>
                 <!--Fin articulo-->
+               
                 <!--Barra números-->
-
                 <div class="btn-toolbar d-flex justify-content-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group me-2" role="group" aria-label="First group">
-                        <a asp-controller="Home" asp-action="index"> <button type="button" class="btn btn-primary active">Inicio</button> </a>
+                        <a asp-controller="Home" asp-action="index"> Inicio </a>
                         <button type="button" class="btn btn-primary">2</button>
                         <button type="button" class="btn btn-primary">3</button>
                         <button type="button" class="btn btn-primary">4</button>
@@ -104,3 +156,24 @@
         </div>
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    
+    /*(function () {
+
+        $(function () {
+
+            $('#btnVentana').on('click', function () {
+                $('#mostrarModal').modal();
+            });
+        });
+
+    }());*/
+
+    $('#btnVentana').on('click', function () {
+        $('#mostrarModal').modal();
+    });
+
+</script>
