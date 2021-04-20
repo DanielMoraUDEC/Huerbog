@@ -41,6 +41,9 @@ namespace Huerbog.Models.ForoView
         public int Idtema { get; set; }
         public string Contenido { get; set; }
         public int? IdForo { get; set; }
+        public byte[] ContentFile { get; set; }
+        public string FileType { get; set; }
+        public string FileName { get; set; }
 
         //tabla temas
         public virtual Foro IdForoNavigation { get; set; }

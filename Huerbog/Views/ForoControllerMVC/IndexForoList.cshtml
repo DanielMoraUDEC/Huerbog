@@ -34,11 +34,10 @@
                         ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                    <div class="col-4">
-                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
-                        <a href="#" class="lead text-center">Ubicación</a>
-                        <br /><br />
-                    </div>
+                        <div class="col-4">
+                            <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
+                            <br /><br />
+                        </div>
 
                         <div class="col-8">
                             <!--titulo post-->
@@ -57,6 +56,10 @@
                                 Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
                             </a>
 
+                            <div class="col-8">
+                                Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
+                            </div>
+                            
                             <a>
                                 <div>
 
@@ -78,7 +81,7 @@
                             </a>
 
                             <!--correo-->
-                            <a href="mailto:">Contactarse: <label id="divCorreo"></label></a>
+                            <a href="mailto:">Contactarse: <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label></a>
                             <br /><br />
                         </div>
                     }

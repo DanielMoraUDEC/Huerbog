@@ -32,7 +32,7 @@ namespace Huerbog.Controllers.API_Controller
                 DescPost = s.DescPost,
                 TituloPost = s.TituloPost,
                 IdCatPublFk = s.IdCatPublFk,
-               
+                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
             ).ToList<ForoListModel>();
 
@@ -65,7 +65,6 @@ namespace Huerbog.Controllers.API_Controller
             foro.FechaPublicacion = foroInfo.FechaPublicacion;
             foro.DescPost = foroInfo.DescPost;
             foro.TituloPost = foroInfo.TituloPost;
-            
             foro.IdUsuario = foroInfo.IdUsuario;
             foro.IdCatPublFk = foroInfo.IdCatPublFk;
 
@@ -73,6 +72,7 @@ namespace Huerbog.Controllers.API_Controller
             foro.Idtema = foroContent.Idtema;
             foro.Contenido = foroContent.Contenido;
             foro.IdForo = foroContent.IdForo;
+            foro.ContentFile = foroContent.ContentFile;
 
             return Ok(foro);
         }
