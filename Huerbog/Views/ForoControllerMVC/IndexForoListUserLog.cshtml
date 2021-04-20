@@ -29,23 +29,16 @@
         </ul>
         <br>
         <div class="row">
-            <div class="col-12 col-md-9" >
+            <div class="col-12 col-md-9">
                 <!--Un articulo-->
                 <div class="row mb-5">
                     <!--el foreach hace que lo de abajo se repita tantas veces como encuentre registros en la lista del modelo
                         ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                    <div class="col-4">
-                        <img src="~/Imagenes/1.jpg" alt="" class="img-fluid">
-                        <a href="#" class="lead text-center">Ubicación</a>
-                        <br /><br />
-
-                    </div>
-
                         <div class="col-8">
                             <!--titulo post-->
-                            <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
+                            <a class="h3" id="divTitulo" asp-action="verPostUserLog" asp-route-id="@item.IdPost">
                                 @Html.DisplayFor(modelItem => item.TituloPost)
                             </a>
 
@@ -57,6 +50,10 @@
                             <a>
                                 Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
                             </a>
+
+                            <div>
+                                Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
+                            </div>
 
                             <a>
                                 <div>
@@ -78,7 +75,7 @@
                                 </div>
                             </a>
                             <!--correo-->
-                            <a href="mailto:">Contactarse:  <label id="divCorreo"></label></a>
+                            <a href="mailto:">Contactarse:  <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label></a>
                             <br /><br />
                         </div>
                     }

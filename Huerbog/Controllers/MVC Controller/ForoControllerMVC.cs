@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 using Huerbog.Models.ForoList;
 using System.Net.Http;
 using Huerbog.Models.ForoView;
-using System.Net.Mail;
-using System.Net;
+using Newtonsoft.Json;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -95,7 +94,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
         //para ver las publicaciones hechas
         [HttpGet]
-        public IActionResult verPost(int Id)
+        public async Task<IActionResult> verPost(int Id)
         {
             ContentForoModel foroModel = new ContentForoModel();
 
@@ -111,10 +110,49 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if(result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<ContentForoModel>();
-                    readTask.Wait();
+                    //var readTask = result.Content.ReadAsAsync<ContentForoModel>();
+                    //readTask.Wait();
 
-                    foroModel = readTask.Result;
+                    var apiResp = await result.Content.ReadAsStringAsync();
+
+                    //foroModel = readTask.Result;
+
+                    foroModel = JsonConvert.DeserializeObject<ContentForoModel>(apiResp);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(foroModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> verPostUserLog(int Id)
+        {
+            ContentForoModel foroModel = new ContentForoModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
+
+                var responseTask = client.GetAsync("Foro/verPost/" + Id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    //var readTask = result.Content.ReadAsAsync<ContentForoModel>();
+                    //readTask.Wait();
+
+                    var apiResp = await result.Content.ReadAsStringAsync();
+
+                    //foroModel = readTask.Result;
+
+                    foroModel = JsonConvert.DeserializeObject<ContentForoModel>(apiResp);
                 }
                 else
                 {
@@ -130,45 +168,5 @@ namespace Huerbog.Controllers.MVC_Controller
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-        [HttpGet]
-
-        public ActionResult btnCorreo_Click()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        protected ActionResult btnCorreo_Click(object sender, EventArgs e)
-        {
-            string body = "<body>" +
-                "<h1>Huertbog comunica</h1>" +
-                "" +
-                "<p> mensaje del usuario con sus datos </p>" +
-                "<p> mensaje enviado desde Huertbog.com" +
-                "</body>";
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("danielmora_99@hotmail.com", "alexandra2209");
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.EnableSsl = true;
-            smtp.UseDefaultCredentials = false;
-
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("danielmora_99@hotmail.com", "Huertbog mensaje");
-            mail.To.Add(new MailAddress("danifeel99@gmail.com"));
-            mail.Subject = "Mensaje de un usuario Huertbog";
-            mail.IsBodyHtml = true;
-            mail.Body = body;
-
-            smtp.Send(mail);
-
-            return Ok();
-
-        }
-
-
     }
 }
