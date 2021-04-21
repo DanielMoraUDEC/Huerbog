@@ -10,7 +10,7 @@
 
 
 <div class="sidenav">
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="index">Inicio</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoListUserLog">Inicio</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Categorias</a>
     <a class="nav-link text-dark" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Mapa huertas</a>
 </div>
@@ -52,7 +52,7 @@
                         <!--Imagen-->
                         @{
                             var base64 = Convert.ToBase64String(Model.ContentFile);
-                            var Image = String.Format("data:image/;base64,{0}", base64);
+                            var Image = String.Format("data:image;base64,{0}", base64);
                         }
 
                         <img src="@Image" alt="" class="img-fluid">

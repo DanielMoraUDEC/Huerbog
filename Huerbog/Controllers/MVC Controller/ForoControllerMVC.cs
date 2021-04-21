@@ -28,20 +28,107 @@ namespace Huerbog.Controllers.MVC_Controller
 
         //página principal de la aplicación, muestra la lista de publicaciones hechas
         [HttpGet]
-        public IActionResult IndexForoList()
+        public IActionResult IndexForoList(string id)
         {
             IEnumerable<ForoListModel> foroList = null;
 
-            using(var client = new HttpClient())
+            if (id == "comerce")
             {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-                var responseTask = client.GetAsync("Foro/foroList");
+                    var responseTask = client.GetAsync("foroListComercio");
+
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        readTask.Wait();
+
+                        foroList = readTask.Result;
+                    }
+                    else
+                    {
+                        foroList = Enumerable.Empty<ForoListModel>();
+
+                        ModelState.AddModelError(string.Empty, "Error del servidor");
+                    }
+                }
+
+                return View(foroList);
+            }
+
+            if (id == "all")
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                    var responseTask = client.GetAsync("foroList");
+
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        readTask.Wait();
+
+                        foroList = readTask.Result;
+                    }
+                    else
+                    {
+                        foroList = Enumerable.Empty<ForoListModel>();
+
+                        ModelState.AddModelError(string.Empty, "Error del servidor");
+                    }
+                }
+
+                return View(foroList);
+            }
+
+            if (id == "general")
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                    var responseTask = client.GetAsync("foroListGeneral");
+
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        readTask.Wait();
+
+                        foroList = readTask.Result;
+                    }
+                    else
+                    {
+                        foroList = Enumerable.Empty<ForoListModel>();
+
+                        ModelState.AddModelError(string.Empty, "Error del servidor");
+                    }
+                }
+
+                return View(foroList);
+            }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                var responseTask = client.GetAsync("foroList");
 
                 responseTask.Wait();
 
                 var result = responseTask.Result;
-                if(result.IsSuccessStatusCode)
+                if (result.IsSuccessStatusCode)
                 {
                     var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
                     readTask.Wait();
@@ -138,6 +225,41 @@ namespace Huerbog.Controllers.MVC_Controller
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
 
                 var responseTask = client.GetAsync("Foro/verPost/" + Id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    //var readTask = result.Content.ReadAsAsync<ContentForoModel>();
+                    //readTask.Wait();
+
+                    var apiResp = await result.Content.ReadAsStringAsync();
+
+                    //foroModel = readTask.Result;
+
+                    foroModel = JsonConvert.DeserializeObject<ContentForoModel>(apiResp);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(foroModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> downloadFile(int Id)
+        {
+            ContentForoModel foroModel = new ContentForoModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                var responseTask = client.GetAsync("downloadFile/" + Id);
 
                 responseTask.Wait();
 

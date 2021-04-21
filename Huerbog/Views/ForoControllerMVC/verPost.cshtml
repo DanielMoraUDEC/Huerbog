@@ -52,10 +52,12 @@
                         <!--Imagen-->
                         @{
                             var base64 = Convert.ToBase64String(Model.ContentFile);
-                            var Image = String.Format("data:image/;base64,{0}", base64);
+                            var Image = String.Format("data:image;base64,{0}", base64);
                         }
-                        
+
                         <img src="@Image" alt="" class="img-fluid">
+    
+                        <a></a>
 
                         <!--Reputación-->
                         <label asp-for="Reputacion" class="control-label">Reputación de 1 a 5</label>
