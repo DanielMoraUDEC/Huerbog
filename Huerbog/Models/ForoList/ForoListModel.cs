@@ -16,6 +16,9 @@ namespace Huerbog.Models.ForoList
         public string TituloPost { get; set; }
         public int? IdCatPublFk { get; set; }
         public Usuario usuario { get; set; }
-        
+
+
+
+
     }
 }
