@@ -120,5 +120,43 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok(foro);
         }
+
+        //envía solicitud
+        public async Task<IActionResult> sendMail([FromBody] Contactarse contact)
+        {
+            var userPost = db.Foros.Where(x => x.IdPost == contact.IdPost).FirstOrDefault();
+
+            var userData = db.Usuarios.Where(x => x.IdusuarioReg == userPost.IdUsuario).FirstOrDefault();
+
+            string body = "<body>" +
+
+                "<h1>Mensaje Huertbog / Titulo del post</h1>" +
+                "<h2>Datos del usuario</h2>" +
+                "<p>Nombre: " + contact.nombre + "</p></n>" +
+                "<p>Apellido: " + contact.apellido + "</p></n>" +
+                "<p>telefono: " + contact.telefono + "</p></n>" +
+                "<p>correo: " + contact.correo + "</p></n>" +
+                "<h2>Mensaje:</h2>" +
+                 contact.mensaje + "</n>" +
+                "<p>Sí presenta algún inconveniente con el mensaje dejanoslo saber al siguiente correo: Huertbog@gmail.com</P>" +
+                "</body>";
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("huertbog@gmail.com", "udechuertbog");
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
+
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress(contact.correo, "Huertbog");
+            mail.To.Add(new MailAddress(userData.Correo));
+            mail.Subject = "Mensaje de un usuario Huertbog";
+            mail.IsBodyHtml = true;
+            mail.Body = body;
+
+            smtp.Send(mail);
+
+            return Ok();
+        }
     }
 }

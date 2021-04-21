@@ -256,8 +256,6 @@ namespace Huerbog.Controllers
             //var claimsIdentity = this.User.Identity as ClaimsIdentity;
             //var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
 
-            var userMail = getCurrUser().ToString();
-
             Foro foro = new Foro();
 
             Tema tema = new Tema();

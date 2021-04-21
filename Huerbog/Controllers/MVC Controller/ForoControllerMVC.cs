@@ -295,48 +295,36 @@ namespace Huerbog.Controllers.MVC_Controller
 
 
         [HttpGet]
-        public ActionResult Contactarse(){
-            return View();
+        public ActionResult Contactarse(int id)
+        {
+            Contactarse contact = new Contactarse();
+
+            contact.IdPost = id;
+
+            return View(contact);
         }
 
         [HttpPost]
-        public ActionResult btnContactarse(object sender, EventArgs e, string nombre, string apellido, string correo, string telefono, string mensaje)
+        public ActionResult btnContactarse(Contactarse contact)
         {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
+
+                insertrec.Wait();
             
-            
-            string body = "<body>" +
-                
-                "<h1>Mensaje Huertbog / Titulo del post</h1>" +
-                "<h2>Datos del usuario</h2>"+
-                "<p>Nombre: "+nombre+"</p></n>"+
-                "<p>Apellido: " + apellido + "</p></n>" +
-                "<p>telefono: " + telefono + "</p></n>" +
-                "<p>correo: " + correo + "</p></n>" +
-                "<h2>Mensaje:</h2>" +
-                 mensaje + "</n>" +
-                "<p>Sí presenta algún inconveniente con el mensaje dejanoslo saber al siguiente correo: Huertbog@gmail.com</P>" +
-                "</body>";
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("huertbog@gmail.com", "udechuertbog");
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.EnableSsl = true;
-            smtp.UseDefaultCredentials = false;
-
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress(correo, "Huertbog");
-            mail.To.Add(new MailAddress("danielmora_99@hotmail.com"));
-            mail.Subject = "Mensaje de un usuario Huertbog";
-            mail.IsBodyHtml = true;
-            mail.Body = body;
-
-            smtp.Send(mail);
-
-            return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                if(insertrec.Result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("IndexForoList");
+                }
+                else
+                {
+                    return View();
+                }
+            }
         }
-
-
-
 
     }
 }
