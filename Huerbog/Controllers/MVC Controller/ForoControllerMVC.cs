@@ -307,23 +307,23 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpPost]
         public ActionResult btnContactarse(Contactarse contact)
         {
-            using (var client = new HttpClient())
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+            var insertrec = client.PostAsJsonAsync<Contactarse>("Foro/sendMail", contact);
+
+            insertrec.Wait();
+
+            if (insertrec.Result.IsSuccessStatusCode)
             {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-                var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
-
-                insertrec.Wait();
-            
-                if(insertrec.Result.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("IndexForoList");
-                }
-                else
-                {
-                    return View();
-                }
+                return RedirectToAction("IndexForoList");
             }
+            else
+            {
+                return View();
+            }
+            
         }
 
     }
