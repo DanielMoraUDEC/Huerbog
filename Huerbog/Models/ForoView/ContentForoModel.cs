@@ -58,5 +58,23 @@ namespace Huerbog.Models.ForoView
         public virtual ICollection<Foro> Foros { get; set; }
         public virtual ICollection<Solicitude> Solicitudes { get; set; }
         public virtual ICollection<TablaHuertum> TablaHuerta { get; set; }
+
+
+        //contactarse
+
+        [Required]
+        public string nombre { get; set; }
+        [Required]
+        public string apellido { get; set; }
+        [Required]
+        public string correo { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+        public string telefono { get; set; }
+
+        [Required]
+        public string mensaje { get; set; }
     }
 }

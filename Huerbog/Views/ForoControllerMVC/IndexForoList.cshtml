@@ -5,6 +5,7 @@
 }
 
 <link rel="stylesheet" href="~/css/estilos.css" />
+<script src="~/lib/jquery/site.js"></script>
 
 
 
@@ -36,125 +37,56 @@
                     ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                        <div class="col-8">
-                            <!--titulo post-->
-                            <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
-                                @Html.DisplayFor(modelItem => item.TituloPost)
+                    <div class="col-8">
+                        <!--titulo post-->
+                        <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
+                            @Html.DisplayFor(modelItem => item.TituloPost)
 
-                            </a>
+                        </a>
 
-                            <!--descripcion post-->
-                            <p id="divDescripcion">
-                                @Html.DisplayFor(modelItem => item.DescPost)
-                            </p>
+                        <!--descripcion post-->
+                        <p id="divDescripcion">
+                            @Html.DisplayFor(modelItem => item.DescPost)
+                        </p>
 
-                            <!--fecha publicacion-->
-                            <a>
-                                Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
-                            </a>
+                        <!--fecha publicacion-->
+                        <a>
+                            Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
+                        </a>
 
-                            <div>
-                                Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
-                            </div>
-
-                            <a>
-                                <div>
-
-                                    <div>
-                                        @if (item.IdCatPublFk == 1)
-                                        {
-                                            <div>
-                                                Categoria de publicación: General
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div>
-                                                Categoria de publicación: Comercio
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </a>
-
-                            <!-- Modal-->
-                            <div class="modal position-fixed" tabindex="-1" id="mostrarModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h2 class="modal-title">Contactarse</h2>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form asp-action="btnCorreo_Click">
-                                  
-
-                                            <div class=" align-items-center">
-                                                <div class="form-group col-11">
-                                                    <label class="h5">Apellido:</label>
-                                                    <input type="text" id="Apellido" class="form-control" />
-                                                </div>
-
-                                                <div class="form-group col-11">
-                                                    <label class="h5">Correo:</label>
-                                                    <input type="text" id="Correo" class="form-control" />
-                                                </div>
-                                                <div class="form-group col-11">
-                                                    <label class="h5">Telefono:</label>
-                                                    <input type="text" id="telefono" class="form-control" />
-                                                </div>
-                                                <div class="form-group col-11">
-                                                    <label class="h5">Mensaje:</label>
-                                                    <textarea rows="4" type="text" id="mensaje" class="form-control"></textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal-footer form-group">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                <input type="submit" value="Enviar" class="btn btn-primary" id="btnCorreo" runat="server" />
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <script type="text/javascript">
-
-                                /*(function () {
-
-                                    $(function () {
-
-                                        $('#btnVentana').on('click', function () {
-                                            $('#mostrarModal').modal();
-                                        });
-                                    });
-
-                                }());*/
-
-                                var modal = document.getElementById('mostrarModal');
-                                var btn = document.getElementById('btnVentana');
-
-
-                                btn.onclick = function () {
-                                    modal.style.display = "block";
-                                }
-
-                                document.onclick = function (event) {
-                                    if (event.target == modal) {
-                                        modal.style.display = "none";
-                                    }
-                                }
-
-                            </script>
-                            <!--correo-->
-                            <button type="button" class="btn-outline-dark" id="btnVentana">Contactarse</button>
-                            <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label>
-
-                            <!--fin correo-->
-
-                            <br /><br />
+                        <div>
+                            Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
                         </div>
+
+                        <a>
+                            <div>
+
+                                <div>
+                                    @if (item.IdCatPublFk == 1)
+                                    {
+                                        <div>
+                                            Categoria de publicación: General
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            Categoria de publicación: Comercio
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                        
+
+                        <!--correo-->
+                        <a type="button" id="btnVentana" asp-controller="ForoControllerMVC" asp-action="contactarse">Contactarse</a>
+                        <label id="divCorreo"> @Html.DisplayFor(modelItem => item.usuario.Correo) </label>
+
+                        <!--fin correo-->
+
+                        <br /><br />
+                    </div>
                         
                    }
                 </div>

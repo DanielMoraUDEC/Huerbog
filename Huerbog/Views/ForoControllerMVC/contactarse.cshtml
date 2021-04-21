@@ -1,0 +1,57 @@
+﻿@model Huerbog.Models.ForoView.ContentForoModel
+   
+
+@{
+
+}
+
+<body>
+    <div class="main">
+        <h1>Contactarse</h1>
+
+        <form asp-action="btnContactarse">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="nombre" name="nombre" class="control-label">Nombre:</label>
+                <input asp-for="nombre" name="nombre" class="form-control" required />
+                <span asp-validation-for="nombre" name="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="apellido" class="control-label">Apellido</label>
+                <input asp-for="apellido" name="apellido" class="form-control" required />
+                <span asp-validation-for="apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="correo" class="control-label">Correo:</label>
+                <input asp-for="correo" name="correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
+                <span asp-validation-for="correo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="telefono" class="control-label">Telefono / Celular:</label>
+                <input asp-for="telefono" name="telefono" class="form-control" type="tel" required placeholder="3187126721" />
+                <span asp-validation-for="telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="mensaje" class="control-label">Mensaje o pregunta:</label>
+                <textarea asp-for="mensaje" rows="4" name="mensaje" class="form-control" type="tel" required></textarea>
+                <span asp-validation-for="mensaje" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enviar Mensaje" class="btn btn-primary" />
+            </div>
+        </form>
+
+
+
+
+
+        <div>
+            <a asp-controller="ForoControllerMVC" asp-action="IndexForoList">Regresar</a>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+    <script src="../js/site.js"></script>
+</body>
