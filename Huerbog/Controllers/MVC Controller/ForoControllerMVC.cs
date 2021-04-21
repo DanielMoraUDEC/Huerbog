@@ -40,7 +40,7 @@ namespace Huerbog.Controllers.MVC_Controller
                 {
                     client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-                    var responseTask = client.GetAsync("foroListComercio");
+                    var responseTask = client.GetAsync("foroListComerce");
 
                     responseTask.Wait();
 

@@ -41,6 +41,48 @@ namespace Huerbog.Controllers.API_Controller
             return Ok(foroList);
         }
 
+        [HttpGet]
+        [Route("foroListComerce")]
+        public IActionResult foroListComerce()
+        {
+            IList<ForoListModel> foroList = null;
+
+            foroList = db.Foros.Select(s => new ForoListModel()
+            {
+                IdUser = (int)s.IdUsuario,
+                IdPost = s.IdPost,
+                FechaPublicacion = s.FechaPublicacion,
+                DescPost = s.DescPost,
+                TituloPost = s.TituloPost,
+                IdCatPublFk = s.IdCatPublFk,
+                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
+            }
+            ).Where(x=>x.IdCatPublFk == 2).ToList<ForoListModel>();
+
+            return Ok(foroList);
+        }
+
+        [HttpGet]
+        [Route("foroListGeneral")]
+        public IActionResult foroListGeneral()
+        {
+            IList<ForoListModel> foroList = null;
+
+            foroList = db.Foros.Select(s => new ForoListModel()
+            {
+                IdUser = (int)s.IdUsuario,
+                IdPost = s.IdPost,
+                FechaPublicacion = s.FechaPublicacion,
+                DescPost = s.DescPost,
+                TituloPost = s.TituloPost,
+                IdCatPublFk = s.IdCatPublFk,
+                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
+            }
+            ).Where(x => x.IdCatPublFk == 1).ToList<ForoListModel>();
+
+            return Ok(foroList);
+        }
+
         //ver publicación seleccionada
         [HttpGet]
         [Route("verPost/{IdPost}")]
@@ -78,8 +120,5 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok(foro);
         }
-
-
-
     }
 }
