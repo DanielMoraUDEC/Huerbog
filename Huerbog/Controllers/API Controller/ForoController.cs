@@ -132,7 +132,7 @@ namespace Huerbog.Controllers.API_Controller
 
             string body = "<body>" +
 
-                "<h1>Mensaje Huertbog / Titulo del post</h1>" +
+                "<h1>Mensaje Huertbog</h1>" +
                 "<h2>Datos del usuario</h2>" +
                 "<p>Nombre: " + contact.nombre + "</p></n>" +
                 "<p>Apellido: " + contact.apellido + "</p></n>" +
