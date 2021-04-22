@@ -1,15 +1,15 @@
 ﻿@model Huerbog.Models.Contactarse
-   
+
 
 @{
-
+    Layout = "_LayoutRegistrado";
 }
 
 <body>
     <div class="main">
         <h1>Contactarse</h1>
 
-        <form method="post" asp-action="btnContactarse">
+        <form method="post" asp-action="btnContactarseRegistrado">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -47,7 +47,7 @@
 
 
         <div>
-            <a asp-controller="ForoControllerMVC" asp-action="IndexForoList">Regresar</a>
+            <a asp-controller="ForoControllerMVC" asp-action="IndexForoListUserLog">Regresar</a>
             <br>
             <br>
             <br>
