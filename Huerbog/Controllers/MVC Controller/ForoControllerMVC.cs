@@ -374,8 +374,6 @@ namespace Huerbog.Controllers.MVC_Controller
 
         }
 
-
-
         //Contactarse registrado
 
         [HttpGet]
@@ -409,24 +407,6 @@ namespace Huerbog.Controllers.MVC_Controller
             }
 
         }
-
-        //Descargar archivos
-
-        [HttpGet]
-        public async Task<IActionResult> downloadFile(int id)
-        {
-
-
-            return View();
-        }
-
-        /*[HttpPost]
-        public async Task<IActionResult> downloadFile(int id)
-        {
-
-
-            return View();
-        }*/
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

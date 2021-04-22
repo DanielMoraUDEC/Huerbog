@@ -87,8 +87,6 @@ namespace Huerbog.Controllers
                 if (!(db.Usuarios.Any(x => x.Correo.Equals(model.Correo)) || db.Usuarios.Any(x => x.Telefono.Equals(model.Telefono))
                 || db.TablaHuerta.Any(x => x.UbicacionHuerta.Equals(model.UbicacionHuerta))))
                 {
-
-
                     TablaHuertum tHuerta = new TablaHuertum();
 
                     oUsuar.Nombre = model.Nombre;
