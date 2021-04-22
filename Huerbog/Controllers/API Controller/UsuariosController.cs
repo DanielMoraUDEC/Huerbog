@@ -270,13 +270,13 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = 2;
+            foro.IdUsuario = 3;
             foro.IdCatPublFk = (int) model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;
             tema.Contenido = model.Contenido;
 
-            var descPost = new SqlParameter("@descPost", foro.DescPost);
+            var descPost = new SqlParameter("@descPost", foro.DescPost); 
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
             var contenido = new SqlParameter("@contenido", tema.Contenido);
