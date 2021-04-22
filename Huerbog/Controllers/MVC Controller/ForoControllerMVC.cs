@@ -340,6 +340,8 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(foroModel);
         }
 
+        //Contactarse no registrado
+
         [HttpGet]
         public ActionResult Contactarse(int id)
         {
@@ -371,6 +373,58 @@ namespace Huerbog.Controllers.MVC_Controller
             }
 
         }
+
+
+
+        //Contactarse registrado
+
+        [HttpGet]
+        public ActionResult ContactarseRegistrado(int id)
+        {
+            Contactarse contact = new Contactarse();
+
+            contact.IdPost = id;
+
+            return View(contact);
+        }
+
+        [HttpPost]
+        public ActionResult btnContactarseRegistrado(Contactarse contact)
+        {
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+            var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
+
+            insertrec.Wait();
+
+            if (insertrec.Result.IsSuccessStatusCode == true)
+            {
+                return RedirectToAction("IndexForoListUserLog");
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> downloadFile(int id)
+        {
+
+
+            return View();
+        }
+
+        /*[HttpPost]
+        public async Task<IActionResult> downloadFile(int id)
+        {
+
+
+            return View();
+        }*/
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
