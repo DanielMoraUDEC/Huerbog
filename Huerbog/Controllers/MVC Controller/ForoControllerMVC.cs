@@ -357,11 +357,11 @@ namespace Huerbog.Controllers.MVC_Controller
 
             client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-            var insertrec = client.PostAsJsonAsync<Contactarse>("Foro/sendMail", contact);
+            var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
 
             insertrec.Wait();
 
-            if (insertrec.Result.IsSuccessStatusCode)
+            if (insertrec.Result.IsSuccessStatusCode==true)
             {
                 return RedirectToAction("IndexForoList");
             }
