@@ -117,6 +117,8 @@ namespace Huerbog.Controllers.API_Controller
             foro.Contenido = foroContent.Contenido;
             foro.IdForo = foroContent.IdForo;
             foro.ContentFile = foroContent.ContentFile;
+            foro.FileName = foroContent.FileName;
+            foro.FileType = foroContent.FileType;
 
             return Ok(foro);
         }
@@ -159,6 +161,21 @@ namespace Huerbog.Controllers.API_Controller
             smtp.Send(mail);
 
             return Ok();
+        }
+
+        //descargar archivo
+        [HttpPost]
+        [Route("downloadFile")]
+        public IActionResult downloadFile(int? id)
+        {
+            if(id.Equals(null))
+            {
+                return NotFound();
+            }
+
+            var content = db.Temas.Where(x => x.Idtema == id).FirstOrDefault();
+
+            return Ok(content.ContentFile);
         }
     }
 }
