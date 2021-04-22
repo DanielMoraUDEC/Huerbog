@@ -268,7 +268,7 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = 3;
+            foro.IdUsuario = 2;
             foro.IdCatPublFk = (int) model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;
