@@ -308,8 +308,8 @@ namespace Huerbog.Controllers
             var verifyUrl = "/UsuariosControllerMVC/userVerification/" + ActivationCode;
             var link = Request.Host + verifyUrl;
 
-            var fromEmail = new MailAddress("pepgrillo420@gmail.com");
-            var fromEmailPass = "Bareta420";
+            var fromEmail = new MailAddress("huertbog@gmail.com");
+            var fromEmailPass = "udechuertbog";
             var toEmail = new MailAddress(emailID);
             string subject = "Su cuenta ha sido exitosamente activada";
 
