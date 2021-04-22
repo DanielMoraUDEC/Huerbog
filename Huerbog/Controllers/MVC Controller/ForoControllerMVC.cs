@@ -372,22 +372,6 @@ namespace Huerbog.Controllers.MVC_Controller
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> downloadFile(int id)
-        {
-
-
-            return View();
-        }
-
-        /*[HttpPost]
-        public async Task<IActionResult> downloadFile(int id)
-        {
-
-
-            return View();
-        }*/
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

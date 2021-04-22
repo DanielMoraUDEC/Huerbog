@@ -163,19 +163,5 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
-        //descargar archivo
-        [HttpPost]
-        [Route("downloadFile")]
-        public IActionResult downloadFile(int? id)
-        {
-            if(id.Equals(null))
-            {
-                return NotFound();
-            }
-
-            var content = db.Temas.Where(x => x.Idtema == id).FirstOrDefault();
-
-            return Ok(content.ContentFile);
-        }
     }
 }
