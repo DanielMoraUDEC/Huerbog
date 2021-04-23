@@ -112,6 +112,8 @@ namespace Huerbog.Controllers.MVC_Controller
                     var apiResp = await result.Content.ReadAsStringAsync();
 
                     userInfo = JsonConvert.DeserializeObject<UserListModel>(apiResp);
+
+                    ViewBag.message = "Eliminación de usuario correcta";
                 }
                 else
                 {
