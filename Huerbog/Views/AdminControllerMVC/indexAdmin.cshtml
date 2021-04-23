@@ -1,17 +1,28 @@
 ﻿@model IEnumerable<Huerbog.Models.UserList.UserListModel>
 @{
     ViewData["Title"] = "indexAdmin";
+    Layout = "_LayoutRegistrado";
 }
 
 <link rel="stylesheet" href="~/css/estilos.css" />
 
-<h1>Página de administración del sitio</h1>
-
 <div class="main">
-    <div class="container mb-5">
-        <a asp-action="listUsers">Ver usuarios registrados</a>
-    </div>
-    <div>
-        <button asp-action="">Ver publicaciones reportadas</button>
-    </div>
+    <form class="form-horizontal" role="form">
+        <center>
+            <br />
+            <h1>Página de administración del sitio</h1>
+        </center>
+        <br /> <hr />
+
+        <div class="container mb-2">
+            <a asp-action="listUsers" class="h3 btn-outline-secondary text-dark ">Ver usuarios registrados</a>
+
+        </div>
+        <div class="container mb-2">
+            <a asp-action="" class="h3 btn-outline-secondary text-dark ">Ver publicaciones reportadas</a>
+        </div>
+
+
+    </form>
 </div>
+
