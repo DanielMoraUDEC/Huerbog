@@ -65,13 +65,13 @@ namespace Huerbog.Controllers.API_Controller
 
         [HttpDelete]
         [Route("deleteUser/{id}")]
-        public async Task<IActionResult> deleteUser(int id)
+        public IActionResult deleteUser(int id)
         {
-            var idusuarioReg = id;
+            var idUsuario = new SqlParameter("@idUsuario", id);
 
-            db.Database.ExecuteSqlRaw("Exec EliminarUsuario @idUsuario", new[] {idusuarioReg});
+            db.Database.ExecuteSqlRaw("exec EliminarUsuario @idUsuario", new[] {idUsuario});
 
-            await db.SaveChangesAsync();
+            db.SaveChangesAsync();
 
             return Ok();
         }
