@@ -342,7 +342,6 @@ namespace Huerbog.Controllers.MVC_Controller
         }
 
         //Contactarse no registrado
-        int idPostPrueba;
 
 
 
