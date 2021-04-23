@@ -67,33 +67,9 @@ namespace Huerbog.Controllers.API_Controller
         [Route("deleteUser/{id}")]
         public IActionResult deleteUser(int id)
         {
-            /*var user = db.Usuarios.Where(x=>x.IdusuarioReg == id).FirstOrDefault();
-
-            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
-
-            var userForo = db.Foros.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
-
-            var userTema = db.Temas.Where(x => x.IdForo == userForo.IdPost).FirstOrDefault();*/
             var idUsuario = new SqlParameter("@idUsuario", id);
 
             db.Database.ExecuteSqlRaw("exec EliminarUsuario @idUsuario", new[] {idUsuario});
-
-            /*if(userTema == null && userForo == null)
-            {
-                db.Remove(userHuerta);
-
-                db.Remove(user);
-            }
-            else
-            {
-                db.Remove(userTema);
-
-                db.Remove(userForo);
-
-                db.Remove(userHuerta);
-
-                db.Remove(user);
-            }*/
 
             db.SaveChangesAsync();
 
