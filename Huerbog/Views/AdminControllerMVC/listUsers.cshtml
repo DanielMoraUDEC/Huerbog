@@ -2,59 +2,91 @@
 
 @{
     ViewData["Title"] = "listUsers";
+    Layout = "_LayoutRegistrado";
 }
 
 
-<h1>Lista de Usuarios</h1>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/nav.css" />
+<script>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CantPublicacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reputacion)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "160px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+    <a href="#">Categorias</a>
+    <a href="#">Mapa Huertas</a>
+</div>
+
+<!-- Use any element to open the sidenav -->
+
+<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
+
+<div class="main">
+    <h1>Lista de Usuarios</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Apellido)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Correo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CantPublicacion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Reputacion)
-                </td>
-                <td>
-                    <a asp-action="viewUser" asp-route-id="@item.IdusuarioReg">Details</a> |
-                    <a asp-action="deleteUser" asp-route-id="@item.IdusuarioReg">Eliminar</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Apellido)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Correo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CantPublicacion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reputacion)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Apellido)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Correo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CantPublicacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reputacion)
+                    </td>
+                    <td>
+                        <a asp-action="viewUser" asp-route-id="@item.IdusuarioReg">Details</a> |
+                        <a asp-action="deleteUser" asp-route-id="@item.IdusuarioReg">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
