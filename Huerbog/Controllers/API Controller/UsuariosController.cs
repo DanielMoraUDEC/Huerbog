@@ -257,7 +257,7 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = 1;
+            foro.IdUsuario = 3;
             foro.IdCatPublFk = (int) model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;
@@ -302,7 +302,7 @@ namespace Huerbog.Controllers
             var toEmail = new MailAddress(emailID);
             string subject = "Su cuenta ha sido exitosamente activada";
 
-            string body = "<br/><br/>Gracias por registrarse en la página, ahora tiene acceso a más funciones" +
+            string body = "<br/><h1>HuertBog</h1><br/>Gracias por registrarse en la página, ahora tiene acceso a más funciones" +
                 " como publicar información general o publicar información con respecto a solicitudes u ofrecimientos" +
                 " de servicios o productos, recuerde publicar contenido con respecto a las huertas y mantenerse apegado" +
                 "a las normas de la comunidad. Por favor haga click en el link de abajo para terminar de verificar su cuenta " +
