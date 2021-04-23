@@ -36,50 +36,50 @@
                         ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                    <div class="col-8">
-                        <!--titulo post-->
-                        <a class="h3" id="divTitulo" asp-action="verPostUserLog" asp-route-id="@item.IdPost">
-                            @Html.DisplayFor(modelItem => item.TituloPost)
-                        </a>
+                        <div class="col-8">
+                            <!--titulo post-->
+                            <a class="h3" id="divTitulo" asp-action="verPostUserLog" asp-route-id="@item.IdPost">
+                                @Html.DisplayFor(modelItem => item.TituloPost)
+                            </a>
 
-                        <!--descripcion post-->
-                        <p id="divDescripcion">
-                            @Html.DisplayFor(modelItem => item.DescPost)
-                        </p>
+                            <!--descripcion post-->
+                            <p id="divDescripcion">
+                                @Html.DisplayFor(modelItem => item.DescPost)
+                            </p>
 
-                        <a>
-                            Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
-                        </a>
+                            <a>
+                                Fecha de publicación: @Html.DisplayFor(modelItem => item.FechaPublicacion)
+                            </a>
 
-                        <div>
-                            Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
-                        </div>
-
-                        <a>
                             <div>
-
-                                <div>
-                                    @if (item.IdCatPublFk == 1)
-                                    {
-                                        <div>
-                                            Categoria de publicación: General
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div>
-                                            Categoria de publicación: Comercio
-                                        </div>
-                                    }
-                                </div>
+                                Publicado por: @Html.DisplayFor(modelItem => item.usuario.Nombre) @Html.DisplayFor(modelItem => item.usuario.Apellido)
                             </div>
-                        </a>
-                        <!--correo-->
-                        <a type="button" id="btnVentana" asp-controller="ForoControllerMVC" asp-action="ContactarseRegistrado" asp-route-id="@item.IdPost">Contactarse</a>
 
-                        <!--fin correo-->
-                        <br /><br />
-                    </div>
+                            <a>
+                                <div>
+
+                                    <div>
+                                        @if (item.IdCatPublFk == 1)
+                                        {
+                                            <div>
+                                                Categoria de publicación: General
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                Categoria de publicación: Comercio
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                            <!--correo-->
+                            <a type="button" id="btnVentana" asp-controller="ForoControllerMVC" asp-action="ContactarseRegistrado" asp-route-id="@item.IdPost">Contactarse</a>
+
+                            <!--fin correo-->
+                            <br /><br />
+                        </div>
                     }
                 </div>
                 <!--Fin articulo-->

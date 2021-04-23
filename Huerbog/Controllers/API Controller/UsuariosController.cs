@@ -48,18 +48,7 @@ namespace Huerbog.Controllers
             config = _config;
         }
 
-        //lista de usuarios registrados
-        [HttpGet]
-        [Route("get")]
-        public IActionResult get()
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                return Ok(db.Usuarios.ToList<Usuario>());
-            }
-        }
-
-        //resgistro de usuarios
+        //registro de usuarios
         [AllowAnonymous]
         [HttpPost]
         [Route("post")]
@@ -137,7 +126,7 @@ namespace Huerbog.Controllers
                 }
                 else
                 {
-                    return Ok("Ubicación de huerta, correo o teléfono ya existente");
+                    return BadRequest();
                 }
             }
 
@@ -268,7 +257,7 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = 3;
+            foro.IdUsuario = 1;
             foro.IdCatPublFk = (int) model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;
