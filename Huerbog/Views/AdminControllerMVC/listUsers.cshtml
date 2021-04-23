@@ -51,9 +51,8 @@
                     @Html.DisplayFor(modelItem => item.Reputacion)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdusuarioReg">Edit</a> |
                     <a asp-action="viewUser" asp-route-id="@item.IdusuarioReg">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdusuarioReg">Delete</a>
+                    <a asp-action="deleteUser" asp-route-id="@item.IdusuarioReg">Eliminar</a>
                 </td>
             </tr>
         }

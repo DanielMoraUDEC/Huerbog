@@ -119,7 +119,7 @@ namespace Huerbog.Controllers.MVC_Controller
                 }
             }
 
-            return View(userInfo);
+            return RedirectToAction("listUser");
         }
 
         

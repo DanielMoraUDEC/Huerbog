@@ -65,13 +65,36 @@ namespace Huerbog.Controllers.API_Controller
 
         [HttpDelete]
         [Route("deleteUser/{id}")]
-        public async Task<IActionResult> deleteUser(int id)
+        public IActionResult deleteUser(int id)
         {
-            var idusuarioReg = id;
+            var user = db.Usuarios.Where(x=>x.IdusuarioReg == id).FirstOrDefault();
 
-            db.Database.ExecuteSqlRaw("Exec EliminarUsuario @idUsuario", new[] {idusuarioReg});
+            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
 
-            await db.SaveChangesAsync();
+            var userForo = db.Foros.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
+
+            var userTema = db.Temas.Where(x => x.IdForo == userForo.IdPost).FirstOrDefault();
+
+            //db.Database.ExecuteSqlRaw("Exec EliminarUsuario @idUsuario", new[] {idusuarioReg});
+
+            if(userTema == null && userForo == null)
+            {
+                db.Remove(userHuerta);
+
+                db.Remove(user);
+            }
+            else
+            {
+                db.Remove(userTema);
+
+                db.Remove(userForo);
+
+                db.Remove(userHuerta);
+
+                db.Remove(user);
+            }
+
+            db.SaveChangesAsync();
 
             return Ok();
         }
