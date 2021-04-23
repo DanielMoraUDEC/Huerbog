@@ -154,7 +154,6 @@ namespace Huerbog.Controllers
         public async Task<IActionResult> createPost(ForoTemaModel model)
         {
             var formContent = new MultipartFormDataContent();
-
             var fileName = Path.GetFileName(model.ContentFile.FileName);
             var fileExt = Path.GetExtension(fileName);
             var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
