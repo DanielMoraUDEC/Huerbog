@@ -38,6 +38,10 @@
         <form method="post" asp-action="btnContactarse">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+            <div>
+                <input hidden asp-for="IdPost"/>
+            </div>
+
             <div class="form-group">
                 <label asp-for="nombre" class="control-label">Nombre:</label>
                 <input asp-for="nombre" name="nombre" class="form-control" required />
