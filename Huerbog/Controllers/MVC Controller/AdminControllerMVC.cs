@@ -91,5 +91,37 @@ namespace Huerbog.Controllers.MVC_Controller
 
             return View(userInfo);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> deleteUser(int id)
+        {
+            UserListModel userInfo = new UserListModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin");
+
+                var responseTask = client.DeleteAsync("Admin/deleteUser/" + id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var apiResp = await result.Content.ReadAsStringAsync();
+
+                    userInfo = JsonConvert.DeserializeObject<UserListModel>(apiResp);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(userInfo);
+        }
+
+        
     }
 }

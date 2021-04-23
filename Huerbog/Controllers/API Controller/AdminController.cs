@@ -29,7 +29,7 @@ namespace Huerbog.Controllers.API_Controller
         {
             using (HUERBOGContext db = new HUERBOGContext())
             {
-                return Ok(db.Usuarios.ToList<Usuario>().Where(x=>x.Roles == 2));
+                return Ok(db.Usuarios.ToList<Usuario>().Where(x => x.Roles == 2));
             }
         }
 
@@ -58,9 +58,22 @@ namespace Huerbog.Controllers.API_Controller
             userInfo.DescHuerta = userTablaHuerta.DescHuerta;
             userInfo.AreaCultivo = userTablaHuerta.AreaCultivo;
             userInfo.IdUsuario = user.IdusuarioReg;
-            userInfo.foro = userForo;
+            //userInfo.foro = userForo;
 
             return Ok(userInfo);
+        }
+
+        [HttpDelete]
+        [Route("deleteUser/{id}")]
+        public async Task<IActionResult> deleteUser(int id)
+        {
+            var idusuarioReg = id;
+
+            db.Database.ExecuteSqlRaw("Exec EliminarUsuario @idUsuario", new[] {idusuarioReg});
+
+            await db.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
