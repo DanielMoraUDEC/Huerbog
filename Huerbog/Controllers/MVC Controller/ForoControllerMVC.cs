@@ -352,8 +352,7 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(contact);
         }
 
-        [HttpPost]
-        public ActionResult btnContactarse(Contactarse contact)
+        public ActionResult Contactarse(Contactarse contact)
         {
             HttpClient client = new HttpClient();
 
