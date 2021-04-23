@@ -13,6 +13,10 @@
         <form method="post" asp-action="btnContactarseRegistrado">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+            <div>
+                <input hidden asp-for="IdPost" />
+            </div>
+
             <div class="form-group">
                 <input hidden asp-for="IdPost">
             </div>
