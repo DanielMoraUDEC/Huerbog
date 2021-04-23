@@ -14,6 +14,7 @@ using Huerbog.Models.ForoView;
 using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -341,6 +342,9 @@ namespace Huerbog.Controllers.MVC_Controller
         }
 
         //Contactarse no registrado
+        int idPostPrueba;
+
+
 
         [HttpGet]
         public ActionResult Contactarse(int id)
@@ -355,7 +359,9 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpPost]
         public ActionResult btnContactarse(Contactarse contact)
         {
+            contact.IdPost = 1;
             HttpClient client = new HttpClient();
+            
 
             client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
@@ -389,6 +395,7 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpPost]
         public ActionResult btnContactarseRegistrado(Contactarse contact)
         {
+            contact.IdPost = 1;
             HttpClient client = new HttpClient();
 
             client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");

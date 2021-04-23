@@ -126,8 +126,9 @@ namespace Huerbog.Controllers.API_Controller
         //envía solicitud
         [HttpPost]
         [Route("sendMail")]
-        public async Task<IActionResult> sendMail([FromBody] Contactarse contact)
+        public async Task<IActionResult> sendMail([FromBody] Contactarse contact, int id)
         {
+           
             var userPost = db.Foros.Where(x => x.IdPost == contact.IdPost).FirstOrDefault();
 
             var userData = db.Usuarios.Where(x => x.IdusuarioReg == userPost.IdUsuario).FirstOrDefault();
