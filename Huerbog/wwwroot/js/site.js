@@ -84,3 +84,4 @@ function mensaje() {
     confirm("El link de activación ha sido enviado a su correo, Confirmelo por favor.");
 }
 
+
