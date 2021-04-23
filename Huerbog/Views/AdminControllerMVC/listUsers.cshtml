@@ -4,11 +4,8 @@
     ViewData["Title"] = "listUsers";
 }
 
-<h1>listUsers</h1>
+<h1>Usuarios registrados</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -50,9 +47,8 @@
                     @Html.DisplayFor(modelItem => item.Reputacion)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.IdusuarioReg">Edit</a> |
-                    <a asp-action="viewUser" asp-route-id="@item.IdusuarioReg">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.IdusuarioReg">Delete</a>
+                    <a asp-action="viewUser" asp-route-id="@item.IdusuarioReg">Detalles</a> |
+                    <a asp-action="deleteUser" asp-route-id="@item.IdusuarioReg">Eliminar</a>
                 </td>
             </tr>
         }

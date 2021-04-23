@@ -86,18 +86,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.foro)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TituloPost)
-                    </td>
-                </tr>
-            }
+            
         </tbody>
     </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdusuarioReg">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="listUsers">Regresar</a>
 </div>
