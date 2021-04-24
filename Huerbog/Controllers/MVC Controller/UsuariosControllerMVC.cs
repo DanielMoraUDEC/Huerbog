@@ -186,5 +186,31 @@ namespace Huerbog.Controllers
             }
         }
 
+        //reportar publicación
+        public IActionResult reportPost(int id)
+        { 
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var responseTask = client.GetAsync("reportPost/" + id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
+
     }
 }

@@ -343,8 +343,6 @@ namespace Huerbog.Controllers.MVC_Controller
 
         //Contactarse no registrado
 
-
-
         [HttpGet]
         public ActionResult Contactarse(int id)
         {

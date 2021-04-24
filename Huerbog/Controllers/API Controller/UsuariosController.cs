@@ -225,16 +225,6 @@ namespace Huerbog.Controllers
 
         //Métodos referentes a publicaciones
 
-        /*[HttpGet]
-        [Route("getForo")]
-        public IActionResult getForo()
-        {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                return Ok(db.Foros.ToList<Foro>());
-            }
-        }*/
-
         //crea una publicación
         [HttpPost]
         [Route("createPost")]
@@ -257,7 +247,7 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = 2;
+            foro.IdUsuario = 1;
             foro.IdCatPublFk = (int) model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;
@@ -285,6 +275,21 @@ namespace Huerbog.Controllers
             {
                 throw ex;
             }
+        }
+
+        [HttpGet]
+        [Route("reportPost/{id}")]
+        public async Task<IActionResult> reportPost(int id)
+        {
+            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+
+            userForo.Reportes += 1;
+
+            db.Update(userForo);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
         }
 
       
