@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Huerbog.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Huerbog.Models.ForoList;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -124,6 +125,36 @@ namespace Huerbog.Controllers.MVC_Controller
             return RedirectToAction("listUsers");
         }
 
-        
+        [HttpGet]
+        public IActionResult getReportedPost()
+        {
+            IEnumerable<ForoListModel> foroList = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.GetAsync("getReportedPost");
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                    readTask.Wait();
+
+                    foroList = readTask.Result;
+                }
+                else
+                {
+                    foroList = Enumerable.Empty<ForoListModel>();
+
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(foroList);
+        }
     }
 }

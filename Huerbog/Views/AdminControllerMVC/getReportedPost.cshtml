@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Huerbog.Models.ForoList.ForoListModel>
+
+@{
+    ViewData["Title"] = "getReportedPost";
+}
+
+<h1>getReportedPost</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.usuario.Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TituloPost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescPost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCatPublFk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaPublicacion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-controller="AdminControllerMVC" asp-action="viewUser" asp-route-id="@item.usuario.IdusuarioReg">@Html.DisplayFor(modelItem => item.usuario.Correo)</a>
+            </td>
+            <td>
+                <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost">@Html.DisplayFor(modelItem => item.TituloPost)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescPost)
+            </td>
+            <td>
+                @if (item.IdCatPublFk == 1)
+                {
+                    <div>
+                        General
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        Comercio
+                    </div>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaPublicacion)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.IdPost">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Net;
 using Huerbog.Models.UserList;
+using Huerbog.Models.ForoList;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,14 +24,13 @@ namespace Huerbog.Controllers.API_Controller
     {
         HUERBOGContext db = new HUERBOGContext();
 
+
+        //Manejo de usuarios
         [HttpGet]
         [Route("getUsers")]
         public IActionResult getUsers()
         {
-            using (HUERBOGContext db = new HUERBOGContext())
-            {
-                return Ok(db.Usuarios.ToList<Usuario>().Where(x => x.Roles == 2));
-            }
+            return Ok(db.Usuarios.ToList<Usuario>().Where(x => x.Roles == 2));
         }
 
         [HttpGet]
@@ -75,5 +75,29 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok();
         }
+
+        //manejo publicaciones reportadas
+        [HttpGet]
+        [Route("getReportedPost")]
+        public IActionResult getReportedPost()
+        {
+            IList<ForoListModel> foroList = null;
+
+            foroList = db.Foros.Select(s => new ForoListModel()
+            {
+                IdUser = (int)s.IdUsuario,
+                IdPost = s.IdPost,
+                FechaPublicacion = s.FechaPublicacion,
+                DescPost = s.DescPost,
+                TituloPost = s.TituloPost,
+                IdCatPublFk = s.IdCatPublFk,
+                Reportes = s.Reportes,
+                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario && x.Roles == 2).FirstOrDefault()
+            }
+            ).Where(x=>x.Reportes > 0).ToList<ForoListModel>();
+
+            return Ok(foroList);
+        }
+
     }
 }

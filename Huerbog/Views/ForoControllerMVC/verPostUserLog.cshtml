@@ -60,7 +60,7 @@
                         <button asp-for="Reacciones" class="fas fa-thumbs-up"></button>
                         <button asp-for="Reacciones" class="fas fa-thumbs-down"></button>
                         <div>
-                            <button class="alert-danger" asp-route-id="@Model.IdPost" asp-controller="UsuariosControllerMVC" asp-action="reportPost" >Reportar</button>
+                            <button id="btnReport" class="alert-danger" asp-route-id="@Model.IdPost" asp-controller="UsuariosControllerMVC" asp-action="reportPost" >Reportar</button>
                         </div>
                     </div>
 
@@ -165,6 +165,13 @@
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
 </div>
+
+<script>
+    const button = document.getElementById(btnReport);
+    button.addEventListener("click", function () {
+
+    }, {once:true});
+</script>
 
 <br />
 <br />
