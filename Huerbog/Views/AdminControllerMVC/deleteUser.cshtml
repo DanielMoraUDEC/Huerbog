@@ -2,38 +2,69 @@
 
 @{
     ViewData["Title"] = "deleteUser";
+    Layout = "_LayoutRegistrado";
 }
 
-<h1>deleteUser</h1>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/nav.css" />
+<script>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>UserListModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Correo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Correo)
-        </dd>
-    </dl>
-    
-    <form asp-action="deleteUser">
-        <input type="hidden" asp-for="IdusuarioReg" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" asp-route-id="@Model.IdusuarioReg"/> |
-        <a asp-action="listUsers">Regresar</a>
-    </form>
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "160px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+    <a href="#">Categorias</a>
+    <a href="#">Mapa Huertas</a>
 </div>
+
+<!-- Use any element to open the sidenav -->
+
+<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
+
+<div class="main">
+    <h1>deleteUser</h1>
+
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>UserListModel</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Apellido)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Apellido)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Correo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Correo)
+            </dd>
+        </dl>
+
+        <form asp-action="deleteUser">
+            <input type="hidden" asp-for="IdusuarioReg" />
+            <input type="submit" value="Eliminar" class="btn btn-danger" asp-route-id="@Model.IdusuarioReg" /> |
+            <a asp-action="listUsers">Regresar</a>
+        </form>
+    </div>
+</div>
+
+

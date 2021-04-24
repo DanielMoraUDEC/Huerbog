@@ -5,73 +5,104 @@
     Layout = "_LayoutRegistrado";
 }
 
-<h1>Crear Publicacion</h1>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/nav.css" />
+<script>
 
-<h4>
-    Recuerde crear publicaciones con respecto al tema de las huerta y siga siempre los lineamientos de la comunidad.
-    Tenga en cuenta que debe indicar el tipo de publicación; General cuando las publicaciones sean de temas donde no
-    se vean involucradas operaciones de comercio y Comercio cuando el contenido de la publicación esté relacionada
-    con el intercambio de servicios o productos.
-</h4>
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "160px";
+    }
 
-<hr />
-<div class="row">
-    <div class="col-12 col-md-9">
-        <form enctype="multipart/form-data" asp-action="createPost">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
 
-            <div class="form-group h4">
-                <label asp-for="TituloPost" class="control-label">Título</label>
-                <input asp-for="TituloPost" class="form-control" />
-                <span asp-validation-for="TituloPost" class="text-danger"></span>
-            </div>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+    <a href="#">Categorias</a>
+    <a href="#">Mapa Huertas</a>
+</div>
 
-            <div class="form-group h4">
-                <label asp-for="DescPost" class="control-label">Descripción</label>
-                <input asp-for="DescPost" class="form-control" />
-                <span asp-validation-for="DescPost" class="text-danger"></span>
-            </div>
+<!-- Use any element to open the sidenav -->
 
-            <div class="form-group h4">
-                <label asp-for="Contenido" class="control-label">Contenido detallado</label>
-                <textarea rows="5" asp-for="Contenido" class="form-control"></textarea>
-                <span asp-validation-for="Contenido" class="text-danger"></span>
-            </div>
-            <div class="form-check form-check-inline">
+<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
 
-                <label class="control-label h4">Categoría de la publicación:</label><br />
-                <div class="form-check">
-                    <label class="form-check-label h5" for="exampleRadios2">
-                        General
-                    </label>
-                    <input class="form-check-input" type="radio" asp-for="IdCatPublFk" value="1" />
-                    <span asp-validation-for="IdCatPublFk" class="text-danger"></span>
+
+<div class="main">
+    <h1>Crear Publicacion</h1>
+
+    <h4>
+        Recuerde crear publicaciones con respecto al tema de las huerta y siga siempre los lineamientos de la comunidad.
+        Tenga en cuenta que debe indicar el tipo de publicación; General cuando las publicaciones sean de temas donde no
+        se vean involucradas operaciones de comercio y Comercio cuando el contenido de la publicación esté relacionada
+        con el intercambio de servicios o productos.
+    </h4>
+
+    <hr />
+    <div class="row">
+        <div class="col-12 col-md-9">
+            <form enctype="multipart/form-data" asp-action="createPost">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group h4">
+                    <label asp-for="TituloPost" class="control-label">Título</label>
+                    <input asp-for="TituloPost" class="form-control" />
+                    <span asp-validation-for="TituloPost" class="text-danger"></span>
                 </div>
-                <div class="form-check">
-                    <label class="form-check-label h5" for="exampleRadios2">
-                        Comercio
-                    </label>
-                    <input class="form-check-input" type="radio" asp-for="IdCatPublFk" value="2" />
-                    <span asp-validation-for="IdCatPublFk" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group h4">
-                <label asp-for="ContentFile" class="control-label">Imagen:</label><br />
-                <input class="form-control-file" multiple asp-for="ContentFile" type="file" />
-            </div>
-            <div class="form-group h4">
-                <input type="submit" value="Crear publicación" class="btn btn-primary" />
-            </div>
 
-        </form>
+                <div class="form-group h4">
+                    <label asp-for="DescPost" class="control-label">Descripción</label>
+                    <input asp-for="DescPost" class="form-control" />
+                    <span asp-validation-for="DescPost" class="text-danger"></span>
+                </div>
+
+                <div class="form-group h4">
+                    <label asp-for="Contenido" class="control-label">Contenido detallado</label>
+                    <textarea rows="5" asp-for="Contenido" class="form-control"></textarea>
+                    <span asp-validation-for="Contenido" class="text-danger"></span>
+                </div>
+                <div class="form-check form-check-inline">
+
+                    <label class="control-label h4">Categoría de la publicación:</label><br />
+                    <div class="form-check">
+                        <label class="form-check-label h5" for="exampleRadios2">
+                            General
+                        </label>
+                        <input class="form-check-input" type="radio" asp-for="IdCatPublFk" value="1" />
+                        <span asp-validation-for="IdCatPublFk" class="text-danger"></span>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label h5" for="exampleRadios2">
+                            Comercio
+                        </label>
+                        <input class="form-check-input" type="radio" asp-for="IdCatPublFk" value="2" />
+                        <span asp-validation-for="IdCatPublFk" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group h4">
+                    <label asp-for="ContentFile" class="control-label">Imagen:</label><br />
+                    <input class="form-control-file" multiple asp-for="ContentFile" type="file" />
+                </div>
+                <div class="form-group h4">
+                    <input type="submit" value="Crear publicación" class="btn btn-primary" />
+                </div>
+
+            </form>
+        </div>
     </div>
+
+    <div>
+        <a asp-controller="ForoControllerMVC" asp-action="IndexForoListUserLog">Regresar</a>
+    </div>
+    <br />
+    <br />
 </div>
 
-<div>
-    <a asp-controller="ForoControllerMVC" asp-action="IndexForoListUserLog">Regresar</a>
-</div>
-<br />
-<br />
+
 <!--
 @section Scripts{
     <script>
