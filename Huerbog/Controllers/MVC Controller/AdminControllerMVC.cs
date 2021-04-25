@@ -176,5 +176,38 @@ namespace Huerbog.Controllers.MVC_Controller
 
             return RedirectToAction("getReportedPost");
         }
+
+        [HttpGet]
+        public IActionResult viewDirHuertas()
+        {
+            IEnumerable<UserHuertaListModel> userInfo = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.GetAsync("viewDirHuerta");
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<UserHuertaListModel>>();
+                    readTask.Wait();
+
+                    userInfo = readTask.Result;
+                }
+                else
+                {
+                    userInfo = Enumerable.Empty<UserHuertaListModel>();
+
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(userInfo);
+
+        }
     }
 }

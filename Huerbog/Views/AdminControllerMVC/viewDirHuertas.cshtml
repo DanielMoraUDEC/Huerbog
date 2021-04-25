@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Huerbog.Models.UserList.UserHuertaListModel>
+
+@{
+    ViewData["Title"] = "viewDirHuertas";
+    Layout = "_LayoutRegistrado";
+}
+
+<h1>Directorio de huertas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>
+                Descripción de huerta
+            </th>
+            <th>
+                Dirección
+            </th>
+            <th>
+                Área de la huerta
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userHuerta.DescHuerta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userHuerta.UbicacionHuerta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userHuerta.AreaCultivo)
+                </td>
+                <td>
+                    <a asp-action="viewUser" asp-route-id="@item.IdusuarioReg">Ver perfil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

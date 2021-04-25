@@ -111,6 +111,24 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+        [HttpGet]
+        [Route("viewDirHuerta")]
+        public IActionResult viewDirHuerta()
+        {
+            IList<UserHuertaListModel> userInfo = null;
 
+            userInfo = db.Usuarios.Select(s => new UserHuertaListModel()
+                {
+                    IdusuarioReg = s.IdusuarioReg,
+                    Nombre = s.Nombre,
+                    Apellido = s.Apellido,
+                    Correo = s.Correo,
+                    Roles = s.Roles,
+                    userHuerta = db.TablaHuerta.Where(x=>x.IdUsuario == s.IdusuarioReg).FirstOrDefault()
+                }
+            ).Where(x =>x.Roles == 2).ToList<UserHuertaListModel>();
+
+            return Ok(userInfo);
+        }
     }
 }
