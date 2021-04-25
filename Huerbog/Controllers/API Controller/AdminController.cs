@@ -24,7 +24,6 @@ namespace Huerbog.Controllers.API_Controller
     {
         HUERBOGContext db = new HUERBOGContext();
 
-
         //Manejo de usuarios
         [HttpGet]
         [Route("getUsers")]
@@ -98,6 +97,20 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok(foroList);
         }
+
+        [HttpDelete]
+        [Route("deletePost/{id}")]
+        public async Task<IActionResult> deletePost(int id)
+        {
+            var idPublicacion = new SqlParameter("@idPublicacion", id);
+
+            db.Database.ExecuteSqlRaw("exec EliminarPubicacion @idPublicacion", new[] { idPublicacion });
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
     }
 }

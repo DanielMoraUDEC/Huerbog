@@ -2,30 +2,28 @@
 
 @{
     ViewData["Title"] = "getReportedPost";
+    Layout = "_LayoutRegistrado";
 }
 
-<h1>getReportedPost</h1>
+<h1>Lista de publicaciones reportadas</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.usuario.Correo)
+                Correo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TituloPost)
+                Título de la publicación
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DescPost)
+                Descripción
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdCatPublFk)
+                Categoría
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaPublicacion)
+                Fecha de publicación
             </th>
             <th></th>
         </tr>
@@ -60,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.FechaPublicacion)
             </td>
             <td>
-                <a asp-action="Delete" asp-route-id="@item.IdPost">Eliminar</a>
+                <a asp-action="deletePost" asp-route-id="@item.IdPost">Eliminar</a>
             </td>
         </tr>
 }

@@ -36,7 +36,7 @@ namespace Huerbog.Controllers.API_Controller
                 IdCatPublFk = s.IdCatPublFk,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
-            ).ToList<ForoListModel>();
+            ).OrderByDescending(x=>x.IdPost).ToList<ForoListModel>();
 
             return Ok(foroList);
         }
@@ -57,7 +57,7 @@ namespace Huerbog.Controllers.API_Controller
                 IdCatPublFk = s.IdCatPublFk,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
-            ).Where(x=>x.IdCatPublFk == 2).ToList<ForoListModel>();
+            ).Where(x=>x.IdCatPublFk == 2).OrderByDescending(x=>x.IdPost).ToList<ForoListModel>();
 
             return Ok(foroList);
         }
@@ -78,7 +78,7 @@ namespace Huerbog.Controllers.API_Controller
                 IdCatPublFk = s.IdCatPublFk,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
-            ).Where(x => x.IdCatPublFk == 1).ToList<ForoListModel>();
+            ).Where(x => x.IdCatPublFk == 1).OrderByDescending(x=>x.IdPost).ToList<ForoListModel>();
 
             return Ok(foroList);
         }

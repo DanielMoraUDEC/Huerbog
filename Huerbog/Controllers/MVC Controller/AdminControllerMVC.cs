@@ -94,10 +94,8 @@ namespace Huerbog.Controllers.MVC_Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> deleteUser(int id)
+        public IActionResult deleteUser(int id)
         {
-            UserListModel userInfo = new UserListModel();
-
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Admin");
@@ -110,10 +108,6 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if (result.IsSuccessStatusCode)
                 {
-                    var apiResp = await result.Content.ReadAsStringAsync();
-
-                    userInfo = JsonConvert.DeserializeObject<UserListModel>(apiResp);
-
                     ViewBag.message = "Eliminación de usuario correcta";
                 }
                 else
@@ -155,6 +149,32 @@ namespace Huerbog.Controllers.MVC_Controller
             }
 
             return View(foroList);
+        }
+
+        [HttpGet]
+        public IActionResult deletePost(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.DeleteAsync("deletePost/" + id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    ViewBag.message = "Eliminación de post correcta";
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return RedirectToAction("getReportedPost");
         }
     }
 }
