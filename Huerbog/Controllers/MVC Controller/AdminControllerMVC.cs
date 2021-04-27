@@ -66,31 +66,33 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public async Task<IActionResult> viewUser(int id)
         {
-            UserListModel userInfo = new UserListModel();
+            //_ = new UserForoModel();
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Admin");
+                var baseAddress = "https://localhost:44325";
 
-                var responseTask = client.GetAsync("Admin/viewUser/" + id);
+                client.BaseAddress = new Uri(baseAddress);
 
-                responseTask.Wait();
+                var responseTask = await client.GetAsync(baseAddress + "/api/Admin/viewUser/" + id);
 
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                if (responseTask.IsSuccessStatusCode)
                 {
-                    var apiResp = await result.Content.ReadAsStringAsync();
+                    var apiResp = await responseTask.Content.ReadAsStringAsync();
 
-                    userInfo = JsonConvert.DeserializeObject<UserListModel>(apiResp);
+                    var userInfo = JsonConvert.DeserializeObject<UserForoModel>(apiResp);
+
+                    return View(userInfo);
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View();
                 }
             }
 
-            return View(userInfo);
+            
         }
 
         [HttpGet]
