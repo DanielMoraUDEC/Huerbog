@@ -34,32 +34,52 @@ namespace Huerbog.Controllers.API_Controller
 
         [HttpGet]
         [Route("viewUser/{id}")]
-        public IActionResult viewUser(int id)
+        public ActionResult<UserForoModel> viewUser(int id)
         {
-            UserListModel userInfo = new UserListModel();
-
             var user = db.Usuarios.Where(x => x.IdusuarioReg == id).FirstOrDefault();
 
-            var userTablaHuerta = db.TablaHuerta.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
+            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
 
-            var userForo = db.Foros.Where(x => x.IdUsuario == user.IdusuarioReg).ToList();
+            var model = new UserForoModel
+            {
+                user = new Usuario
+                {
+                    IdusuarioReg = user.IdusuarioReg,
+                    Nombre = user.Nombre,
+                    Apellido = user.Apellido,
+                    Correo = user.Correo,
+                    CantPublicacion = user.CantPublicacion,
+                    Reputacion = user.Reputacion,
+                    CantSolicitudes = user.CantSolicitudes,
+                    Red = user.Red,
+                    Telefono = user.Telefono
+                },
 
-            userInfo.Nombre = user.Nombre;
-            userInfo.Apellido = user.Apellido;
-            userInfo.Correo = user.Correo;
-            userInfo.CantPublicacion = user.CantPublicacion;
-            userInfo.Reputacion = user.Reputacion;
-            userInfo.CantSolicitudes = user.CantSolicitudes;
-            userInfo.Red = user.Red;
-            userInfo.Telefono = user.Telefono;
-            userInfo.IdHuerta = userTablaHuerta.IdHuerta;
-            userInfo.UbicacionHuerta = userTablaHuerta.UbicacionHuerta;
-            userInfo.DescHuerta = userTablaHuerta.DescHuerta;
-            userInfo.AreaCultivo = userTablaHuerta.AreaCultivo;
-            userInfo.IdUsuario = user.IdusuarioReg;
-            //userInfo.foro = userForo;
+                userHuerta = new TablaHuertum
+                {
+                    IdUsuario = user.IdusuarioReg,
+                    IdHuerta = userHuerta.IdHuerta,
+                    UbicacionHuerta = userHuerta.UbicacionHuerta,
+                    AreaCultivo = userHuerta.AreaCultivo,
+                    DescHuerta = userHuerta.DescHuerta,
+                    DirHuerta = userHuerta.DirHuerta
+                },
 
-            return Ok(userInfo);
+                userForo = db.Foros.Select(s => new Foro()
+                    {
+                        IdUsuario = s.IdUsuario,
+                        IdPost = s.IdPost,
+                        TituloPost = s.TituloPost,
+                        DescPost = s.DescPost,
+                        FechaPublicacion = s.FechaPublicacion,
+                        IdCatPublFk = s.IdCatPublFk
+                    }
+                ).Where(x=>x.IdUsuario == user.IdusuarioReg).ToList<Foro>(),
+                
+            };
+            //userInfo.userForo = userForo;
+
+            return Ok(model);
         }
 
         [HttpDelete]

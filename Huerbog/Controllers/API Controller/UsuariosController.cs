@@ -198,6 +198,17 @@ namespace Huerbog.Controllers
             }
         }
 
+        //ver perfil de usuario logeado
+        [HttpGet]
+        [Route("viewPerfil")]
+        public IActionResult viewPerfil()
+        {
+
+
+            return Ok();
+        }
+
+
         //obtiene el token del usuario logeado actualmente
         [HttpGet]
         [Route("getCurrUser")]

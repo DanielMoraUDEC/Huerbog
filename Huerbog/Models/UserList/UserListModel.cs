@@ -37,7 +37,6 @@ namespace Huerbog.Models.UserList
         public string DescHuerta { get; set; }
         public double? AreaCultivo { get; set; }
         public int? IdUsuario { get; set; }
-        public IEnumerable<Foro> foro { get; set; }
 
         public virtual Usuario IdUsuarioNavigation { get; set; }
         public virtual ICollection<DirHuertum> DirHuerta { get; set; }
