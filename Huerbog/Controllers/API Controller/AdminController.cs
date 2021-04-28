@@ -100,9 +100,9 @@ namespace Huerbog.Controllers.API_Controller
         [Route("getReportedPost")]
         public IActionResult getReportedPost()
         {
-            IList<ForoListModel> foroList = null;
+            IList<ForoListModels> foroList = null;
 
-            foroList = db.Foros.Select(s => new ForoListModel()
+            foroList = db.Foros.Select(s => new ForoListModels()
             {
                 IdUser = (int)s.IdUsuario,
                 IdPost = s.IdPost,
@@ -113,7 +113,7 @@ namespace Huerbog.Controllers.API_Controller
                 Reportes = s.Reportes,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario && x.Roles == 2).FirstOrDefault()
             }
-            ).Where(x=>x.Reportes > 0).ToList<ForoListModel>();
+            ).Where(x=>x.Reportes > 0).ToList<ForoListModels>();
 
             return Ok(foroList);
         }

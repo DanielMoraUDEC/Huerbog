@@ -33,7 +33,7 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public IActionResult IndexForoList(string id)
         {
-            IEnumerable<ForoListModel> foroList = null;
+            IEnumerable<ForoListModels> foroList = null;
 
             if (id == "comerce")
             {
@@ -48,14 +48,14 @@ namespace Huerbog.Controllers.MVC_Controller
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                         readTask.Wait();
 
                         foroList = readTask.Result;
                     }
                     else
                     {
-                        foroList = Enumerable.Empty<ForoListModel>();
+                        foroList = Enumerable.Empty<ForoListModels>();
 
                         ModelState.AddModelError(string.Empty, "Error del servidor");
                     }
@@ -77,14 +77,14 @@ namespace Huerbog.Controllers.MVC_Controller
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                         readTask.Wait();
 
                         foroList = readTask.Result;
                     }
                     else
                     {
-                        foroList = Enumerable.Empty<ForoListModel>();
+                        foroList = Enumerable.Empty<ForoListModels>();
 
                         ModelState.AddModelError(string.Empty, "Error del servidor");
                     }
@@ -106,14 +106,14 @@ namespace Huerbog.Controllers.MVC_Controller
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                         readTask.Wait();
 
                         foroList = readTask.Result;
                     }
                     else
                     {
-                        foroList = Enumerable.Empty<ForoListModel>();
+                        foroList = Enumerable.Empty<ForoListModels>();
 
                         ModelState.AddModelError(string.Empty, "Error del servidor");
                     }
@@ -133,14 +133,14 @@ namespace Huerbog.Controllers.MVC_Controller
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                    var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                     readTask.Wait();
 
                     foroList = readTask.Result;
                 }
                 else
                 {
-                    foroList = Enumerable.Empty<ForoListModel>();
+                    foroList = Enumerable.Empty<ForoListModels>();
 
                     ModelState.AddModelError(string.Empty, "Error del servidor");
                 }
@@ -153,7 +153,7 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public IActionResult IndexForoListUserLog(string id)
         {
-            IEnumerable<ForoListModel> foroList = null;
+            IEnumerable<ForoListModels> foroList = null;
 
             if (id == "comerce")
             {
@@ -168,14 +168,14 @@ namespace Huerbog.Controllers.MVC_Controller
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                         readTask.Wait();
 
                         foroList = readTask.Result;
                     }
                     else
                     {
-                        foroList = Enumerable.Empty<ForoListModel>();
+                        foroList = Enumerable.Empty<ForoListModels>();
 
                         ModelState.AddModelError(string.Empty, "Error del servidor");
                     }
@@ -197,14 +197,14 @@ namespace Huerbog.Controllers.MVC_Controller
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                         readTask.Wait();
 
                         foroList = readTask.Result;
                     }
                     else
                     {
-                        foroList = Enumerable.Empty<ForoListModel>();
+                        foroList = Enumerable.Empty<ForoListModels>();
 
                         ModelState.AddModelError(string.Empty, "Error del servidor");
                     }
@@ -226,14 +226,14 @@ namespace Huerbog.Controllers.MVC_Controller
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                         readTask.Wait();
 
                         foroList = readTask.Result;
                     }
                     else
                     {
-                        foroList = Enumerable.Empty<ForoListModel>();
+                        foroList = Enumerable.Empty<ForoListModels>();
 
                         ModelState.AddModelError(string.Empty, "Error del servidor");
                     }
@@ -254,14 +254,14 @@ namespace Huerbog.Controllers.MVC_Controller
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                    var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                     readTask.Wait();
 
                     foroList = readTask.Result;
                 }
                 else
                 {
-                    foroList = Enumerable.Empty<ForoListModel>();
+                    foroList = Enumerable.Empty<ForoListModels>();
 
                     ModelState.AddModelError(string.Empty, "Error del servidor");
                 }
