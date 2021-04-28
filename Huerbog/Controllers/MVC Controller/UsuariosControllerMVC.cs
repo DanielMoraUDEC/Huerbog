@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IO;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 
 namespace Huerbog.Controllers
 {
@@ -90,17 +93,37 @@ namespace Huerbog.Controllers
         }
 
         [HttpPost]
-        public IActionResult login(Usuario model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> login(Usuario model)
         {
-            HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
-
-            var login = hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);   
-
-            login.Wait();
-
-            if(login.Result.IsSuccessStatusCode == true)
+            if(ModelState.IsValid)
             {
+                HttpClient hc = new HttpClient();
+                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+
+                var login = await hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);
+
+                if (login.StatusCode.ToString() == "Unauthorized")
+                {
+                    TempData["alert"] = "Los datos son incorrectos";
+                    return View();
+                }
+
+                if(login.StatusCode.ToString() == "NotFound")
+                {
+                    TempData["alert"] = "Usuario no encontrado";
+                    return View();
+                }
+
+                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                identity.AddClaim(new Claim(ClaimTypes.Name, model.Correo));
+
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                HttpContext.Session.SetString("JWToken", login.ToString());
+                TempData["alert"] = "Bienvenido" + model.Correo;
                 return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
             }
             else
