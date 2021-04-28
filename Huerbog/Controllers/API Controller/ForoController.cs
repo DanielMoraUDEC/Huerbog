@@ -24,9 +24,9 @@ namespace Huerbog.Controllers.API_Controller
         [Route("foroList")]
         public IActionResult foroList()
         {
-            IList<ForoListModels> foroList = null;
+            IList<ForoListModel> foroList = null;
 
-            foroList = db.Foros.Select(s => new ForoListModels()
+            foroList = db.Foros.Select(s => new ForoListModel()
             {
                 IdUser = (int)s.IdUsuario,
                 IdPost = s.IdPost,
@@ -36,7 +36,7 @@ namespace Huerbog.Controllers.API_Controller
                 IdCatPublFk = s.IdCatPublFk,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
-            ).OrderByDescending(x=>x.IdPost).ToList<ForoListModels>();
+            ).OrderByDescending(x=>x.IdPost).ToList<ForoListModel>();
 
             return Ok(foroList);
         }
@@ -45,9 +45,9 @@ namespace Huerbog.Controllers.API_Controller
         [Route("foroListComerce")]
         public IActionResult foroListComerce()
         {
-            IList<ForoListModels> foroList = null;
+            IList<ForoListModel> foroList = null;
 
-            foroList = db.Foros.Select(s => new ForoListModels()
+            foroList = db.Foros.Select(s => new ForoListModel()
             {
                 IdUser = (int)s.IdUsuario,
                 IdPost = s.IdPost,
@@ -57,7 +57,7 @@ namespace Huerbog.Controllers.API_Controller
                 IdCatPublFk = s.IdCatPublFk,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
-            ).Where(x=>x.IdCatPublFk == 2).OrderByDescending(x=>x.IdPost).ToList<ForoListModels>();
+            ).Where(x=>x.IdCatPublFk == 2).OrderByDescending(x=>x.IdPost).ToList<ForoListModel>();
 
             return Ok(foroList);
         }
@@ -66,9 +66,9 @@ namespace Huerbog.Controllers.API_Controller
         [Route("foroListGeneral")]
         public IActionResult foroListGeneral()
         {
-            IList<ForoListModels> foroList = null;
+            IList<ForoListModel> foroList = null;
 
-            foroList = db.Foros.Select(s => new ForoListModels()
+            foroList = db.Foros.Select(s => new ForoListModel()
             {
                 IdUser = (int)s.IdUsuario,
                 IdPost = s.IdPost,
@@ -78,7 +78,7 @@ namespace Huerbog.Controllers.API_Controller
                 IdCatPublFk = s.IdCatPublFk,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
             }
-            ).Where(x => x.IdCatPublFk == 1).OrderByDescending(x=>x.IdPost).ToList<ForoListModels>();
+            ).Where(x => x.IdCatPublFk == 1).OrderByDescending(x=>x.IdPost).ToList<ForoListModel>();
 
             return Ok(foroList);
         }
