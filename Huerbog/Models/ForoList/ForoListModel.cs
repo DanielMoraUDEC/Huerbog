@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Huerbog.Models.ForoList
 {
-    public class ForoListModels
+    public class ForoListModel
     {
         public int IdUser { get; set; }
         [Key]
