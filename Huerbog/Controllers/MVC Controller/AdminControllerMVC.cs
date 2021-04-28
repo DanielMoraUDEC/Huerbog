@@ -124,7 +124,7 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public IActionResult getReportedPost()
         {
-            IEnumerable<ForoListModel> foroList = null;
+            IEnumerable<ForoListModels> foroList = null;
 
             using (var client = new HttpClient())
             {
@@ -137,14 +137,14 @@ namespace Huerbog.Controllers.MVC_Controller
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                    var readTask = result.Content.ReadAsAsync<IList<ForoListModels>>();
                     readTask.Wait();
 
                     foroList = readTask.Result;
                 }
                 else
                 {
-                    foroList = Enumerable.Empty<ForoListModel>();
+                    foroList = Enumerable.Empty<ForoListModels>();
 
                     ModelState.AddModelError(string.Empty, "Error del servidor");
                 }
