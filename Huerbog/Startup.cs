@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Huerbog
 {
@@ -32,14 +31,13 @@ namespace Huerbog
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
 
             services.AddControllersWithViews();
-            services.AddCors(options =>
-            {
+            services.AddCors(options => {
                 options.AddPolicy("Permitir",
                     builder =>
                     {
                         builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                     });
-            });
+                });
 
             services.AddDistributedMemoryCache();
 
@@ -62,27 +60,10 @@ namespace Huerbog
                 };
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
-                options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromHours(2);
-                    options.LoginPath = "/UsuariosControllerMVC/login";
-                    options.AccessDeniedPath = "/UsuariosController/post";
-                    options.SlidingExpiration = true;
-                });
-
             services.AddRazorPages();
             services.AddDistributedMemoryCache();
             services.AddMvc().AddSessionStateTempDataProvider();
-            services.AddHttpClient();
-            services.AddSession(
-                options =>
-                {
-                    options.IdleTimeout = TimeSpan.FromMinutes(10);
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.IsEssential = true;
-                });
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,15 +79,15 @@ namespace Huerbog
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+ 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseSession();
-            app.UseCors("Permitir");
             app.UseAuthentication();
             app.UseAuthorization();
-            
+            app.UseSession();
+            app.UseCors("Permitir");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -115,7 +96,7 @@ namespace Huerbog
                 endpoints.MapRazorPages();
             });
 
-
+            
         }
     }
 }
