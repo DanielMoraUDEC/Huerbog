@@ -57,8 +57,15 @@
                         <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
                         <!--Reacciones-->
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
-                        <button asp-for="Reacciones" class="fas fa-thumbs-up"></button>
-                        <button asp-for="Reacciones" class="fas fa-thumbs-down"></button>
+
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <button  type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="post" asp-action="btnLike"></button>
+                            <button  type="submit" asp-for="Reacciones" class="fas fa-thumbs-down"></button>
+
+
+                    
+                            
 
 
                     </div>
