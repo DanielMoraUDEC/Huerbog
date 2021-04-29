@@ -1,4 +1,6 @@
 ﻿@model Huerbog.Models.ForoView.ContentForoModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpAcc
 
 @{
     ViewData["Title"] = "verPost";
@@ -62,14 +64,54 @@
                         <!--Reacciones-->
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
 
+                        @if (httpAcc.HttpContext.Session.GetString("JWToken") != null && httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                        {
+                            <br />
 
-                        
-                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="get" asp-route-id="@Model.IdPost" asp-action="btnLike"></button>
-                        <input asp-for="ReaccionLike" class="form-control border-0 col-2" readonly="readonly" />
-                        
+                            <div class="row ">
+                                <div class="form-group col-3">
+                                    <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="get" asp-route-id="@Model.IdPost" asp-action="btnLike"></button>
+                                </div>
+                                <div class="form-group col-3">
 
-                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-down" method="get" asp-route-id="@Model.IdPost" asp-action="btnDislike"></button>
-                        <input asp-for="ReaccionDisLike" class="form-control border-0 col-2" readonly="readonly" />
+                                    <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-down" method="get" asp-route-id="@Model.IdPost" asp-action="btnDislike"></button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
+                                </div>
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
+                                </div>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <br />
+                            <div class="row ">
+                                <div class="form-group col-3">
+                                    <label class="h4">#Likes: </label>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="h4">#Dislikes: </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
+                                </div>
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
+                                </div>
+
+                            </div>
+
+                        }
+
 
 
 
@@ -143,25 +185,25 @@
 
 
                 <!--
-      <div class="form-group">
-        <label><strong>Categoría de publicación</strong></label>
-        <div>
-            @if (Model.IdCatPublFk == 1)
-            {
-                <div>
-                    General
+                  <div class="form-group">
+                    <label><strong>Categoría de publicación</strong></label>
+                    <div>
+                        @if (Model.IdCatPublFk == 1)
+                        {
+                            <div>
+                                General
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                Comercio
+                            </div>
+                        }
+                    </div>
                 </div>
-            }
-            else
-            {
-                <div>
-                    Comercio
-                </div>
-            }
-        </div>
-    </div>
 
-     -->
+                 -->
 
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
