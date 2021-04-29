@@ -183,7 +183,7 @@ namespace Huerbog.Controllers.API_Controller
         }
 
         [HttpGet]
-        [Route("btnDisike/{id}")]
+        [Route("btnDislike/{id}")]
         public async Task<IActionResult> btnDislike(int id)
         {
 
