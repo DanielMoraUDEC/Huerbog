@@ -33,6 +33,12 @@ using System.IdentityModel.Tokens.Jwt;
 
 //comando bd en la nube (sirve para todos)
 //Scaffold-DBContext "Server=tcp:jimmyrueda.database.windows.net,1433;Initial Catalog=HUERBOG;Persist Security Info=False;User ID=administrador;Password=JimmyR1070G ;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+/*
+nombre del servidor:  jimmyrueda.database.windows.net   
+inicio de secion:   administrador
+contraseña:   JimmyR1070G
+*/
 namespace Huerbog.Controllers
 {
     [Route("api/[controller]")]
