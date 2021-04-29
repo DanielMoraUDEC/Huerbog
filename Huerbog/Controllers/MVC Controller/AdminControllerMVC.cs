@@ -10,9 +10,11 @@ using Huerbog.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Huerbog.Models.ForoList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
+    [AllowAnonymous]
     public class AdminControllerMVC : Controller
     {
         private readonly ILogger<AdminControllerMVC> _logger;

@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Huerbog.Controllers
 {
+    [AllowAnonymous]
     public class UsuariosControllerMVC : Controller
     {
 
@@ -72,16 +73,29 @@ namespace Huerbog.Controllers
         [HttpPost]
         public IActionResult post(UserHuertaModel model)
         {
-            HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+            if(ModelState.IsValid)
+            {
+                HttpClient hc = new HttpClient();
+                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
 
-            var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("Usuarios/post", model);
+                var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("Usuarios/post", model);
 
-            insertrec.Wait();
+                insertrec.Wait();
 
-            ModelState.Clear();
+                if(insertrec.Status.ToString() == "BadRequest")
+                {
+                    TempData["alert"] = "El correo, teléfono o ubicación de la huerta ya se encuentra registrado";
+                    return View();
+                }
 
-            return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                ModelState.Clear();
+
+                return RedirectToAction("IndexForoList", "ForoControllerMVC");
+            }
+            else
+            {
+                return View();
+            }
 
         }
 
@@ -123,14 +137,24 @@ namespace Huerbog.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                 HttpContext.Session.SetString("JWToken", login.ToString());
-                TempData["alert"] = "Bienvenido" + model.Correo;
-                return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+
+                hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.ToString());
+
+                return RedirectToAction("IndexForoList", "ForoControllerMVC");
             }
             else
             {
                 return View();
             }
             
+        }
+
+        //cerrar sesión
+        public async Task<IActionResult> logout()
+        {
+            await HttpContext.SignOutAsync();
+            HttpContext.Session.SetString("JWToken", "");
+            return RedirectToAction("IndexForoList", "ForoControllerMVC");
         }
 
         //muestra la vista con el mensaje de usuario verificado
@@ -176,11 +200,15 @@ namespace Huerbog.Controllers
         [HttpPost]
         public async Task<IActionResult> createPost(ForoTemaModel model)
         {
+            var u = HttpContext.Session.GetString("JWToken");
+
+            string user = u.ToString();
+
             var formContent = new MultipartFormDataContent();
             var fileName = Path.GetFileName(model.ContentFile.FileName);
             var fileExt = Path.GetExtension(fileName);
             var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
-
+            
             formContent.Add(new StringContent(model.TituloPost), "TituloPost");
             formContent.Add(new StringContent(model.DescPost), "DescPost");
             formContent.Add(new StringContent(model.Contenido), "Contenido");
@@ -197,10 +225,9 @@ namespace Huerbog.Controllers
 
             var userPost = await hc.PostAsync("createPost", formContent);
 
-
             if(userPost.IsSuccessStatusCode == true)
             {
-                return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+                return RedirectToAction("IndexForoList", "ForoControllerMVC");
             }
             else
             {
@@ -223,7 +250,7 @@ namespace Huerbog.Controllers
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("IndexForoListUserLog", "ForoControllerMVC");
+                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
                 }
                 else
                 {

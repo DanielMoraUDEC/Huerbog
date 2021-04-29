@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpAcc
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,12 +9,11 @@
     <title>@ViewData["Title"] - Huertbog</title>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-  
+
 
 </head>
 <body>
     <header>
-
     </header>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark ">
@@ -24,12 +26,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="navbar-nav ml-auto ">
-
-                    <a class="nav-link active" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Ingresar</a>
-                    <a class="nav-link active mr-4" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="post">Registrarse</a>
+                    @if (httpAcc.HttpContext.Session.GetString("JWToken") != null && httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                    {
+                        <a class="nav-link active" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="createPost">Publicar</a>
+                        <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle mb-3 form-control" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Menú
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <a class="dropdown-item" type="button" asp-controller="UsuariosControllerMVC" asp-action="logout">Cerrar sesión</a>
+                                <button class="dropdown-item" type="button">Another action</button>
+                                <button class="dropdown-item" type="button">Something else here</button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="nav-link active" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Ingresar</a>
+                        <a class="nav-link active mr-4" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="post">Registrarse</a>
+                    }
                     <form class="d-flex mr-4">
                         <input class="form-control me-2 mr-2" type="search" placeholder="Search" aria-label="Search" required>
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
                     </form>
                 </div>
 
