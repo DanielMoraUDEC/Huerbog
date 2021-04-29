@@ -113,6 +113,8 @@ namespace Huerbog.Controllers.API_Controller
             foro.TituloPost = foroInfo.TituloPost;
             foro.IdUsuario = foroInfo.IdUsuario;
             foro.IdCatPublFk = foroInfo.IdCatPublFk;
+            foro.ReaccionLike = foroInfo.ReaccionLike;
+            foro.ReaccionDisLike = foroInfo.ReaccionDisLike;
 
             //DATOS CONTENIDO DE PUBLICACIÓN
             foro.Idtema = foroContent.Idtema;

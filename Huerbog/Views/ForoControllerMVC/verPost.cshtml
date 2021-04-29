@@ -63,9 +63,13 @@
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
 
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="get"  asp-route-id="@Model.IdPost" asp-action="btnLike" ></button>
-                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-down" method="get"  asp-route-id="@Model.IdPost" asp-action="btnDislike"></button>
+                        
+                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="get" asp-route-id="@Model.IdPost" asp-action="btnLike"></button>
+                        <input asp-for="ReaccionLike" class="form-control border-0 col-2" readonly="readonly" />
+                        
+
+                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-down" method="get" asp-route-id="@Model.IdPost" asp-action="btnDislike"></button>
+                        <input asp-for="ReaccionDisLike" class="form-control border-0 col-2" readonly="readonly" />
 
 
 
