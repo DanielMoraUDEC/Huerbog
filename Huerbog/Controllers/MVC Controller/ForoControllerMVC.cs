@@ -15,9 +15,11 @@ using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
+    [AllowAnonymous]
     public class ForoControllerMVC : Controller
     {
         HUERBOGContext db = new HUERBOGContext();
@@ -355,7 +357,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
         public ActionResult Contactarse(Contactarse contact)
         {
-            contact.IdPost = 1;
+           // contact.IdPost = 1;
             HttpClient client = new HttpClient();
             
 
@@ -390,7 +392,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
         public ActionResult btnContactarseRegistrado(Contactarse contact)
         {
-            contact.IdPost = 1;
+           // contact.IdPost = 1;
             HttpClient client = new HttpClient();
 
             client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
@@ -415,5 +417,22 @@ namespace Huerbog.Controllers.MVC_Controller
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public ActionResult btnLike(int id)
+        {
+            Foro obj = new Foro();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult btnDislike(int id)
+        {
+            Foro obj = new Foro();
+
+            return View();
+        }
+
     }
 }

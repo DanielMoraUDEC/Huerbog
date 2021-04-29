@@ -33,11 +33,18 @@ using System.IdentityModel.Tokens.Jwt;
 
 //comando bd en la nube (sirve para todos)
 //Scaffold-DBContext "Server=tcp:jimmyrueda.database.windows.net,1433;Initial Catalog=HUERBOG;Persist Security Info=False;User ID=administrador;Password=JimmyR1070G ;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+/*
+nombre del servidor:  jimmyrueda.database.windows.net   
+inicio de secion:   administrador
+contraseña:   JimmyR1070G
+*/
 namespace Huerbog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("Permitir")]
+    [AllowAnonymous]
     //[Authorize]
     public class UsuariosController : ControllerBase
     {
@@ -160,6 +167,7 @@ namespace Huerbog.Controllers
 
                         var claims = new ClaimsIdentity(new Claim[] 
                         {
+                            new Claim(ClaimTypes.NameIdentifier, user.IdusuarioReg.ToString()),
                             new Claim(ClaimTypes.Name, user.Correo)
                         });
                         claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Correo));
@@ -167,7 +175,7 @@ namespace Huerbog.Controllers
                         var tokenDesc = new SecurityTokenDescriptor
                         {
                             Subject = claims,
-                            Expires = DateTime.UtcNow.AddHours(4),
+                            Expires = DateTime.UtcNow.AddMinutes(20),
                             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                         };
 
@@ -243,14 +251,13 @@ namespace Huerbog.Controllers
         [Route("createPost")]
         public async Task<IActionResult> createPost([FromForm]ForoTemaModel model)
         {
-            //var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            //var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            //var u = HttpContext.Session.GetString("JWToken");
 
             Foro foro = new Foro();
 
             Tema tema = new Tema();
 
-            //var user = db.Usuarios.Where(x => x.Correo.Equals(userId)).FirstOrDefault();
+            //var user = db.Usuarios.Where(x => x.Correo.Equals(u.ToString())).FirstOrDefault();
 
             using(var target = new MemoryStream())
             {

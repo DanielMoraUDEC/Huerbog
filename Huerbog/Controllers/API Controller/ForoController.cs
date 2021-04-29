@@ -10,11 +10,13 @@ using Huerbog.Models.Request;
 using Huerbog.Models.ForoView;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Huerbog.Controllers.API_Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class ForoController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();
