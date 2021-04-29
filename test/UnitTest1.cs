@@ -15,7 +15,7 @@ namespace test
             AdminController test1 = new AdminController();
 
             //act/ ejecucion de nuestro metodo prueba
-            var resultado = test1.deletePost(15);//aqui se envia el id
+            var resultado = test1.deletePost(12);//aqui se envia el id
 
             //asert/ validacion de nuestro metodo
             Assert.IsTrue(resultado.IsCompletedSuccessfully);
@@ -28,10 +28,23 @@ namespace test
             AdminController test1 = new AdminController();
 
             //act/ ejecucion de nuestro metodo prueba
-            var resultado = test1.deleteUser(10);//aqui se envia el id
+            var resultado = test1.deleteUser(7);//aqui se envia el id
 
             //asert/ validacion de nuestro metodo
-            
+            Assert.IsTrue(resultado.IsCompletedSuccessfully);
+        }
+
+        [TestMethod]
+        public void test()
+        {
+            //arrange/ preparar el ambiente de nuestra prueba
+            AdminController test1 = new AdminController();
+
+            //act/ ejecucion de nuestro metodo prueba
+            var resultado = test1.viewUser(1);
+
+            //asert/ validacion de nuestro metodo
+            Assert.IsNull(resultado.Value);
         }
     }
 }
