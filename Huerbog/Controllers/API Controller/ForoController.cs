@@ -166,5 +166,37 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+        [HttpGet]
+        [Route("btnLike/{id}")]
+        public async Task<IActionResult> btnLike(int id)
+        {
+           
+            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+
+            userForo.ReaccionLike += 1;
+
+            db.Update(userForo);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("btnDisike/{id}")]
+        public async Task<IActionResult> btnDislike(int id)
+        {
+
+            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+
+            userForo.ReaccionDisLike += 1;
+
+            db.Update(userForo);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
 }

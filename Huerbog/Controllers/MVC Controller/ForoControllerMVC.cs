@@ -276,6 +276,7 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public async Task<IActionResult> verPost(int Id)
         {
+
             ContentForoModel foroModel = new ContentForoModel();
 
             using (var client = new HttpClient())
@@ -312,6 +313,8 @@ namespace Huerbog.Controllers.MVC_Controller
         public async Task<IActionResult> verPostUserLog(int Id)
         {
             ContentForoModel foroModel = new ContentForoModel();
+
+            
 
             using (var client = new HttpClient())
             {
@@ -418,21 +421,61 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpPost]
-        public ActionResult btnLike(int id)
+       
+        public IActionResult btnLike(int id)
         {
-            Foro obj = new Foro();
+          
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-            return View();
+                var responseTask = client.GetAsync("btnLike/ " +id, (HttpCompletionOption)id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("");
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+
+               
+            }
         }
 
         [HttpPost]
         public ActionResult btnDislike(int id)
         {
-            Foro obj = new Foro();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-            return View();
-        }
+                var responseTask = client.GetAsync("btnDislike/ " + id, (HttpCompletionOption)id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("");
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
 
     }
 }

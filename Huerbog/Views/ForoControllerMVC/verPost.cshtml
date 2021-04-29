@@ -36,6 +36,10 @@
             <form asp-action="verPost">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                <div>
+                    <input hidden asp-for="IdPost" />
+                </div>
+
                 <div class="form-group text-center">
                     <label asp-for="TituloPost" class="control-label">
                         <input asp-for="TituloPost" class="p-3 h1 border-0 text-centet" readonly="readonly" />
@@ -59,13 +63,13 @@
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
 
 
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <button  type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="post" asp-action="btnLike"></button>
-                            <button  type="submit" asp-for="Reacciones" class="fas fa-thumbs-down"></button>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="get"  asp-route-id="@Model.IdPost" asp-action="btnLike" ></button>
+                        <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-down" method="get"  asp-route-id="@Model.IdPost" asp-action="btnDislike"></button>
 
 
-                    
-                            
+
+
 
 
                     </div>
@@ -135,25 +139,25 @@
 
 
                 <!--
-                  <div class="form-group">
-                    <label><strong>Categoría de publicación</strong></label>
-                    <div>
-                        @if (Model.IdCatPublFk == 1)
-                        {
-                            <div>
-                                General
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                Comercio
-                            </div>
-                        }
-                    </div>
+      <div class="form-group">
+        <label><strong>Categoría de publicación</strong></label>
+        <div>
+            @if (Model.IdCatPublFk == 1)
+            {
+                <div>
+                    General
                 </div>
+            }
+            else
+            {
+                <div>
+                    Comercio
+                </div>
+            }
+        </div>
+    </div>
 
-                 -->
+     -->
 
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
