@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Huerbog
 {
@@ -66,7 +70,7 @@ namespace Huerbog
                 options =>
                 {
                     options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                     options.LoginPath = "/UsuariosControllerMVC/login";
                     options.AccessDeniedPath = "/UsuariosController/post";
                     options.SlidingExpiration = true;
@@ -75,6 +79,14 @@ namespace Huerbog
             services.AddRazorPages();
             services.AddDistributedMemoryCache();
             services.AddMvc().AddSessionStateTempDataProvider();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            /*services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });*/
             services.AddHttpClient();
             services.AddSession(
                 options =>

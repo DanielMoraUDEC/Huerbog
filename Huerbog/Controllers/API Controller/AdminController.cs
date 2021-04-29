@@ -13,6 +13,7 @@ using System.Net.Mail;
 using System.Net;
 using Huerbog.Models.UserList;
 using Huerbog.Models.ForoList;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,6 +21,7 @@ namespace Huerbog.Controllers.API_Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AdminController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();

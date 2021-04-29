@@ -15,9 +15,11 @@ using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
+    [AllowAnonymous]
     public class ForoControllerMVC : Controller
     {
         HUERBOGContext db = new HUERBOGContext();

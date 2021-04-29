@@ -44,6 +44,7 @@ namespace Huerbog.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("Permitir")]
+    [AllowAnonymous]
     //[Authorize]
     public class UsuariosController : ControllerBase
     {
@@ -166,6 +167,7 @@ namespace Huerbog.Controllers
 
                         var claims = new ClaimsIdentity(new Claim[] 
                         {
+                            new Claim(ClaimTypes.NameIdentifier, user.IdusuarioReg.ToString()),
                             new Claim(ClaimTypes.Name, user.Correo)
                         });
                         claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Correo));
@@ -173,7 +175,7 @@ namespace Huerbog.Controllers
                         var tokenDesc = new SecurityTokenDescriptor
                         {
                             Subject = claims,
-                            Expires = DateTime.UtcNow.AddHours(4),
+                            Expires = DateTime.UtcNow.AddMinutes(20),
                             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                         };
 
@@ -249,14 +251,13 @@ namespace Huerbog.Controllers
         [Route("createPost")]
         public async Task<IActionResult> createPost([FromForm]ForoTemaModel model)
         {
-            //var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            //var userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            //var u = HttpContext.Session.GetString("JWToken");
 
             Foro foro = new Foro();
 
             Tema tema = new Tema();
 
-            //var user = db.Usuarios.Where(x => x.Correo.Equals(userId)).FirstOrDefault();
+            //var user = db.Usuarios.Where(x => x.Correo.Equals(u.ToString())).FirstOrDefault();
 
             using(var target = new MemoryStream())
             {
