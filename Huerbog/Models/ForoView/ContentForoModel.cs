@@ -38,6 +38,9 @@ namespace Huerbog.Models.ForoView
         public int? IdCatPublFk { get; set; }
         public int? Reportes { get; set; }
 
+        public int? ReaccionLike { get; set; }
+        public int? ReaccionDisLike { get; set; }
+
         //tabla temas
         public int Idtema { get; set; }
         public string Contenido { get; set; }

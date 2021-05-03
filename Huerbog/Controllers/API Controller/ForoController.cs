@@ -113,6 +113,8 @@ namespace Huerbog.Controllers.API_Controller
             foro.TituloPost = foroInfo.TituloPost;
             foro.IdUsuario = foroInfo.IdUsuario;
             foro.IdCatPublFk = foroInfo.IdCatPublFk;
+            foro.ReaccionLike = foroInfo.ReaccionLike;
+            foro.ReaccionDisLike = foroInfo.ReaccionDisLike;
 
             //DATOS CONTENIDO DE PUBLICACIÓN
             foro.Idtema = foroContent.Idtema;
@@ -162,6 +164,38 @@ namespace Huerbog.Controllers.API_Controller
             mail.Body = body;
 
             smtp.Send(mail);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("btnLike/{id}")]
+        public async Task<IActionResult> btnLike(int id)
+        {
+           
+            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+
+            userForo.ReaccionLike += 1;
+
+            db.Update(userForo);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("btnDislike/{id}")]
+        public async Task<IActionResult> btnDislike(int id)
+        {
+
+            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+
+            userForo.ReaccionDisLike += 1;
+
+            db.Update(userForo);
+
+            await db.SaveChangesAsync();
 
             return Ok();
         }
