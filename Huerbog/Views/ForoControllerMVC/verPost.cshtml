@@ -1,8 +1,11 @@
-﻿@model Huerbog.Models.ForoView.ContentForoModel
+﻿
+@model Huerbog.Models.ForoView.ContentForoModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpAcc
 
 @{
     ViewData["Title"] = "verPost";
-    Layout = "_Layout";
+
 }
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <link rel="stylesheet" href="~/css/nav2.css" />
@@ -36,6 +39,10 @@
             <form asp-action="verPost">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                <div>
+                    <input hidden asp-for="IdPost" />
+                </div>
+
                 <div class="form-group text-center">
                     <label asp-for="TituloPost" class="control-label">
                         <input asp-for="TituloPost" class="p-3 h1 border-0 text-centet" readonly="readonly" />
@@ -58,24 +65,66 @@
                         <!--Reacciones-->
                         <span asp-validation-for="Reacciones" class="text-danger"></span>
 
+                        @if (httpAcc.HttpContext.Session.GetString("JWToken") != null && httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                        {
+            <br />
 
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <button  type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="post" asp-action="btnLike"></button>
-                            <button  type="submit" asp-for="Reacciones" class="fas fa-thumbs-down"></button>
+                            <div class="row ">
+                                <div class="form-group col-3">
+                                    <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-up" method="get" asp-route-id="@Model.IdPost" asp-action="btnLike"></button>
+                                </div>
+                                <div class="form-group col-3">
+
+                                    <button type="submit" asp-for="Reacciones" class="fas fa-thumbs-down" method="get" asp-route-id="@Model.IdPost" asp-action="btnDislike"></button>
+                                </div>
+                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group col-3">
+                                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
+                                                </div>
+
+                                            </div> }
+                                                        else
+                                                        {
+                                            <br />
+                                                            <div class="row ">
+                                                                <div class="form-group col-3">
+                                                                    <label class="h4">#Likes: </label>
+                                                                </div>
+                                                                <div class="form-group col-3">
+                                                                    <label class="h4">#Dislikes: </label>
+                                                                </div>
+                                                            </div>
+
+                                                                            <div class="row">
+                                                                                <div class="form-group col-3">
+                                                                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
+                                                                                </div>
+                                                                                <div class="form-group col-3">
+                                                                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
+                                                                                </div>
+
+                                                                            </div>}
+
+
+
+
+
+
 
                     </div>
                     <div class="form-group col-4">
 
                         <!--Imagen-->
-                        @{
-                            var base64 = Convert.ToBase64String(Model.ContentFile);
-                            var Image = String.Format("data:image;base64,{0}", base64);
-                        }
+                        @{ var base64 = Convert.ToBase64String(Model.ContentFile);
+                                        var Image = String.Format("data:image;base64,{0}", base64); }
 
-                        @{
-                            var base64File = Convert.ToBase64String(Model.ContentFile);
-                            var File = String.Format("data:application/text;base64,{0}", base64File);
-                        }
+                        @{ var base64File = Convert.ToBase64String(Model.ContentFile);
+                                        var File = String.Format("data:application/text;base64,{0}", base64File); }
 
                         <img src="@Image" alt="" class="img-fluid" id="image">
 
@@ -86,12 +135,10 @@
 
                         @if (Image.Equals(null))
                         {
-                            <a href="@Image" download="@Model.FileName">Descargar: @Model.FileName</a>
-                        }
+            <a href="@Image" download="@Model.FileName">Descargar: @Model.FileName</a> }
                         else
                         {
-                            <a href="@File" download="@Model.FileName">Descargar: @Model.FileName</a>
-                        }
+            <a href="@File" download="@Model.FileName">Descargar: @Model.FileName</a>}
                     </div>
 
                 </div>
