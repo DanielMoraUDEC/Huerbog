@@ -67,7 +67,7 @@
 
                         @if (httpAcc.HttpContext.Session.GetString("JWToken") != null && httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
                         {
-            <br />
+                            <br />
 
                             <div class="row ">
                                 <div class="form-group col-3">
@@ -79,36 +79,36 @@
                                 </div>
                             </div>
 
-                                            <div class="row">
-                                                <div class="form-group col-3">
-                                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
-                                                </div>
-                                                <div class="form-group col-3">
-                                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
-                                                </div>
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
+                                </div>
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
+                                </div>
 
-                                            </div> }
-                                                        else
-                                                        {
-                                            <br />
-                                                            <div class="row ">
-                                                                <div class="form-group col-3">
-                                                                    <label class="h4">#Likes: </label>
-                                                                </div>
-                                                                <div class="form-group col-3">
-                                                                    <label class="h4">#Dislikes: </label>
-                                                                </div>
-                                                            </div>
+                            </div> }
+                        else
+                        {
+                            <br />
+                            <div class="row ">
+                                <div class="form-group col-3">
+                                    <label class="h4">#Likes: </label>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="h4">#Dislikes: </label>
+                                </div>
+                            </div>
 
-                                                                            <div class="row">
-                                                                                <div class="form-group col-3">
-                                                                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
-                                                                                </div>
-                                                                                <div class="form-group col-3">
-                                                                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
-                                                                                </div>
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
+                                </div>
+                                <div class="form-group col-3">
+                                    <input asp-for="ReaccionDisLike" class="form-control border-0" readonly="readonly" />
+                                </div>
 
-                                                                            </div>}
+                            </div>}
 
 
 
