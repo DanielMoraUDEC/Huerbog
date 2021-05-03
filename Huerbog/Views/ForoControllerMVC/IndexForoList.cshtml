@@ -26,16 +26,16 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
-<<<<<<< HEAD
-    <a href="#">no sé</a>
-    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa Huertas</a>
-=======
+    
+    
     @if (httpAcc.HttpContext.Session.GetString("JWToken") != null && httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
     {
-        <a asp-controller="UsuariosControllerMVC" asp-action="viewPerfil" asp-route-data="@httpAcc.HttpContext.Session.GetString("JWToken")">Ver perfil</a> 
+        {
+            var token = httpAcc.HttpContext.Session.GetString("JWToken").ToString();
+        }
+        <a asp-controller="UsuariosControllerMVC" asp-action="viewPerfil" asp-route-id="token">Ver perfil</a> 
     }
     <a href="#">Mapa Huertas</a>
->>>>>>> cf6db9706f5b9fe0035224eae44fd9e7839c2844
 </div>
 
 <!-- Use any element to open the sidenav -->

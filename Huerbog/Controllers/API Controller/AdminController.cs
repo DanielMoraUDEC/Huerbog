@@ -21,7 +21,7 @@ namespace Huerbog.Controllers.API_Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    
     public class AdminController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();

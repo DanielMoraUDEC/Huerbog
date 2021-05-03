@@ -415,21 +415,14 @@ namespace Huerbog.Controllers.MVC_Controller
 
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-       
         public IActionResult btnLike(int id)
         {
-          
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-                var responseTask = client.GetAsync("btnLike/ " +id, (HttpCompletionOption)id);
+                var responseTask = client.GetAsync("btnLike/ " + id, (HttpCompletionOption)id);
 
                 responseTask.Wait();
 
@@ -447,7 +440,7 @@ namespace Huerbog.Controllers.MVC_Controller
                     return View(ModelState);
                 }
 
-               
+
             }
         }
 
@@ -478,35 +471,10 @@ namespace Huerbog.Controllers.MVC_Controller
             }
         }
 
-        [HttpGet]
-        public ActionResult mapaHuertas()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-                var responseTask = client.GetAsync("mapaHuertas" );
-
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
-                {
-                    return View();
-
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Error del servidor");
-
-                    return View(ModelState);
-                }
-            }
-
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-
     }
 }

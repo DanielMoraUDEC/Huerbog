@@ -36,7 +36,7 @@ namespace Huerbog.Models.Request
         public string FileType { get; set; }
 
         //envio token
-        public string Token { get; set; }
+        //public string Token { get; set; }
 
         //tabla tema
         public virtual Foro IdForoNavigation { get; set; }

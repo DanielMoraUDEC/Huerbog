@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Huerbog.Models.Login;
+using Huerbog.Models.UserList;
 
 namespace Huerbog.Controllers
 {
@@ -252,12 +253,11 @@ namespace Huerbog.Controllers
             HttpClient hc = new HttpClient();
 
             var token = HttpContext.Session.GetString("JWToken");
-
-            model.Token = token;
+            //model.Token = token;
 
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            formContent.Add(new StringContent(model.Token), "Token");
+            //formContent.Add(new StringContent(model.Token), "Token");
 
             hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
@@ -301,13 +301,41 @@ namespace Huerbog.Controllers
         }
 
         [HttpGet]
-        public IActionResult viewPerfil(string token)
+        public async Task<IActionResult> viewPerfil()
+        {
+            UserForoModel userInfo = new UserForoModel(); 
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var responseTask = await client.GetAsync("viewPerfil/" + HttpContext.Session.GetString("JWToken"));
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    var apiResp = await responseTask.Content.ReadAsStringAsync();
+
+                    userInfo = JsonConvert.DeserializeObject<UserForoModel>(apiResp);
+
+                    return View(userInfo);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
+
+        [HttpPost]
+        public IActionResult viewPerfil(UserForoModel model)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-                var responseTask = client.GetAsync("viewPerfil/" + token);
+                var responseTask = client.PostAsJsonAsync<UserForoModel>("updatePerfil", model);
 
                 responseTask.Wait();
 
@@ -315,7 +343,7 @@ namespace Huerbog.Controllers
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return View();
+                    return RedirectToAction("viewPerfil", "UsuariosControllerMVC");
                 }
                 else
                 {
