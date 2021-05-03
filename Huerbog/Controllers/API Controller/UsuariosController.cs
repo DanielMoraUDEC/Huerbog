@@ -230,12 +230,31 @@ namespace Huerbog.Controllers
 
         //ver perfil de usuario logeado
         [HttpGet]
-        [Route("viewPerfil")]
-        public IActionResult viewPerfil()
+        [Route("viewPerfil/{token}")]
+        public IActionResult viewPerfil(string token)
         {
+            Usuario userInfo = new Usuario();
 
+            var u = token;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
 
-            return Ok();
+            tokenHandler.ValidateToken(u, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+
+            userInfo = db.Usuarios.Where(x => x.IdusuarioReg == userId).FirstOrDefault();
+
+            return Ok(userInfo);
         }
 
 
