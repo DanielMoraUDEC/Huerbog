@@ -3,3 +3,39 @@
 *@
 @{
 }
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/nav2.css" />
+<script>
+
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "160px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+    <a href="#">Categorias</a>
+    <a href="#">Mapa Huertas</a>
+</div>
+
+<!-- Use any element to open the sidenav -->
+
+<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
+
+
+<div class="main">
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15902.764134512336!2d-74.34701655!3d4.82301575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2sco!4v1620067784543!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+
+</div>
+
+
