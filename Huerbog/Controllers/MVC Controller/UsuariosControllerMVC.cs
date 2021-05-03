@@ -18,10 +18,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Huerbog.Models.Login;
 
 namespace Huerbog.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class UsuariosControllerMVC : Controller
     {
 
@@ -65,12 +66,14 @@ namespace Huerbog.Controllers
 
         //registro de usuarios
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult post()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult post(UserHuertaModel model)
         {
             if(ModelState.IsValid)
@@ -101,21 +104,23 @@ namespace Huerbog.Controllers
 
         //login de usuarios
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> login(Usuario model)
         {
             if(ModelState.IsValid)
             {
                 HttpClient hc = new HttpClient();
-                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-                var login = await hc.PostAsJsonAsync<Usuario>("Usuarios/login", model);
+                var login = await hc.PostAsJsonAsync<Usuario>("login", model);
 
                 if (login.StatusCode.ToString() == "Unauthorized")
                 {
@@ -129,16 +134,46 @@ namespace Huerbog.Controllers
                     return View();
                 }
 
+                var jsonString = await login.Content.ReadAsStringAsync();
+
+                var userobject = JsonConvert.DeserializeObject<UserLogin>(jsonString);
+
+                if(userobject.Token == null)
+                {
+                    TempData["alert"] = "Los datos son incorrectos";
+                    return View();
+                }
+
+                if(userobject.Correo == "dmartinezcifuentes180@gmail.com")
+                {
+                    var identity2 = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity2.AddClaim(new Claim(ClaimTypes.Name, userobject.Correo));
+
+                    var principal2 = new ClaimsPrincipal(identity2);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal2);
+
+                    HttpContext.Session.SetString("JWToken", userobject.Token);
+
+                    TempData["alert"] = "Bienvenido/a " + userobject.Correo;
+
+                    //hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.ToString());
+
+                    return RedirectToAction("indexAdmin", "AdminControllerMVC");
+                }
+
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.Name, model.Correo));
+                identity.AddClaim(new Claim(ClaimTypes.Name, userobject.Correo));
 
                 var principal = new ClaimsPrincipal(identity);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                HttpContext.Session.SetString("JWToken", login.ToString());
+                HttpContext.Session.SetString("JWToken", userobject.Token);
 
-                hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.ToString());
+                TempData["alert"] = "Bienvenido/a " + userobject.Correo;
+
+                //hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userobject.Token);
 
                 return RedirectToAction("IndexForoList", "ForoControllerMVC");
             }
@@ -159,23 +194,23 @@ namespace Huerbog.Controllers
 
         //muestra la vista con el mensaje de usuario verificado
         [HttpGet]
-        public IActionResult userVerification(string id)
+        [AllowAnonymous]
+        public async Task<IActionResult> userVerification(string id)
         {
             Usuario u = new Usuario();
 
             using(var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+                var baseAddress = "https://localhost:44325";
 
-                var responseTask = client.GetAsync("Usuarios/userVerification/" + id);
+                client.BaseAddress = new Uri(baseAddress);
 
-                responseTask.Wait();
+                var responseTask = await client.GetAsync(baseAddress + "/api/Usuarios/userVerification/" + id);
 
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                if (responseTask.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<Usuario>();
+                    var readTask = responseTask.Content.ReadAsAsync<Usuario>();
+                    
                     readTask.Wait();
 
                     u = readTask.Result;
@@ -190,7 +225,6 @@ namespace Huerbog.Controllers
         }
 
         //creación de publicaciones
-        //[Authorize]
         [HttpGet]
         public IActionResult createPost()
         {
@@ -198,12 +232,9 @@ namespace Huerbog.Controllers
         }
 
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> createPost(ForoTemaModel model)
         {
-            var u = HttpContext.Session.GetString("JWToken");
-
-            string user = u.ToString();
-
             var formContent = new MultipartFormDataContent();
             var fileName = Path.GetFileName(model.ContentFile.FileName);
             var fileExt = Path.GetExtension(fileName);
@@ -219,14 +250,22 @@ namespace Huerbog.Controllers
             formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
 
             HttpClient hc = new HttpClient();
-            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-            //var userPost = hc.PostAsJsonAsync<ForoTemaModel>("Usuarios/createPost", model);
+            var token = HttpContext.Session.GetString("JWToken");
+
+            model.Token = token;
+
+            hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            formContent.Add(new StringContent(model.Token), "Token");
+
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
             var userPost = await hc.PostAsync("createPost", formContent);
 
             if(userPost.IsSuccessStatusCode == true)
             {
+                
                 return RedirectToAction("IndexForoList", "ForoControllerMVC");
             }
             else

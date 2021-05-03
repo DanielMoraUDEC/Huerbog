@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
-    [AllowAnonymous]
+    [Authorize]
     public class AdminControllerMVC : Controller
     {
         private readonly ILogger<AdminControllerMVC> _logger;
