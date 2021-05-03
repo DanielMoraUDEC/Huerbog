@@ -28,6 +28,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using Huerbog.Models.UserList;
 
 
 
@@ -170,19 +171,9 @@ namespace Huerbog.Controllers
                             new Claim(ClaimTypes.Name, user.Correo)
                         };
 
-                        //var SecretKey = config.GetValue<string>("AppSettings:Token");
-                        //var key = Encoding.ASCII.GetBytes(SecretKey);
-
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
 
                         var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-                        /*var tokenDesc = new SecurityTokenDescriptor
-                        {
-                            Subject = claims,
-                            Expires = DateTime.UtcNow.AddMinutes(20),
-                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                        };*/
 
                         var tokenDescriptor = new SecurityTokenDescriptor
                         {
@@ -194,16 +185,8 @@ namespace Huerbog.Controllers
                         var tokenHandler = new JwtSecurityTokenHandler();
                         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                        //string bearer_token = tokenHandler.WriteToken(createdToken);
 
-                        /*using(var client = new HttpClient())
-                        {
-                            client.DefaultRequestHeaders.Add("Authorization", "Bearer" + bearer_token);
-                        }
-                        
-                        Request.Headers.Add("Authorization", "Bearer " + bearer_token);
-                        */
-                        //return Ok(bearer_token);
+                        //Request.Headers.Add("Authorization", "Bearer " + bearer_token);
 
                         return Ok(new 
                         { 
@@ -229,12 +212,11 @@ namespace Huerbog.Controllers
         }
 
         //ver perfil de usuario logeado
+        [AllowAnonymous]
         [HttpGet]
         [Route("viewPerfil/{token}")]
-        public IActionResult viewPerfil(string token)
+        public ActionResult<UserForoModel> viewPerfil(string token)
         {
-            Usuario userInfo = new Usuario();
-
             var u = token;
             var tokenHandler = new JwtSecurityTokenHandler();
             var SecretKey = config.GetValue<string>("AppSettings:Token");
@@ -252,11 +234,76 @@ namespace Huerbog.Controllers
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
 
-            userInfo = db.Usuarios.Where(x => x.IdusuarioReg == userId).FirstOrDefault();
+            var user = db.Usuarios.Where(x => x.IdusuarioReg == userId).FirstOrDefault();
 
-            return Ok(userInfo);
+            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
+
+            var model = new UserForoModel
+            {
+                user = new Usuario
+                {
+                    IdusuarioReg = user.IdusuarioReg,
+                    Nombre = user.Nombre,
+                    Apellido = user.Apellido,
+                    Correo = user.Correo,
+                    CantPublicacion = user.CantPublicacion,
+                    Reputacion = user.Reputacion,
+                    CantSolicitudes = user.CantSolicitudes,
+                    Red = user.Red,
+                    Telefono = user.Telefono
+                },
+
+                userHuerta = new TablaHuertum
+                {
+                    IdUsuario = user.IdusuarioReg,
+                    IdHuerta = userHuerta.IdHuerta,
+                    UbicacionHuerta = userHuerta.UbicacionHuerta,
+                    AreaCultivo = userHuerta.AreaCultivo,
+                    DescHuerta = userHuerta.DescHuerta,
+                    DirHuerta = userHuerta.DirHuerta
+                },
+
+                userForo = db.Foros.Select(s => new Foro()
+                {
+                    IdUsuario = s.IdUsuario,
+                    IdPost = s.IdPost,
+                    TituloPost = s.TituloPost,
+                    DescPost = s.DescPost,
+                    FechaPublicacion = s.FechaPublicacion,
+                    IdCatPublFk = s.IdCatPublFk
+                }
+                ).Where(x => x.IdUsuario == user.IdusuarioReg).ToList<Foro>(),
+            };
+
+            return Ok(model);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("updatePerfil")]
+        public async Task <ActionResult> updatePerfil([FromBody] UserForoModel model)
+        {
+            var userInfo = db.Usuarios.Where(x => x.IdusuarioReg == model.user.IdusuarioReg).FirstOrDefault();
+
+            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == userInfo.IdusuarioReg).FirstOrDefault();
+
+            userInfo.Nombre = model.user.Nombre;
+            userInfo.Apellido = model.user.Apellido;
+            userInfo.Correo = model.user.Correo;
+            userInfo.Red = model.user.Red;
+            userInfo.Telefono = model.user.Telefono;
+            userHuerta.UbicacionHuerta = model.userHuerta.UbicacionHuerta;
+            userHuerta.DescHuerta = model.userHuerta.DescHuerta;
+            userHuerta.AreaCultivo = model.userHuerta.AreaCultivo;
+
+            db.Update(userInfo);
+
+            db.Update(userHuerta);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
 
         //obtiene el token del usuario logeado actualmente
         [HttpGet]
@@ -292,12 +339,19 @@ namespace Huerbog.Controllers
         [Route("createPost")]
         public async Task<IActionResult> createPost([FromForm]ForoTemaModel model)
         {
-            var u = model.Token;
+            //var u = model.Token;
+
+            //tokenizado
             var tokenHandler = new JwtSecurityTokenHandler();
             var SecretKey = config.GetValue<string>("AppSettings:Token");
             var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
 
-            tokenHandler.ValidateToken(u, new TokenValidationParameters
+            //quita la palabra "Bearer" del token
+            var realtoken = token.ToString().Substring(7);
+
+            //valida el token
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
@@ -306,21 +360,23 @@ namespace Huerbog.Controllers
                 ClockSkew = TimeSpan.Zero
             }, out SecurityToken validatedToken);
 
+            //obtiene el valor del almacenado en el token
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
 
+            //instancia el modelo de la tabla foro y tema
             Foro foro = new Foro();
 
             Tema tema = new Tema();
 
-            //var user = db.Usuarios.Where(x => x.Correo.Equals(u.ToString())).FirstOrDefault();
-
+            //convierte el archivo (img, doc, etc) a un arreglo de bytes
             using(var target = new MemoryStream())
             {
                 await model.ContentFile.CopyToAsync(target);
                 tema.ContentFile = target.ToArray();
             }
 
+            //asigna los valores a los campos de cada modelo
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.IdUsuario = userId;
@@ -329,6 +385,7 @@ namespace Huerbog.Controllers
             tema.FileType = model.FileType;
             tema.Contenido = model.Contenido;
 
+            //convierte los valores de los campos a parámetros SQL para la SP
             var descPost = new SqlParameter("@descPost", foro.DescPost); 
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
@@ -338,6 +395,7 @@ namespace Huerbog.Controllers
             var file_name_ = new SqlParameter("@file_name_", tema.FileName);
             var FileType = new SqlParameter("@FileType", tema.FileType);
 
+            //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
             try
             {
                 db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @idUsuario," +
@@ -367,7 +425,6 @@ namespace Huerbog.Controllers
 
             return Ok();
         }
-
       
         //métodos para uso único de la clase actual
         [NonAction]
