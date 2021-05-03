@@ -478,5 +478,35 @@ namespace Huerbog.Controllers.MVC_Controller
             }
         }
 
+        [HttpGet]
+        public ActionResult mapaHuertas()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                var responseTask = client.GetAsync("mapaHuertas" );
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return View();
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+
+        }
+
+
+
     }
 }

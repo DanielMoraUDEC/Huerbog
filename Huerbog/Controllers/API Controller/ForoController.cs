@@ -200,5 +200,12 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+        [HttpGet]
+        [Route("mapaHuertas")]
+        public async Task<IActionResult> mapaHuertas()
+        {
+            return Ok();
+        }
+
     }
 }
