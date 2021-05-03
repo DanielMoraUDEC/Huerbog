@@ -300,5 +300,30 @@ namespace Huerbog.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult viewPerfil(string token)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var responseTask = client.GetAsync("viewPerfil/" + token);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return View();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
     }
 }
