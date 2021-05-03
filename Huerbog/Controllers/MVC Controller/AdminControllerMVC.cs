@@ -68,8 +68,6 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public async Task<IActionResult> viewUser(int id)
         {
-            //_ = new UserForoModel();
-
             using (var client = new HttpClient())
             {
                 var baseAddress = "https://localhost:44325";
