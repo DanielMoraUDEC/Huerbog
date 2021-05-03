@@ -33,8 +33,6 @@ namespace Huerbog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretKey"));
-
             services.AddControllersWithViews();
             services.AddCors(options =>
             {
@@ -47,24 +45,17 @@ namespace Huerbog
 
             services.AddDistributedMemoryCache();
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
@@ -79,14 +70,6 @@ namespace Huerbog
             services.AddRazorPages();
             services.AddDistributedMemoryCache();
             services.AddMvc().AddSessionStateTempDataProvider();
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            /*services.AddMvc(config =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                                 .RequireAuthenticatedUser()
-                                 .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
-            });*/
             services.AddHttpClient();
             services.AddSession(
                 options =>
@@ -95,6 +78,8 @@ namespace Huerbog
                     options.Cookie.HttpOnly = true;
                     options.Cookie.IsEssential = true;
                 });
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,8 +99,8 @@ namespace Huerbog
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseSession();
             app.UseCors("Permitir");
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
             

@@ -27,6 +27,8 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+
 
 
 //Scaffold-DBContext "Server=DESKTOP-NQEHQCM ;Database=HUERBOG;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
@@ -44,8 +46,7 @@ namespace Huerbog.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("Permitir")]
-    [AllowAnonymous]
-    //[Authorize]
+    [Authorize]
     public class UsuariosController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();
@@ -60,6 +61,7 @@ namespace Huerbog.Controllers
         //registro de usuarios
         [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("post")]
         public async Task<IActionResult> post([FromBody] UserHuertaModel model)
         {
@@ -146,7 +148,7 @@ namespace Huerbog.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> login([FromBody] Usuario model)
+        public IActionResult login([FromBody] Usuario model)
         {
             if(ModelState.IsValid)
             {
@@ -162,34 +164,52 @@ namespace Huerbog.Controllers
 
                     if (client_post_hash_password.Equals(user.Contraseña))
                     {
-                        var SecretKey = config.GetValue<string>("SecretKey");
-                        var key = Encoding.ASCII.GetBytes(SecretKey);
-
-                        var claims = new ClaimsIdentity(new Claim[] 
+                        var claims = new []
                         {
                             new Claim(ClaimTypes.NameIdentifier, user.IdusuarioReg.ToString()),
                             new Claim(ClaimTypes.Name, user.Correo)
-                        });
-                        claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Correo));
+                        };
 
-                        var tokenDesc = new SecurityTokenDescriptor
+                        //var SecretKey = config.GetValue<string>("AppSettings:Token");
+                        //var key = Encoding.ASCII.GetBytes(SecretKey);
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
+
+                        var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+                        /*var tokenDesc = new SecurityTokenDescriptor
                         {
                             Subject = claims,
                             Expires = DateTime.UtcNow.AddMinutes(20),
                             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                        };*/
+
+                        var tokenDescriptor = new SecurityTokenDescriptor
+                        {
+                            Subject = new ClaimsIdentity(claims),
+                            Expires = DateTime.Now.AddDays(1),
+                            SigningCredentials = credenciales
                         };
 
                         var tokenHandler = new JwtSecurityTokenHandler();
-                        var createdToken = tokenHandler.CreateToken(tokenDesc);
+                        var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                        string bearer_token = tokenHandler.WriteToken(createdToken);
+                        //string bearer_token = tokenHandler.WriteToken(createdToken);
 
-                        using(var client = new HttpClient())
+                        /*using(var client = new HttpClient())
                         {
                             client.DefaultRequestHeaders.Add("Authorization", "Bearer" + bearer_token);
                         }
+                        
+                        Request.Headers.Add("Authorization", "Bearer " + bearer_token);
+                        */
+                        //return Ok(bearer_token);
 
-                        return Ok(bearer_token);
+                        return Ok(new 
+                        { 
+                            Correo = claims[1].Value.ToString(),
+                            Token = tokenHandler.WriteToken(token)
+                        });
                     }
                     else
                     {
@@ -229,9 +249,10 @@ namespace Huerbog.Controllers
         }
 
         //verifica el registro de un usuario
+        [AllowAnonymous]
         [HttpGet]
         [Route("userVerification/{id}")]
-        public IActionResult userVerification(string id)
+        public ActionResult userVerification(string id)
         {
             var v = db.Usuarios.Where(a => a.ActivationCode == new Guid(id)).FirstOrDefault();
 
@@ -247,11 +268,27 @@ namespace Huerbog.Controllers
         //Métodos referentes a publicaciones
 
         //crea una publicación
+        [AllowAnonymous]
         [HttpPost]
         [Route("createPost")]
         public async Task<IActionResult> createPost([FromForm]ForoTemaModel model)
         {
-            //var u = HttpContext.Session.GetString("JWToken");
+            var u = model.Token;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+
+            tokenHandler.ValidateToken(u, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
 
             Foro foro = new Foro();
 
@@ -267,7 +304,7 @@ namespace Huerbog.Controllers
 
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = 3;
+            foro.IdUsuario = userId;
             foro.IdCatPublFk = (int) model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;

@@ -7,6 +7,9 @@ namespace Huerbog.Models.Login
 {
     public class UserLogin
     {
-        public int idLog { get; set; }
+        public int IdusuarioReg { get; set; }
+        public string Correo { get; set; }
+        public string Contraseña { get; set; }
+        public string Token { get; set; }
     }
 }
