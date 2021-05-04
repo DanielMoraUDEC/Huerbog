@@ -10,7 +10,6 @@ namespace Huerbog.Models.UserList
     [Keyless]
     public class UserForoModel
     {
-        
         public Usuario user { get; set; }
         public TablaHuertum userHuerta { get; set; }
         public IList<Foro> userForo { get; set; }

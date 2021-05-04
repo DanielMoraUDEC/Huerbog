@@ -305,6 +305,55 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("viewPerfilPubl/{id}")]
+        [AllowAnonymous]
+        public ActionResult<UserForoModel> viewPerfilPubl(int id)
+        {
+            var user = db.Usuarios.Where(x => x.IdusuarioReg == id).FirstOrDefault();
+
+            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == user.IdusuarioReg).FirstOrDefault();
+
+            var model = new UserForoModel
+            {
+                user = new Usuario
+                {
+                    IdusuarioReg = user.IdusuarioReg,
+                    Nombre = user.Nombre,
+                    Apellido = user.Apellido,
+                    Correo = user.Correo,
+                    CantPublicacion = user.CantPublicacion,
+                    Reputacion = user.Reputacion,
+                    CantSolicitudes = user.CantSolicitudes,
+                    Red = user.Red,
+                    Telefono = user.Telefono
+                },
+
+                userHuerta = new TablaHuertum
+                {
+                    IdUsuario = user.IdusuarioReg,
+                    IdHuerta = userHuerta.IdHuerta,
+                    UbicacionHuerta = userHuerta.UbicacionHuerta,
+                    AreaCultivo = userHuerta.AreaCultivo,
+                    DescHuerta = userHuerta.DescHuerta,
+                    DirHuerta = userHuerta.DirHuerta
+                },
+
+                userForo = db.Foros.Select(s => new Foro()
+                {
+                    IdUsuario = s.IdUsuario,
+                    IdPost = s.IdPost,
+                    TituloPost = s.TituloPost,
+                    DescPost = s.DescPost,
+                    FechaPublicacion = s.FechaPublicacion,
+                    IdCatPublFk = s.IdCatPublFk
+                }
+                ).Where(x => x.IdUsuario == user.IdusuarioReg).ToList<Foro>(),
+            };
+
+            return Ok(model);
+        }
+
         //obtiene el token del usuario logeado actualmente
         [HttpGet]
         [Route("getCurrUser")]

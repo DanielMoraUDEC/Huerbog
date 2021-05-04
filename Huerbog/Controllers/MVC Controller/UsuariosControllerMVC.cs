@@ -355,5 +355,34 @@ namespace Huerbog.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> viewPerfilPubl(int id)
+        {
+            UserForoModel userInfo = new UserForoModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var responseTask = await client.GetAsync("viewPerfilPubl/" + id);
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    var apiResp = await responseTask.Content.ReadAsStringAsync();
+
+                    userInfo = JsonConvert.DeserializeObject<UserForoModel>(apiResp);
+
+                    return View(userInfo);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
     }
 }
