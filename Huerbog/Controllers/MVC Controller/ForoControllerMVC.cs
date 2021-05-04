@@ -282,36 +282,63 @@ namespace Huerbog.Controllers.MVC_Controller
         }
 
         //ver lista de huerteros por red de huerteros
-        [HttpGet]
-        public ActionResult searchRed()
+        
+        public ActionResult searchRed(string Buscar)
         {
-            IEnumerable<UserListModel> userInfo = null;
+            IEnumerable<Usuario> userInfo = null;
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
-
-                var responseTask = client.GetAsync("getUsers");
-
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                if(Buscar != null)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<UserListModel>>();
-                    readTask.Wait();
+                    client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-                    userInfo = readTask.Result;
+                    var responseTask = client.GetAsync("searchUser/" + Buscar);
+
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<IList<Usuario>>();
+
+                        readTask.Wait();
+
+                        userInfo = readTask.Result;
+                    }
+                    else
+                    {
+                        TempData["alert"] = "Busqueda no encontrada";
+                    }
+
+                    return View(userInfo);
                 }
                 else
                 {
-                    userInfo = Enumerable.Empty<UserListModel>();
+                    client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
 
-                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                    var responseTask = client.GetAsync("getUsers");
+
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<IList<Usuario>>();
+                        readTask.Wait();
+
+                        userInfo = readTask.Result;
+                    }
+                    else
+                    {
+                        userInfo = Enumerable.Empty<Usuario>();
+
+                        ModelState.AddModelError(string.Empty, "Error del servidor");
+                    }
+
+                    return View(userInfo);
                 }
             }
-
-            return View(userInfo);
         }
 
         [HttpGet]

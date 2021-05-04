@@ -156,8 +156,6 @@ namespace Huerbog.Controllers
 
                     HttpContext.Session.SetString("JWToken", userobject.Token);
 
-                    TempData["alert"] = "Bienvenido/a " + userobject.Correo;
-
                     //hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.ToString());
 
                     return RedirectToAction("indexAdmin", "AdminControllerMVC");
@@ -384,5 +382,6 @@ namespace Huerbog.Controllers
                 }
             }
         }
+        
     }
 }

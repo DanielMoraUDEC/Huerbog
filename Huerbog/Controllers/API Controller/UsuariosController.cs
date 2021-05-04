@@ -381,6 +381,24 @@ namespace Huerbog.Controllers
             return Ok();
         }
 
+        //busca usuarios por red
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("searchUser/{Buscar}")]
+        public IActionResult searchUser(string Buscar)
+        {
+            var user = db.Usuarios.Where(x => x.Nombre.ToLower().Contains(Buscar.ToLower()) || x.Apellido.ToLower() == Buscar.ToLower() || x.Red.ToLower() == Buscar.ToLower()).ToList();
+
+            if(user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         //Métodos referentes a publicaciones
 
         //crea una publicación
