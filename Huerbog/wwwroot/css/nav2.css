@@ -52,3 +52,7 @@
             font-size: 18px;
         }
 }
+
+#map {
+    height: 100%;
+}
