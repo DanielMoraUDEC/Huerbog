@@ -56,12 +56,6 @@
                 @Html.DisplayFor(model => model.user.Correo)
             </dd>
             <dt class="col-sm-2">
-                Cantidad de publicaciones
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.CantPublicacion)
-            </dd>
-            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.user.Reputacion)
             </dt>
             <dd class="col-sm-10">
@@ -80,6 +74,9 @@
                 @Html.DisplayFor(model => model.userHuerta.DescHuerta)
             </dd>
         </dl>
+
+        <h4>Publicaciones realizadas</h4>
+        
         <table class="table">
             <thead>
                 <tr>

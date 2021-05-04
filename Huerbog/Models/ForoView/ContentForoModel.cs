@@ -23,6 +23,7 @@ namespace Huerbog.Models.ForoView
         public string Correo { get; set; }
         public double? Reputacion { get; set; }
         public string Red { get; set; }
+        public int? Roles { get; set; }
 
         //tabla foro
         [Key]

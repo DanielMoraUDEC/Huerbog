@@ -326,7 +326,8 @@ namespace Huerbog.Controllers
                     Reputacion = user.Reputacion,
                     CantSolicitudes = user.CantSolicitudes,
                     Red = user.Red,
-                    Telefono = user.Telefono
+                    Telefono = user.Telefono,
+                    Roles = user.Roles
                 },
 
                 userHuerta = new TablaHuertum

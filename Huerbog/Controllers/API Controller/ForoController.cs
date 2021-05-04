@@ -105,6 +105,7 @@ namespace Huerbog.Controllers.API_Controller
             foro.Correo = foroUser.Correo;
             foro.Reputacion = foroUser.Reputacion;
             foro.Red = foroUser.Red;
+            foro.Roles = foroUser.Roles;
 
             //DATOS PUBLICACIONES DE USUARIO
             foro.IdPost = foroInfo.IdPost;
