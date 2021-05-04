@@ -24,7 +24,7 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
     <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
-    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Ver lista de redes</a>
+    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>>
 </div>
 
 <!-- Use any element to open the sidenav -->
@@ -56,22 +56,10 @@
                 @Html.DisplayFor(model => model.user.Correo)
             </dd>
             <dt class="col-sm-2">
-                Cantidad de publicaciones
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.CantPublicacion)
-            </dd>
-            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.user.Reputacion)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.user.Reputacion)
-            </dd>
-            <dt class="col-sm-2">
-                Cantidad de solicitudes
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.CantSolicitudes)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.user.Red)
@@ -80,30 +68,15 @@
                 @Html.DisplayFor(model => model.user.Red)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Telefono)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Telefono)
-            </dd>
-            <dt class="col-sm-2">
-                Ubicación de la huerta
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.userHuerta.UbicacionHuerta)
-            </dd>
-            <dt class="col-sm-2">
                 Descripción de la huerta
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.userHuerta.DescHuerta)
             </dd>
-            <dt class="col-sm-2">
-                Área de cultivo
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.userHuerta.AreaCultivo)
-            </dd>
         </dl>
+
+        <h4>Publicaciones realizadas</h4>
+        
         <table class="table">
             <thead>
                 <tr>
@@ -132,7 +105,7 @@
                             @Html.DisplayFor(modelItem => item.DescPost)
                         </td>
                         <td>
-                            @if(item.IdCatPublFk == 1)
+                            @if (item.IdCatPublFk == 1)
                             {
                                 <div>
                                     General
@@ -154,8 +127,7 @@
         </table>
     </div>
     <div>
-        <a asp-action="listUsers">Regresar</a>
+        <a asp-controller="ForoControllerMVC" asp-action="searchRed">Regresar</a>
     </div>
 </div>
-
 

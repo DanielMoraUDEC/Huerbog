@@ -300,6 +300,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //ver perfil de usuario logeado
         [HttpGet]
         public async Task<IActionResult> viewPerfil()
         {
@@ -328,6 +329,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //actualizar la información del usuario logeado
         [HttpPost]
         public IActionResult viewPerfil(UserForoModel model)
         {
@@ -344,6 +346,35 @@ namespace Huerbog.Controllers
                 if (result.IsSuccessStatusCode)
                 {
                     return RedirectToAction("viewPerfil", "UsuariosControllerMVC");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> viewPerfilPubl(int id)
+        {
+            UserForoModel userInfo = new UserForoModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var responseTask = await client.GetAsync("viewPerfilPubl/" + id);
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    var apiResp = await responseTask.Content.ReadAsStringAsync();
+
+                    userInfo = JsonConvert.DeserializeObject<UserForoModel>(apiResp);
+
+                    return View(userInfo);
                 }
                 else
                 {

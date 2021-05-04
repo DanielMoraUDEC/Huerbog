@@ -16,6 +16,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Authorization;
+using Huerbog.Models.UserList;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -151,170 +152,12 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(foroList);
         }
 
-        //lo mismo que el anterior, pero solo cuando el usuario se logea
-        [HttpGet]
-        public IActionResult IndexForoListUserLog(string id)
-        {
-            IEnumerable<ForoListModel> foroList = null;
-
-            if (id == "comerce")
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-                    var responseTask = client.GetAsync("foroListComerce");
-
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
-                        readTask.Wait();
-
-                        foroList = readTask.Result;
-                    }
-                    else
-                    {
-                        foroList = Enumerable.Empty<ForoListModel>();
-
-                        ModelState.AddModelError(string.Empty, "Error del servidor");
-                    }
-                }
-
-                return View(foroList);
-            }
-
-            if (id == "all")
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-                    var responseTask = client.GetAsync("foroList");
-
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
-                        readTask.Wait();
-
-                        foroList = readTask.Result;
-                    }
-                    else
-                    {
-                        foroList = Enumerable.Empty<ForoListModel>();
-
-                        ModelState.AddModelError(string.Empty, "Error del servidor");
-                    }
-                }
-
-                return View(foroList);
-            }
-
-            if (id == "general")
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-                    var responseTask = client.GetAsync("foroListGeneral");
-
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
-                        readTask.Wait();
-
-                        foroList = readTask.Result;
-                    }
-                    else
-                    {
-                        foroList = Enumerable.Empty<ForoListModel>();
-
-                        ModelState.AddModelError(string.Empty, "Error del servidor");
-                    }
-
-                }
-
-                return View(foroList);
-            }
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-                var responseTask = client.GetAsync("foroList");
-
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
-                    readTask.Wait();
-
-                    foroList = readTask.Result;
-                }
-                else
-                {
-                    foroList = Enumerable.Empty<ForoListModel>();
-
-                    ModelState.AddModelError(string.Empty, "Error del servidor");
-                }
-            }
-
-            return View(foroList);
-        }
-        
         //para ver las publicaciones hechas
         [HttpGet]
         public async Task<IActionResult> verPost(int Id)
         {
 
             ContentForoModel foroModel = new ContentForoModel();
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
-
-                var responseTask = client.GetAsync("Foro/verPost/" + Id);
-
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
-                {
-                    //var readTask = result.Content.ReadAsAsync<ContentForoModel>();
-                    //readTask.Wait();
-
-                    var apiResp = await result.Content.ReadAsStringAsync();
-
-                    //foroModel = readTask.Result;
-
-                    foroModel = JsonConvert.DeserializeObject<ContentForoModel>(apiResp);
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Error del servidor");
-                }
-            }
-
-            return View(foroModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> verPostUserLog(int Id)
-        {
-            ContentForoModel foroModel = new ContentForoModel();
-
-            
 
             using (var client = new HttpClient())
             {
@@ -381,40 +224,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
         }
 
-        //Contactarse registrado
-
-        [HttpGet]
-        public ActionResult ContactarseRegistrado(int id)
-        {
-            Contactarse contact = new Contactarse();
-
-            contact.IdPost = id;
-
-            return View(contact);
-        }
-
-        public ActionResult btnContactarseRegistrado(Contactarse contact)
-        {
-           // contact.IdPost = 1;
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
-
-            var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
-
-            insertrec.Wait();
-
-            if (insertrec.Result.IsSuccessStatusCode == true)
-            {
-                return RedirectToAction("IndexForoListUserLog");
-            }
-            else
-            {
-                return View();
-            }
-
-        }
-
+        //reacciones
         public IActionResult btnLike(int id)
         {
 
@@ -471,11 +281,40 @@ namespace Huerbog.Controllers.MVC_Controller
             }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        //ver lista de huerteros por red de huerteros
+        [HttpGet]
+        public ActionResult searchRed()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            IEnumerable<UserListModel> userInfo = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.GetAsync("getUsers");
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<UserListModel>>();
+                    readTask.Wait();
+
+                    userInfo = readTask.Result;
+                }
+                else
+                {
+                    userInfo = Enumerable.Empty<UserListModel>();
+
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(userInfo);
         }
+
+        [HttpGet]
         public ActionResult mapaHuertas()
         {
             using (var client = new HttpClient())
@@ -491,7 +330,6 @@ namespace Huerbog.Controllers.MVC_Controller
                 if (result.IsSuccessStatusCode)
                 {
                     return View();
-
                 }
                 else
                 {
@@ -500,7 +338,12 @@ namespace Huerbog.Controllers.MVC_Controller
                     return View(ModelState);
                 }
             }
+        }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
