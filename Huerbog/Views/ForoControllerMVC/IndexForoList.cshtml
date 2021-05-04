@@ -35,7 +35,7 @@
         }
         <a asp-controller="UsuariosControllerMVC" asp-action="viewPerfil" asp-route-id="token">Ver perfil</a> 
     }
-    <a href="#">Mapa Huertas</a>
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa Huertas</a>
 </div>
 
 <!-- Use any element to open the sidenav -->
@@ -64,7 +64,7 @@
                     ej: si hay 10 registros en la tabla Foro entonces mostrará 10 veces dichas entradas-->
                     @foreach (var item in Model)
                     {
-                        <div class="col-8">
+                        <div class="col-9">
                             <!--titulo post-->
                             <a class="h3" id="divTitulo" asp-action="verPost" asp-route-id="@item.IdPost">
                                 @Html.DisplayFor(modelItem => item.TituloPost)
