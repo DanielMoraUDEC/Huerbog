@@ -315,8 +315,6 @@ namespace Huerbog.Controllers.MVC_Controller
         {
             ContentForoModel foroModel = new ContentForoModel();
 
-            
-
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro");
@@ -509,16 +507,6 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpGet]
         public ActionResult mapaHuertas()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-        public ActionResult mapaHuertas()
-        {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
@@ -532,7 +520,6 @@ namespace Huerbog.Controllers.MVC_Controller
                 if (result.IsSuccessStatusCode)
                 {
                     return View();
-
                 }
                 else
                 {
@@ -541,7 +528,12 @@ namespace Huerbog.Controllers.MVC_Controller
                     return View(ModelState);
                 }
             }
+        }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
