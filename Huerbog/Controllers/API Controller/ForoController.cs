@@ -85,6 +85,29 @@ namespace Huerbog.Controllers.API_Controller
             return Ok(foroList);
         }
 
+        //ver búsqueda de publicaciones
+        [HttpGet]
+        [Route("foroListSearch/{Buscar}")]
+        public IActionResult foroListSearch(string Buscar)
+        {
+            IList<ForoListModel> foroList = null;
+
+            foroList = db.Foros.Select(s => new ForoListModel()
+            {
+                IdUser = (int)s.IdUsuario,
+                IdPost = s.IdPost,
+                FechaPublicacion = s.FechaPublicacion,
+                DescPost = s.DescPost,
+                TituloPost = s.TituloPost,
+                IdCatPublFk = s.IdCatPublFk,
+                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
+            }
+            ).OrderByDescending(x => x.IdPost).Where(x => x.TituloPost.ToLower().Contains(Buscar.ToLower())
+             || x.DescPost.ToLower().Contains(Buscar.ToLower())).ToList<ForoListModel>();
+
+            return Ok(foroList);
+        }
+
         //ver publicación seleccionada
         [HttpGet]
         [Route("verPost/{IdPost}")]
@@ -169,6 +192,7 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+        //reacción like
         [HttpGet]
         [Route("btnLike/{id}")]
         public async Task<IActionResult> btnLike(int id)
@@ -185,6 +209,7 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+        //reacción dislike
         [HttpGet]
         [Route("btnDislike/{id}")]
         public async Task<IActionResult> btnDislike(int id)
@@ -201,6 +226,7 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+        //ver mapa
         [HttpGet]
         [Route("mapaHuertas")]
         public async Task<IActionResult> mapaHuertas()

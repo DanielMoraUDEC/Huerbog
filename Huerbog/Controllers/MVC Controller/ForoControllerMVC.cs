@@ -33,10 +33,39 @@ namespace Huerbog.Controllers.MVC_Controller
         }
 
         //página principal de la aplicación, muestra la lista de publicaciones hechas
-        [HttpGet]
-        public IActionResult IndexForoList(string id)
+        
+        public IActionResult IndexForoList(string id, string Buscar)
         {
             IEnumerable<ForoListModel> foroList = null;
+
+            if (Buscar != null)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                    var responseTask = client.GetAsync("foroListSearch/" + Buscar);
+
+                    responseTask.Wait();
+
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<IList<ForoListModel>>();
+                        readTask.Wait();
+
+                        foroList = readTask.Result;
+                    }
+                    else
+                    {
+                        foroList = Enumerable.Empty<ForoListModel>();
+
+                        ModelState.AddModelError(string.Empty, "Error del servidor");
+                    }
+                }
+
+                return View(foroList);
+            }
 
             if (id == "comerce")
             {
