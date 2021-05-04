@@ -300,6 +300,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //ver perfil de usuario logeado
         [HttpGet]
         public async Task<IActionResult> viewPerfil()
         {
@@ -328,6 +329,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //actualizar la información del usuario logeado
         [HttpPost]
         public IActionResult viewPerfil(UserForoModel model)
         {

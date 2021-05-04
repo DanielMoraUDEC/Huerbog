@@ -22,8 +22,8 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
-    <a href="#">Categorias</a>
-    <a href="#">Mapa Huertas</a>
+    <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
+    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>
 </div>
 
 <!-- Use any element to open the sidenav -->
@@ -32,7 +32,7 @@
 
 
 <div class="main">
-    <center >
+    <center>
 
         <h1>Localización de las huertas</h1>
 
@@ -45,5 +45,3 @@
 
 
 </div>
-
-

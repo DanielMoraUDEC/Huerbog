@@ -16,6 +16,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Authorization;
+using Huerbog.Models.UserList;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -415,6 +416,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
         }
 
+        //reacciones
         public IActionResult btnLike(int id)
         {
 
@@ -469,6 +471,45 @@ namespace Huerbog.Controllers.MVC_Controller
                     return View(ModelState);
                 }
             }
+        }
+
+        //ver lista de huerteros por red de huerteros
+        [HttpGet]
+        public ActionResult searchRed()
+        {
+            IEnumerable<UserListModel> userInfo = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.GetAsync("getUsers");
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<UserListModel>>();
+                    readTask.Wait();
+
+                    userInfo = readTask.Result;
+                }
+                else
+                {
+                    userInfo = Enumerable.Empty<UserListModel>();
+
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return View(userInfo);
+        }
+
+        [HttpGet]
+        public ActionResult mapaHuertas()
+        {
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
