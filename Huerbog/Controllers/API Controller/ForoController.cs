@@ -11,6 +11,7 @@ using Huerbog.Models.ForoView;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using Huerbog.Models.Reacciones;
 
 namespace Huerbog.Controllers.API_Controller
 {
@@ -194,11 +195,11 @@ namespace Huerbog.Controllers.API_Controller
 
         //reacción like
         [HttpGet]
-        [Route("btnLike/{id}")]
-        public async Task<IActionResult> btnLike(int id)
+        [Route("btnLike")]
+        public async Task<IActionResult> btnLike([FromBody] UserReaccionesModel user)
         {
            
-            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+            var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
 
             userForo.ReaccionLike += 1;
 

@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Authorization;
 using Huerbog.Models.UserList;
+using Huerbog.Models.Reacciones;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -256,12 +257,23 @@ namespace Huerbog.Controllers.MVC_Controller
         //reacciones
         public IActionResult btnLike(int id)
         {
+            UserReaccionesModel user = new UserReaccionesModel();
 
             using (var client = new HttpClient())
             {
+                var token = HttpContext.Session.GetString("JWToken");
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-                var responseTask = client.GetAsync("btnLike/ " + id, (HttpCompletionOption)id);
+                user.idForo = id;
+
+                user.idUser = token;
+
+                //var responseTask = client.GetAsync("btnLike/ " + id, (HttpCompletionOption)id);
+
+                var responseTask = client.PostAsJsonAsync<UserReaccionesModel>("btnLike", user);
 
                 responseTask.Wait();
 
