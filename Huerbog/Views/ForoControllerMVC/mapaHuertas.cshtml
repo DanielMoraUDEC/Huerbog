@@ -115,10 +115,13 @@
         }).then(function (data) {
             document.getElementById("direccion").innerHTML = "";
 
-
+            var i = 0;
+            do {
                 let divDireccion = document.createElement("div");
-                divDireccion.innerHTML = data[0].ubicacionHuerta;
-            document.getElementById("direccion").appendChild(divDireccion);
+                divDireccion.innerHTML = data[i].ubicacionHuerta;
+                document.getElementById("direccion").appendChild(divDireccion);
+                i++;
+            } while (data[i] != null)
             
             
 
