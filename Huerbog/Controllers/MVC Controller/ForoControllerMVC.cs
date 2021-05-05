@@ -298,11 +298,20 @@ namespace Huerbog.Controllers.MVC_Controller
         [HttpPost]
         public ActionResult btnDislike(int id)
         {
+            UserReaccionesModel user = new UserReaccionesModel();
             using (var client = new HttpClient())
             {
+                var token = HttpContext.Session.GetString("JWToken");
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-                var responseTask = client.GetAsync("btnDislike/ " + id, (HttpCompletionOption)id);
+                user.idForo = id;
+
+                user.idUser = token;
+
+                var responseTask = client.PostAsJsonAsync<UserReaccionesModel>("btnDislike", user);
 
                 responseTask.Wait();
 
