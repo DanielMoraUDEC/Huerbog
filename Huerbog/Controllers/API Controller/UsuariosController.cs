@@ -101,10 +101,20 @@ namespace Huerbog.Controllers
                     oUsuar.Telefono = model.Telefono;
                     oUsuar.ActivationCode = model.ActivationCode;
                     oUsuar.IsMailConfirmed = model.IsMailConfirmed;
-                    tHuerta.UbicacionHuerta = model.UbicacionHuerta;
-                    tHuerta.DescHuerta = model.DescHuerta;
-                    tHuerta.AreaCultivo = model.AreaCultivo;
 
+                    if(model.UbicacionHuerta == null && model.DescHuerta == null && model.AreaCultivo == null)
+                    {
+                        tHuerta.UbicacionHuerta = "NO APLICA";
+                        tHuerta.DescHuerta = "NO APLICA";
+                        tHuerta.AreaCultivo = 0;
+                    }
+                    else
+                    {
+                        tHuerta.UbicacionHuerta = model.UbicacionHuerta;
+                        tHuerta.DescHuerta = model.DescHuerta;
+                        tHuerta.AreaCultivo = model.AreaCultivo;
+                    }
+                    
                     var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
                     var uApellido = new SqlParameter("@apellido", oUsuar.Apellido);
                     var uCorreo = new SqlParameter("@correo", oUsuar.Correo);
