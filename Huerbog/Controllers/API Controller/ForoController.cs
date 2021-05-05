@@ -12,6 +12,10 @@ using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Huerbog.Models.Reacciones;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Huerbog.Controllers.API_Controller
 {
@@ -21,6 +25,13 @@ namespace Huerbog.Controllers.API_Controller
     public class ForoController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();
+
+        private readonly IConfiguration config;
+
+        public ForoController(IConfiguration _config)
+        {
+            config = _config;
+        }
 
         //obtener los registros de la tabla FORO y convertirla en lista
         [HttpGet]
@@ -194,29 +205,87 @@ namespace Huerbog.Controllers.API_Controller
         }
 
         //reacción like
-        [HttpGet]
+        
+        
         [Route("btnLike")]
         public async Task<IActionResult> btnLike([FromBody] UserReaccionesModel user)
         {
-           
+
+            VerificacionReaccion usuariolike = new VerificacionReaccion();
+            
+            //tokenizado
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
+
+            //quita la palabra "Bearer" del token
+            var realtoken = token.ToString().Substring(7);
+
+            //valida el token
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            //obtiene el valor del almacenado en el token
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+
+
             var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
+            var userReaccion = db.VerificacionReaccions.Where(x => x.IdForo ==user.idForo && x.IdUsuario == userId).FirstOrDefault();
 
-            userForo.ReaccionLike += 1;
 
-            db.Update(userForo);
+            if (userReaccion == null)
+            {
+                userForo.ReaccionLike += 1;
 
-            await db.SaveChangesAsync();
+                usuariolike.IdForo = userForo.IdPost;
+                usuariolike.IdUsuario = userId;
+                usuariolike.ReaccionLike = true;
+                usuariolike.ReaccionDislike = false;
 
-            return Ok();
+                db.Update(userForo);
+                db.VerificacionReaccions.Add(usuariolike);
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+            else if (userReaccion.ReaccionDislike == true)
+            {
+                userForo.ReaccionLike += 1;
+                userForo.ReaccionDisLike -= 1;
+
+                userReaccion.ReaccionLike = true;
+                userReaccion.ReaccionDislike = false;
+
+                db.Update(userForo);
+                db.Update(userReaccion);
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+            else
+            {
+                userForo.ReaccionLike -= 1;
+                db.VerificacionReaccions.Remove(userReaccion);
+                db.Update(userForo);
+                await db.SaveChangesAsync();
+                return Ok();
+            }
         }
 
         //reacción dislike
-        [HttpGet]
-        [Route("btnDislike/{id}")]
-        public async Task<IActionResult> btnDislike(int id)
+        [Route("btnDislike")]
+        public async Task<IActionResult> btnDislike([FromBody] UserReaccionesModel user)
         {
 
-            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+            /*var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
 
             userForo.ReaccionDisLike += 1;
 
@@ -224,7 +293,74 @@ namespace Huerbog.Controllers.API_Controller
 
             await db.SaveChangesAsync();
 
-            return Ok();
+            return Ok();*/
+            VerificacionReaccion usuariolike = new VerificacionReaccion();
+
+            //tokenizado
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
+
+            //quita la palabra "Bearer" del token
+            var realtoken = token.ToString().Substring(7);
+
+            //valida el token
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            //obtiene el valor del almacenado en el token
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+
+
+            var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
+            var userReaccion = db.VerificacionReaccions.Where(x => x.IdForo == user.idForo && x.IdUsuario == userId).FirstOrDefault();
+
+
+            if (userReaccion == null)
+            {
+                userForo.ReaccionDisLike += 1;
+
+                usuariolike.IdForo = userForo.IdPost;
+                usuariolike.IdUsuario = userId;
+                usuariolike.ReaccionLike = false;
+                usuariolike.ReaccionDislike = true;
+
+                db.Update(userForo);
+                db.VerificacionReaccions.Add(usuariolike);
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+            else if (userReaccion.ReaccionDislike == false)
+            {
+                userForo.ReaccionLike -= 1;
+                userForo.ReaccionDisLike += 1;
+
+                userReaccion.ReaccionLike = false;
+                userReaccion.ReaccionDislike = true;
+
+                db.Update(userForo);
+                db.Update(userReaccion);
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+            else
+            {
+                userForo.ReaccionDisLike -= 1;
+                db.VerificacionReaccions.Remove(userReaccion);
+                db.Update(userForo);
+                await db.SaveChangesAsync();
+                return Ok();
+            }
         }
 
         //ver mapa

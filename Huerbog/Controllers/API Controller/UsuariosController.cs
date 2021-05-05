@@ -60,9 +60,9 @@ namespace Huerbog.Controllers
         }
 
         //registro de usuarios
-        [AllowAnonymous]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
         [Route("post")]
         public async Task<IActionResult> post([FromBody] UserHuertaModel model)
         {
