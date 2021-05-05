@@ -281,8 +281,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("");
-
+                    return RedirectToAction("verPost", new {id});
                 }
                 else
                 {
@@ -290,8 +289,6 @@ namespace Huerbog.Controllers.MVC_Controller
 
                     return View(ModelState);
                 }
-
-
             }
         }
 
@@ -319,8 +316,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("");
-
+                    return RedirectToAction("verPost", new { id });
                 }
                 else
                 {

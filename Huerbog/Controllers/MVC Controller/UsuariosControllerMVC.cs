@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Huerbog.Models.Login;
 using Huerbog.Models.UserList;
+using Huerbog.Models.Reacciones;
 
 namespace Huerbog.Controllers
 {
@@ -273,13 +274,22 @@ namespace Huerbog.Controllers
         }
 
         //reportar publicación
+        [AllowAnonymous]
         public IActionResult reportPost(int id)
-        { 
-            using(var client = new HttpClient())
+        {
+            UserReaccionesModel user = new UserReaccionesModel();
+
+            using (var client = new HttpClient())
             {
+                var token = HttpContext.Session.GetString("JWToken");
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
                 client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-                var responseTask = client.GetAsync("reportPost/" + id);
+                user.idForo = id;
+
+                var responseTask = client.PostAsJsonAsync<UserReaccionesModel>("reportPost", user);
 
                 responseTask.Wait();
 
@@ -287,7 +297,7 @@ namespace Huerbog.Controllers
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                    return RedirectToAction("verPost", "ForoControllerMVC", new { id });
                 }
                 else
                 {
@@ -295,6 +305,8 @@ namespace Huerbog.Controllers
 
                     return View(ModelState);
                 }
+
+
             }
         }
 

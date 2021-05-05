@@ -29,6 +29,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using Huerbog.Models.UserList;
+using Huerbog.Models.Reacciones;
 
 
 
@@ -479,19 +480,61 @@ namespace Huerbog.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("reportPost/{id}")]
-        public async Task<IActionResult> reportPost(int id)
+        [AllowAnonymous]
+        [Route("reportPost")]
+        public async Task<IActionResult> reportPost([FromBody] UserReaccionesModel user)
         {
-            var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+            VerificacionReporte usuarioReporte = new VerificacionReporte();
 
-            userForo.Reportes += 1;
+            //tokenizado
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
 
-            db.Update(userForo);
+            //quita la palabra "Bearer" del token
+            var realtoken = token.ToString().Substring(7);
 
-            await db.SaveChangesAsync();
+            //valida el token
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
 
-            return Ok();
+            //obtiene el valor del almacenado en el token
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+
+
+            var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
+            var userReporte = db.VerificacionReportes.Where(x => x.IdForo == user.idForo && x.IdUsuario == userId).FirstOrDefault();
+
+            if (userReporte == null)
+            {
+                userForo.Reportes += 1;
+
+                usuarioReporte.IdForo = userForo.IdPost;
+                usuarioReporte.IdUsuario = userId;
+                usuarioReporte.Reporte = true;
+
+                db.Update(userForo);
+                db.VerificacionReportes.Add(usuarioReporte);
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+            else
+            {
+                userForo.Reportes -= 1;
+                db.VerificacionReportes.Remove(userReporte);
+                db.Update(userForo);
+                await db.SaveChangesAsync();
+                return Ok();
+            }
         }
       
         //métodos para uso único de la clase actual

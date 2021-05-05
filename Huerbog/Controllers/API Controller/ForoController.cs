@@ -210,7 +210,6 @@ namespace Huerbog.Controllers.API_Controller
         [Route("btnLike")]
         public async Task<IActionResult> btnLike([FromBody] UserReaccionesModel user)
         {
-
             VerificacionReaccion usuariolike = new VerificacionReaccion();
             
             //tokenizado
@@ -376,8 +375,6 @@ namespace Huerbog.Controllers.API_Controller
         [Route("getHuerta")]
         public ActionResult getHuerta()
         {
-            using (Models.HUERBOGContext db = new Models.HUERBOGContext()) ;
-
             return Ok(db.TablaHuerta.ToList()); 
         }
 
