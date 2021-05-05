@@ -413,6 +413,34 @@ namespace Huerbog.Controllers.MVC_Controller
             }
         }
 
+        [HttpGet]
+        public ActionResult pruebaGeolocation()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                var responseTask = client.GetAsync("pruebaGeolocation");
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return View();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
+
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

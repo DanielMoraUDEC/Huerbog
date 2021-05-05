@@ -371,6 +371,16 @@ namespace Huerbog.Controllers.API_Controller
         }
 
 
+
+        //ver mapa
+        [HttpGet]
+        [Route("pruebaGeolocation")]
+        public async Task<IActionResult> pruebaGeolocation()
+        {
+            return Ok();
+        }
+
+
         [HttpGet]
         [Route("getHuerta")]
         public ActionResult getHuerta()
