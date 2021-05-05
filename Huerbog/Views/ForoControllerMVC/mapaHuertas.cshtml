@@ -105,7 +105,26 @@
     }
     */
 
-    var url = "https://localhost:44325/api//";
+    var url = "https://localhost:44325/api/Foro/getHuerta";
+
+    get();
+
+    function get() {
+        fetch(url).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            document.getElementById("direccion").innerHTML = "";
+
+
+                let divDireccion = document.createElement("div");
+                divDireccion.innerHTML = data[0].ubicacionHuerta;
+            document.getElementById("direccion").appendChild(divDireccion);
+            
+            
+
+
+        })
+    }
 
     function initMap() {
 
@@ -149,6 +168,8 @@
 
         <h1>Localización de las huertas</h1>
         <div id="map"> </div>
+
+        <div id="direccion"></div>
 
 
     </center>

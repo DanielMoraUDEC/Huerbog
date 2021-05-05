@@ -134,6 +134,7 @@ namespace Huerbog.Controllers.API_Controller
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("viewDirHuerta")]
         public IActionResult viewDirHuerta()
         {
