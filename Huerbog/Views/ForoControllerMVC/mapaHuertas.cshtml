@@ -10,9 +10,9 @@
 <style type="text/css">
     /* Set the size of the div element that contains the map */
     #map {
-        height: 400px;
+        height: 430px;
         /* The height is 400 pixels */
-        width: 80%;
+        width: 60%;
         /* The width is the width of the web page */
     }
 
@@ -107,72 +107,166 @@
 
     var url = "https://localhost:44325/api/Foro/getHuerta";
 
-    get();
+    let descripcion = [];
+    let long = [];
+    let lati = [];
 
-    function get() {
-        fetch(url).then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            document.getElementById("direccion").innerHTML = "";
-
-
-                let divDireccion = document.createElement("div");
-                divDireccion.innerHTML = data[0].ubicacionHuerta;
-            document.getElementById("direccion").appendChild(divDireccion);
-            
-            
-
-
-        })
-    }
 
     function initMap() {
+
+
 
         const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 11,
             center: { lat: 4.6097100, lng: -74.0817500 },
         });
-        // Set LatLng and title text for the markers. The first marker (Boynton Pass)
-        // receives the initial focus when tab is pressed. Use arrow keys to
-        // move between markers; press tab again to cycle through the map controls.
-        const tourStops = [
-            [{ lat: 4.66667, lng: -74.15  }, "Fontibon"],
-            [{ lat: 4.66925, lng: -74.125 }, "Modelia"],
-            [{ lat: 4.64444, lng: -74.1035 }, "Ciudad salitre"],
 
-        ];
-        // Create an info window to share between markers.
-        const infoWindow = new google.maps.InfoWindow();
-        // Create the markers.
-        tourStops.forEach(([position, title], i) => {
-            const marker = new google.maps.Marker({
-                position,
-                map,
-                title: `${i + 1}. ${title}`,
-                label: `${i + 1}`,
-                optimized: false,
-            });
-            // Add a click listener for each marker, and set up the info window.
-            marker.addListener("click", () => {
-                infoWindow.close();
-                infoWindow.setContent(marker.getTitle());
-                infoWindow.open(marker.getMap(), marker);
-            });
-        });
+        fetch(url).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            document.getElementById("direccion").innerHTML = "";
+            document.getElementById("descripcion").innerHTML = "";
+            document.getElementById("latitud").innerHTML = "";
+            document.getElementById("longitud").innerHTML = "";
+
+
+            var i = 0;
+            do {
+                let divDireccion = document.createElement("div");
+                divDireccion.innerHTML = data[i].ubicacionHuerta;
+              //  document.getElementById("direccion").appendChild(divDireccion);
+                let divDescripcion = document.createElement("div");
+
+                divDescripcion.innerHTML = (i+1) + ". "+ data[i].descHuerta;
+                document.getElementById("descripcion").appendChild(divDescripcion);
+
+                let divLatitud = document.createElement("div");
+                divLatitud.innerHTML = data[i].latitud;
+                //document.getElementById("latitud").appendChild(divLatitud);
+
+                let divLogitud = document.createElement("div");
+                divLogitud.innerHTML = data[i].longitud;
+                //document.getElementById("longitud").appendChild(divLogitud);
+
+                descripcion[i] = data[i].descHuerta;
+
+                lati[i] = parseFloat(data[i].latitud);
+
+                long[i] = parseFloat(data[i].longitud);
+
+                i++;
+
+            } while (data[i] != null);   
+
+
+            for (var i = 0; i < descripcion.length; i += 1) {
+                console.log("En el índice '" + i + "' hay este valor: " + descripcion[i]);
+                console.log("En el índice '" + i + "' hay este valor para latitud: " + lati[i]);
+                console.log("En el índice '" + i + "' hay este valor: " + long[i]);
+            }
+
+            // Set LatLng and title text for the markers. The first marker (Boynton Pass)
+            // receives the initial focus when tab is pressed. Use arrow keys to
+            // move between markers; press tab again to cycle through the map controls.
+
+
+            const position = [];
+            const title = [];
+
+            for (var i = 0; i < descripcion.length; i += 1) {
+
+                position[i] = { lat: lati[i], lng: long[i] };
+                title[i] = descripcion[i];
+            }
+
+            for (var i = 0; i < descripcion.length; i += 1) {
+                console.log("En el índice '" + i + "' hay este valor: " + position[i]);
+            }
+
+           
+
+            for (var i = 0; i < descripcion.length; i += 1) {
+                const marker = new google.maps.Marker({
+                    position: position[i],
+                    map,
+                    title: `${i + 1}. ${title[i]}`,
+                    label: `${i + 1}`,
+                    optimized: false,
+                });
+               
+                    marker.addListener("click", () => {
+                        infoWindow.close();
+                        infoWindow.setContent(marker.getTitle());
+                        infoWindow.open(marker.getMap(), marker);
+                    });
+                
+            }
+
+           
+
+
+            
+
+
+            
+        /*      const tourStops = [
+                    [{ lat: lati[1], lng: long[1] }, descripcion[1]],
+
+                ];
+            
+            // Create an info window to share between markers.
+            const infoWindow = new google.maps.InfoWindow();
+            // Create the markers.
+            tourStops.forEach(([position, title], i) => {
+                const marker = new google.maps.Marker({
+                    position,
+                    map,
+                    title: `${i + 1}. ${title}`,
+                    label: `${i + 1}`,
+                    optimized: false,
+                });
+                // Add a click listener for each marker, and set up the info window.
+                marker.addListener("click", () => {
+                    infoWindow.close();
+                    infoWindow.setContent(marker.getTitle());
+                    infoWindow.open(marker.getMap(), marker);
+                });
+            });*/
+
+
+        })
+
+
+       
     }
 </script>
 
 
 <div class="main">
     <center>
-
         <h1>Localización de las huertas</h1>
-        <div id="map"> </div>
+    </center>
+
+    <div class="row">
+        <div class="form-group col-9" id="map">
+
+        </div>
+
+        <div class="form-group col-3 mb-2 h5" id="descripcion">
+        </div>
+
+    </div>
+
+
 
         <div id="direccion"></div>
 
+        <div id="latitud"></div>
 
-    </center>
+        <div id="longitud"></div>
+
+
+    
 
     <br />
     <br />
