@@ -480,7 +480,7 @@ namespace Huerbog.Controllers
             }
         }
 
-        [AllowAnonymous]
+       [AllowAnonymous]
         [Route("reportPost")]
         public async Task<IActionResult> reportPost([FromBody] UserReaccionesModel user)
         {
