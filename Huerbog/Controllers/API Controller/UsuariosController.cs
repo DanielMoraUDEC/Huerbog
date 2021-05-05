@@ -289,7 +289,7 @@ namespace Huerbog.Controllers
 
             userInfo.Nombre = model.user.Nombre;
             userInfo.Apellido = model.user.Apellido;
-            userInfo.Correo = model.user.Correo;
+            userInfo.Correo = userInfo.Correo;
             userInfo.Red = model.user.Red;
             userInfo.Telefono = model.user.Telefono;
             userHuerta.UbicacionHuerta = model.userHuerta.UbicacionHuerta;
