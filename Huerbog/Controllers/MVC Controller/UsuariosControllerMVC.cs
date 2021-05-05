@@ -80,9 +80,9 @@ namespace Huerbog.Controllers
             if(ModelState.IsValid)
             {
                 HttpClient hc = new HttpClient();
-                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios");
+                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-                var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("Usuarios/post", model);
+                var insertrec = hc.PostAsJsonAsync<UserHuertaModel>("post", model);
 
                 insertrec.Wait();
 
