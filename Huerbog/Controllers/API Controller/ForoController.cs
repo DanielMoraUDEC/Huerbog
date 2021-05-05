@@ -235,5 +235,15 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
+
+        [HttpGet]
+        [Route("getHuerta")]
+        public ActionResult getHuerta()
+        {
+            using (Models.HUERBOGContext db = new Models.HUERBOGContext()) ;
+
+            return Ok(db.TablaHuerta.ToList()); 
+        }
+
     }
 }
