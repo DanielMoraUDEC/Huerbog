@@ -82,27 +82,12 @@
                     </div>
                 </div>
                 <div class="column right; col-md-7">
-                    @*<strong>Campos con respecto a la huerta</strong>
-                        <div class="form-group">
-                            <label>Ubicación de la huerta</label>
-                            <input asp-for="@Model.userHuerta.UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
-                            <span asp-validation-for="@Model.userHuerta.UbicacionHuerta" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Descripción de la huerta</label>
-                            <input asp-for="@Model.userHuerta.DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
-                            <span asp-validation-for="@Model.userHuerta.DescHuerta" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Área del cultivo en la huerta</label>
-                            <input asp-for="@Model.userHuerta.AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
-                            <span asp-validation-for="@Model.userHuerta.AreaCultivo" class="text-danger"></span>
-                        </div>*@
+                    
                 </div>
             </form>
 
             <div class="column right; col-md-7">
-                <a class="btn btn-primary" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation">Agregar datos sobre huerta</a>
+                <a class="btn btn-primary" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation" asp-route-id="@Model.userHuerta.IdHuerta">Agregar datos sobre huerta</a>
             </div>
 
             <div>

@@ -21,7 +21,7 @@ namespace Huerbog.Controllers.API_Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class AdminController : ControllerBase
     {
         HUERBOGContext db = new HUERBOGContext();
@@ -68,16 +68,16 @@ namespace Huerbog.Controllers.API_Controller
                 },
 
                 userForo = db.Foros.Select(s => new Foro()
-                    {
-                        IdUsuario = s.IdUsuario,
-                        IdPost = s.IdPost,
-                        TituloPost = s.TituloPost,
-                        DescPost = s.DescPost,
-                        FechaPublicacion = s.FechaPublicacion,
-                        IdCatPublFk = s.IdCatPublFk
-                    }
-                ).Where(x=>x.IdUsuario == user.IdusuarioReg).ToList<Foro>(),
-                
+                {
+                    IdUsuario = s.IdUsuario,
+                    IdPost = s.IdPost,
+                    TituloPost = s.TituloPost,
+                    DescPost = s.DescPost,
+                    FechaPublicacion = s.FechaPublicacion,
+                    IdCatPublFk = s.IdCatPublFk
+                }
+                ).Where(x => x.IdUsuario == user.IdusuarioReg).ToList<Foro>(),
+
             };
             //userInfo.userForo = userForo;
 
@@ -90,7 +90,7 @@ namespace Huerbog.Controllers.API_Controller
         {
             var idUsuario = new SqlParameter("@idUsuario", id);
 
-            db.Database.ExecuteSqlRaw("exec EliminarUsuario @idUsuario", new[] {idUsuario});
+            db.Database.ExecuteSqlRaw("exec EliminarUsuario @idUsuario", new[] { idUsuario });
 
             await db.SaveChangesAsync();
 
@@ -115,7 +115,7 @@ namespace Huerbog.Controllers.API_Controller
                 Reportes = s.Reportes,
                 usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario && x.Roles == 2).FirstOrDefault()
             }
-            ).Where(x=>x.Reportes > 0).ToList<ForoListModel>();
+            ).Where(x => x.Reportes > 0).ToList<ForoListModel>();
 
             return Ok(foroList);
         }
@@ -141,15 +141,15 @@ namespace Huerbog.Controllers.API_Controller
             IList<UserHuertaListModel> userInfo = null;
 
             userInfo = db.Usuarios.Select(s => new UserHuertaListModel()
-                {
-                    IdusuarioReg = s.IdusuarioReg,
-                    Nombre = s.Nombre,
-                    Apellido = s.Apellido,
-                    Correo = s.Correo,
-                    Roles = s.Roles,
-                    userHuerta = db.TablaHuerta.Where(x=>x.IdUsuario == s.IdusuarioReg).FirstOrDefault()
-                }
-            ).Where(x =>x.Roles == 2).ToList<UserHuertaListModel>();
+            {
+                IdusuarioReg = s.IdusuarioReg,
+                Nombre = s.Nombre,
+                Apellido = s.Apellido,
+                Correo = s.Correo,
+                Roles = s.Roles,
+                userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == s.IdusuarioReg).FirstOrDefault()
+            }
+            ).Where(x => x.Roles == 2).ToList<UserHuertaListModel>();
 
             return Ok(userInfo);
         }

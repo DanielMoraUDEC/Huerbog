@@ -414,13 +414,41 @@ namespace Huerbog.Controllers.MVC_Controller
         }
 
         [HttpGet]
-        public ActionResult pruebaGeolocation()
+        public async Task<IActionResult> pruebaGeolocation(int id)
+        {
+            TablaHuertum userHuerta = new TablaHuertum();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+                var responseTask = await client.GetAsync("pruebaGeolocation/" + id);
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    var apiResp = await responseTask.Content.ReadAsStringAsync();
+
+                    userHuerta = JsonConvert.DeserializeObject<TablaHuertum>(apiResp);
+
+                    return View(userHuerta);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return View(ModelState);
+                }
+            }
+        }
+
+        [HttpPost]
+        public IActionResult pruebaGeolocation(TablaHuertum model)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
-                var responseTask = client.GetAsync("pruebaGeolocation");
+                var responseTask = client.PostAsJsonAsync<TablaHuertum>("updateHuerta", model);
 
                 responseTask.Wait();
 
@@ -428,7 +456,7 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return View();
+                    return RedirectToAction("pruebaGeolocation", "ForoControllerMVC", new { model.IdHuerta});
                 }
                 else
                 {

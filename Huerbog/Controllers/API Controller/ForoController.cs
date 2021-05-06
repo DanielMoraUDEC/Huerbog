@@ -370,16 +370,34 @@ namespace Huerbog.Controllers.API_Controller
             return Ok();
         }
 
-
-
         //ver mapa
         [HttpGet]
-        [Route("pruebaGeolocation")]
-        public async Task<IActionResult> pruebaGeolocation()
+        [Route("pruebaGeolocation/{id}")]
+        public IActionResult pruebaGeolocation(int id)
         {
-            return Ok();
+            var userHuerta = db.TablaHuerta.Where(x => x.IdHuerta == id).FirstOrDefault();
+
+            return Ok(userHuerta);
         }
 
+        [HttpPost]
+        [Route("updateHuerta")]
+        public async Task<ActionResult> updateHuerta([FromBody] TablaHuertum model)
+        {
+            var userHuerta = db.TablaHuerta.Where(x => x.IdHuerta == model.IdHuerta).FirstOrDefault();
+
+            userHuerta.UbicacionHuerta = model.UbicacionHuerta;
+            userHuerta.DescHuerta = model.DescHuerta;
+            userHuerta.AreaCultivo = model.AreaCultivo;
+            userHuerta.Longitud = model.Longitud;
+            userHuerta.Latitud = model.Latitud;
+
+            db.Update(userHuerta);
+
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
 
         [HttpGet]
         [Route("getHuerta")]
