@@ -34,15 +34,13 @@
 <body>
     <h1>Editar perfil</h1>
 
-    <a class="float-right" asp-action="IndexForoList" asp-controller="ForoControllerMVC">Regresar</a>
-
     <hr />
 
     <div>
         <div class="main">
             <form asp-action="viewPerfil">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
+
                 <input asp-for="@Model.user.IdusuarioReg" hidden />
 
                 <div class="column left; col-md-7">
@@ -75,85 +73,90 @@
                         <input asp-for="@Model.user.Telefono" class="form-control" type="tel" required placeholder="3187126721" />
                         <span asp-validation-for="@Model.user.Telefono" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <input type="submit" value="Actualizar" class="btn btn-primary float-right" />
+                    </div>
                 </div>
                 <div class="column right; col-md-7">
-                    <strong>Campos con respecto a la huerta</strong>
-                    <div class="form-group">
-                        <label>Ubicación de la huerta</label>
-                        <input asp-for="@Model.userHuerta.UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
-                        <span asp-validation-for="@Model.userHuerta.UbicacionHuerta" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Descripción de la huerta</label>
-                        <input asp-for="@Model.userHuerta.DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
-                        <span asp-validation-for="@Model.userHuerta.DescHuerta" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Área del cultivo en la huerta</label>
-                        <input asp-for="@Model.userHuerta.AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
-                        <span asp-validation-for="@Model.userHuerta.AreaCultivo" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-
-                    </div>
+                    @*<strong>Campos con respecto a la huerta</strong>
+                <div class="form-group">
+                    <label>Ubicación de la huerta</label>
+                    <input asp-for="@Model.userHuerta.UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
+                    <span asp-validation-for="@Model.userHuerta.UbicacionHuerta" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Actualizar" class="btn btn-primary float-right" />
+                    <label>Descripción de la huerta</label>
+                    <input asp-for="@Model.userHuerta.DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
+                    <span asp-validation-for="@Model.userHuerta.DescHuerta" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Área del cultivo en la huerta</label>
+                    <input asp-for="@Model.userHuerta.AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
+                    <span asp-validation-for="@Model.userHuerta.AreaCultivo" class="text-danger"></span>
+                </div>*@
                 </div>
             </form>
 
-            <h4>Publicaciones realizadas</h4>
+            <div class="column right; col-md-7">
+                <a class="btn btn-primary" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation">Agregar datos sobre huerta</a>
+            </div>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Título
-                        </th>
-                        <th>
-                            Descripción
-                        </th>
-                        <th>
-                            Categoría
-                        </th>
-                        <th>
-                            Fecha de publicación
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.userForo)
-                    {
+            <div>
+                <h4>Publicaciones realizadas</h4>
+
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>
-                                <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost">@Html.DisplayFor(modelItem => item.TituloPost)</a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DescPost)
-                            </td>
-                            <td>
-                                @if (item.IdCatPublFk == 1)
-                                {
-                                    <div>
-                                        General
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div>
-                                        Comercio
-                                    </div>
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FechaPublicacion)
-                            </td>
+                            <th>
+                                Título
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                Categoría
+                            </th>
+                            <th>
+                                Fecha de publicación
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.userForo)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost">@Html.DisplayFor(modelItem => item.TituloPost)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DescPost)
+                                </td>
+                                <td>
+                                    @if (item.IdCatPublFk == 1)
+                                    {
+                                        <div>
+                                            General
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            Comercio
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaPublicacion)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <a class="float-right" asp-action="IndexForoList" asp-controller="ForoControllerMVC">Regresar</a>
+            </div>
+            
+            <br />
+            <br />
         </div>
     </div>
 </body>

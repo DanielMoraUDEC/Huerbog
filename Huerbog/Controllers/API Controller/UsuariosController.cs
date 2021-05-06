@@ -292,20 +292,20 @@ namespace Huerbog.Controllers
         {
             var userInfo = db.Usuarios.Where(x => x.IdusuarioReg == model.user.IdusuarioReg).FirstOrDefault();
 
-            var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == userInfo.IdusuarioReg).FirstOrDefault();
+            //var userHuerta = db.TablaHuerta.Where(x => x.IdUsuario == userInfo.IdusuarioReg).FirstOrDefault();
 
             userInfo.Nombre = model.user.Nombre;
             userInfo.Apellido = model.user.Apellido;
             userInfo.Correo = userInfo.Correo;
             userInfo.Red = model.user.Red;
             userInfo.Telefono = model.user.Telefono;
-            userHuerta.UbicacionHuerta = model.userHuerta.UbicacionHuerta;
-            userHuerta.DescHuerta = model.userHuerta.DescHuerta;
-            userHuerta.AreaCultivo = model.userHuerta.AreaCultivo;
+            //userHuerta.UbicacionHuerta = model.userHuerta.UbicacionHuerta;
+            //userHuerta.DescHuerta = model.userHuerta.DescHuerta;
+            //userHuerta.AreaCultivo = model.userHuerta.AreaCultivo;
 
             db.Update(userInfo);
 
-            db.Update(userHuerta);
+            //db.Update(userHuerta);
 
             await db.SaveChangesAsync();
 
