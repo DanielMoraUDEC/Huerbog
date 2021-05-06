@@ -125,16 +125,27 @@
 
             </div>
         </div>
-        <div id="map_canvas" style="height:350px">
+        <br />
 
+        <div class="row">
+            <div id="map_canvas" style="height:400px" class="col-8">
+
+            </div>
+            <div class="col-4 form-group">
+                <label class="h3">Diligencie el formulario: </label>
+                <input type="text" class="form-control mb-2" placeholder="longitud">
+                <input type="text" class="form-control mb-2" placeholder="longitud">
+                <input type="text" class="form-control mb-2" placeholder="longitud">
+            </div>
+           
+              
+
+           
         </div>
     </main>
+    <br />
+    <br />
 
-    <footer class="mastfoot mt-auto">
-        <div class="inner">
-            <p><a href="https://estradawebgroup.com">Estrada Web Group</a>.</p>
-        </div>
-    </footer>
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZa00aHOWQX0T97gIrY42wXQN3VIYwslc&callback=initMap&libraries=&v=weekly"
@@ -149,11 +160,11 @@
     var map
     map = new google.maps.Map(document.getElementById('map_canvas'), {
         zoom: 14,
-        center: new google.maps.LatLng(19.4326296, -99.1331785),
+        center: new google.maps.LatLng(4.6097100, -74.0817500),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     vMarker = new google.maps.Marker({
-        position: new google.maps.LatLng(19.4326296, -99.1331785),
+        position: new google.maps.LatLng(4.6097100, -74.0817500),
         draggable: true
     });
     google.maps.event.addListener(vMarker, 'dragend', function (evt) {
