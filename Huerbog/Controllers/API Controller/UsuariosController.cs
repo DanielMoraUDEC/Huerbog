@@ -107,12 +107,8 @@ namespace Huerbog.Controllers
                         tHuerta.UbicacionHuerta = "NO APLICA";
                         tHuerta.DescHuerta = "NO APLICA";
                         tHuerta.AreaCultivo = 0;
-                    }
-                    else
-                    {
-                        tHuerta.UbicacionHuerta = model.UbicacionHuerta;
-                        tHuerta.DescHuerta = model.DescHuerta;
-                        tHuerta.AreaCultivo = model.AreaCultivo;
+                        tHuerta.Latitud = "0";
+                        tHuerta.Longitud = "0";
                     }
                     
                     var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
