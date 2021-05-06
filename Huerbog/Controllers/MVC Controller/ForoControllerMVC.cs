@@ -456,7 +456,8 @@ namespace Huerbog.Controllers.MVC_Controller
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("pruebaGeolocation", "ForoControllerMVC", new { model.IdHuerta});
+                    
+                    return RedirectToAction("viewPerfil", "UsuariosControllerMVC");
                 }
                 else
                 {
@@ -472,5 +473,7 @@ namespace Huerbog.Controllers.MVC_Controller
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }
