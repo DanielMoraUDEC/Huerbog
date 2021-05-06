@@ -34,6 +34,8 @@
 <body>
     <h1>Editar perfil</h1>
 
+    <a class="float-right" asp-action="IndexForoList" asp-controller="ForoControllerMVC">Regresar</a>
+
     <hr />
 
     <div>
@@ -79,21 +81,21 @@
                 </div>
                 <div class="column right; col-md-7">
                     @*<strong>Campos con respecto a la huerta</strong>
-                <div class="form-group">
-                    <label>Ubicación de la huerta</label>
-                    <input asp-for="@Model.userHuerta.UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
-                    <span asp-validation-for="@Model.userHuerta.UbicacionHuerta" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label>Descripción de la huerta</label>
-                    <input asp-for="@Model.userHuerta.DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
-                    <span asp-validation-for="@Model.userHuerta.DescHuerta" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label>Área del cultivo en la huerta</label>
-                    <input asp-for="@Model.userHuerta.AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
-                    <span asp-validation-for="@Model.userHuerta.AreaCultivo" class="text-danger"></span>
-                </div>*@
+                        <div class="form-group">
+                            <label>Ubicación de la huerta</label>
+                            <input asp-for="@Model.userHuerta.UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
+                            <span asp-validation-for="@Model.userHuerta.UbicacionHuerta" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción de la huerta</label>
+                            <input asp-for="@Model.userHuerta.DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
+                            <span asp-validation-for="@Model.userHuerta.DescHuerta" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Área del cultivo en la huerta</label>
+                            <input asp-for="@Model.userHuerta.AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
+                            <span asp-validation-for="@Model.userHuerta.AreaCultivo" class="text-danger"></span>
+                        </div>*@
                 </div>
             </form>
 
@@ -152,14 +154,13 @@
                         }
                     </tbody>
                 </table>
-                <a class="float-right" asp-action="IndexForoList" asp-controller="ForoControllerMVC">Regresar</a>
             </div>
-            
-            <br />
-            <br />
         </div>
     </div>
 </body>
+
+<br />
+<br />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
