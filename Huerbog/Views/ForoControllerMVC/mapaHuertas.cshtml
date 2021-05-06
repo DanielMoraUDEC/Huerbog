@@ -135,10 +135,12 @@
                 let divDireccion = document.createElement("div");
                 divDireccion.innerHTML = data[i].ubicacionHuerta;
               //  document.getElementById("direccion").appendChild(divDireccion);
-                let divDescripcion = document.createElement("div");
-
-                divDescripcion.innerHTML = (i+1) + ". "+ data[i].descHuerta;
-                document.getElementById("descripcion").appendChild(divDescripcion);
+                if (data[i].descHuerta != 'NO APLICA') {
+                    let divDescripcion = document.createElement("div");
+                    divDescripcion.innerHTML = (i + 1) + ". " + data[i].descHuerta;
+                    document.getElementById("descripcion").appendChild(divDescripcion);
+                }
+                
 
                 let divLatitud = document.createElement("div");
                 divLatitud.innerHTML = data[i].latitud;
