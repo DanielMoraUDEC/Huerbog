@@ -98,20 +98,16 @@
                         </div>
                     </div>
                     <div class="column right; col-md-7">
-                        <strong>Campos con respecto a la huerta</strong>
                         <div class="form-group">
-                            <label>Ubicación de la huerta</label>
-                            <input asp-for="UbicacionHuerta" class="form-control" placeholder="Ej: Cll 127 #18-29" />
+                            <input hidden asp-for="UbicacionHuerta" class="form-control"/>
                             <span asp-validation-for="UbicacionHuerta" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Descripción de la huerta</label>
-                            <input asp-for="DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
+                            <input hidden asp-for="DescHuerta" class="form-control" placeholder="Ej: Siembra de zanahorias" />
                             <span asp-validation-for="DescHuerta" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Área del cultivo en la huerta</label>
-                            <input asp-for="AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" /> metros cuadrados
+                            <input hidden asp-for="AreaCultivo" class="form-control" placeholder="Ej: 3, 5.6, 8" />
                             <span asp-validation-for="AreaCultivo" class="text-danger"></span>
                         </div>
                     </div>

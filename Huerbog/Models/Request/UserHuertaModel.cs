@@ -16,6 +16,7 @@ namespace Huerbog.Models.Request
             DirHuerta = new HashSet<DirHuertum>();
         }
 
+        //datos de usuario
         [Key]
         public int IdusuarioReg { get; set; }
         public string Nombre { get; set; }
@@ -33,10 +34,13 @@ namespace Huerbog.Models.Request
         public bool? IsMailConfirmed { get; set; }
         public Guid? ActivationCode { get; set; }
 
+        //datos de la huerta
+#nullable enable
         public int IdHuerta { get; set; }
-        public string UbicacionHuerta { get; set; }
-        public string DescHuerta { get; set; }
+        public string? UbicacionHuerta { get; set; }
+        public string? DescHuerta { get; set; }
         public double? AreaCultivo { get; set; }
+#nullable disable
         public int? IdUsuario { get; set; }
 
         public virtual Usuario IdUsuarioNavigation { get; set; }
