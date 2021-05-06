@@ -3,14 +3,20 @@
 *@
 @{
     ViewData["Title"] = "pruebaGeolocation";
-    Layout = "_Layout";
+
 }
 
 
 <div class="container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
         <div class="inner">
-            
+
+            <h3 class="masthead-brand">Añadir información de la huerta</h3>
+            <p>
+                Ingrese la información necesaria sobre la huerta. Para añadir la ubicación arrastre el cursor rojo del mapa
+                hasta la localización deseada, también puede ingresar la dirección, ciudad o barrio para ubicar su huerta 
+                en el mapa, luego dele click en el botón "Guardar" para actualizar la información.
+            </p>
 
             <div class="nav nav-masthead justify-content-center">
                 <div class="row">
@@ -32,32 +38,32 @@
     </header>
     <main role="main" class="inner cover">
         <div class="row">
-            <div class="col-md-4">
-                <input type="text" id="txtLat" class="form-control" placeholder="latitude">
-
-            </div>
-            <div class="col-md-4">
-                <input type="text" id="txtLng" class="form-control" placeholder="longitud">
-
-            </div>
+            
         </div>
         <br />
 
-        <div class="row">
-            <div id="map_canvas" style="height:400px" class="col-8">
+        <form asp-controller="UsuariosControllerMVC" asp-action="">
+            <div class="row">
+                <div id="map_canvas" style="height:400px" class="col-8">
 
+                </div>
+                <div class="col-4 form-group">
+                    <label class="h3">Información de la huerta: </label>
+                    <label>Dirección</label>
+                    <input type="text" class="form-control mb-2" placeholder="Ej: Cll 127 #18-29">
+                    <label>Descripción de la huerta</label>
+                    <input type="text" class="form-control mb-2" placeholder="Ej: Siembra de zanahorias">
+                    <label>Área de cultivo</label>
+                    <input type="text" class="form-control mb-2" placeholder="Ej: 3, 5.6, 8">
+                    <label>Latitud</label>
+                    <input type="text" id="txtLat" class="form-control" placeholder="latitud">
+                    <label>Longitud</label>
+                    <input type="text" id="txtLng" class="form-control" placeholder="longitud">
+                    <input type="submit" value="Actualizar" class="btn btn-primary text-center" />
+                </div>
+                
             </div>
-            <div class="col-4 form-group">
-                <label class="h3">Diligencie el formulario: </label>
-                <input type="text" class="form-control mb-2" placeholder="longitud">
-                <input type="text" class="form-control mb-2" placeholder="longitud">
-                <input type="text" class="form-control mb-2" placeholder="longitud">
-            </div>
-           
-              
-
-           
-        </div>
+        </form>
     </main>
     <br />
     <br />
