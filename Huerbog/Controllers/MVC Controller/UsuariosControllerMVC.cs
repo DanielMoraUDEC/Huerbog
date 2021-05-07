@@ -320,7 +320,11 @@ namespace Huerbog.Controllers
             {
                 client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
-                var responseTask = await client.GetAsync("viewPerfil/" + HttpContext.Session.GetString("JWToken"));
+                var token = HttpContext.Session.GetString("JWToken");
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var responseTask = await client.GetAsync("viewPerfil");
 
                 if (responseTask.IsSuccessStatusCode)
                 {
@@ -332,9 +336,7 @@ namespace Huerbog.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error del servidor");
-
-                    return View(ModelState);
+                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
                 }
             }
         }

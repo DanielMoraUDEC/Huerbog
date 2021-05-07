@@ -192,8 +192,7 @@ namespace Huerbog.Controllers
                         var tokenHandler = new JwtSecurityTokenHandler();
                         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-
-                        //Request.Headers.Add("Authorization", "Bearer " + bearer_token);
+                        Request.Headers.Add("Authorization", "Bearer " + token);
 
                         return Ok(new 
                         { 
@@ -221,15 +220,17 @@ namespace Huerbog.Controllers
         //ver perfil de usuario logeado
         [AllowAnonymous]
         [HttpGet]
-        [Route("viewPerfil/{token}")]
-        public ActionResult<UserForoModel> viewPerfil(string token)
+        [Route("viewPerfil")]
+        public ActionResult<UserForoModel> viewPerfil()
         {
-            var u = token;
             var tokenHandler = new JwtSecurityTokenHandler();
             var SecretKey = config.GetValue<string>("AppSettings:Token");
             var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
 
-            tokenHandler.ValidateToken(u, new TokenValidationParameters
+            var realtoken = token.ToString().Substring(7);
+
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
