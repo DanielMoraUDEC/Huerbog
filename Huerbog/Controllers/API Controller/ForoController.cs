@@ -283,16 +283,6 @@ namespace Huerbog.Controllers.API_Controller
         [Route("btnDislike")]
         public async Task<IActionResult> btnDislike([FromBody] UserReaccionesModel user)
         {
-
-            /*var userForo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
-
-            userForo.ReaccionDisLike += 1;
-
-            db.Update(userForo);
-
-            await db.SaveChangesAsync();
-
-            return Ok();*/
             VerificacionReaccion usuariolike = new VerificacionReaccion();
 
             //tokenizado
