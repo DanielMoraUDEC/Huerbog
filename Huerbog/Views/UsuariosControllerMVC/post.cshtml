@@ -63,41 +63,41 @@
                 <form asp-action="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="column left; col-md-7">
-                        <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-4">
                             <label asp-for="Nombre" class="control-label"></label>
                             <input asp-for="Nombre" class="form-control" required placeholder="Pepe" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-4">
                             <label asp-for="Apellido" class="control-label"></label>
                             <input asp-for="Apellido" class="form-control" required placeholder="Grillo" />
                             <span asp-validation-for="Apellido" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-4">
                             <label asp-for="Correo" class="control-label"></label>
                             <input asp-for="Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
                             <span asp-validation-for="Correo" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="column middle; col-md-7">
-                        <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-4">
                             <label asp-for="Contraseña" class="control-label"></label>
                             <input asp-for="Contraseña" class="form-control" type="password" required placeholder="Contraseña" />
                             <span asp-validation-for="Contraseña" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-4">
                             <label asp-for="Red" class="control-label"></label>
                             <input asp-for="Red" class="form-control" placeholder="Ej: Huerteros de Bosa" />
                             <span asp-validation-for="Red" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-4">
                             <label asp-for="Telefono" class="control-label"></label>
                             <input asp-for="Telefono" class="form-control" type="tel" required placeholder="3187126721" />
                             <span asp-validation-for="Telefono" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="column right; col-md-7">
+                    <div class="form-group">
                         <div class="form-group">
                             <input hidden asp-for="UbicacionHuerta" class="form-control"/>
                             <span asp-validation-for="UbicacionHuerta" class="text-danger"></span>
@@ -122,9 +122,7 @@
 
         <div>
             <a asp-controller="ForoControllerMVC" asp-action="IndexForoList">Regresar</a>
-            <br>
-            <br>
-            <br>
+
         </div>
     </div>
     <script src="../js/site.js"></script>
