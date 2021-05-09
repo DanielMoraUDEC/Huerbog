@@ -34,9 +34,7 @@ namespace Huerbog.Models.Request
         public IFormFile ContentFile { get; set; }
         public string FileName { get; set; }
         public string FileType { get; set; }
-
-        //envio token
-        //public string Token { get; set; }
+        public byte[] img { get; set; }
 
         //tabla tema
         public virtual Foro IdForoNavigation { get; set; }

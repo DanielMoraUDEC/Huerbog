@@ -32,132 +32,136 @@
 </head>
 
 
-    <h1>Editar perfil</h1>
+<h1>Editar perfil</h1>
 
+<hr />
+
+
+<div class="main">
+    <form asp-action="viewPerfil">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input asp-for="@Model.user.IdusuarioReg" hidden />
+
+
+        <strong>Datos de usuario</strong>
+        <div class="row">
+
+            <div class="form-group col-4">
+                <label asp-for="@Model.user.Nombre" class="control-label"></label>
+                <input asp-for="@Model.user.Nombre" class="form-control" required placeholder="Pepe" />
+                <span asp-validation-for="@Model.user.Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="@Model.user.Apellido" class="control-label"></label>
+                <input asp-for="@Model.user.Apellido" class="form-control" required placeholder="Grillo" />
+                <span asp-validation-for="@Model.user.Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="@Model.user.Correo" class="control-label"></label>
+                <input disabled asp-for="@Model.user.Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
+                <span asp-validation-for="@Model.user.Correo" class="text-danger"></span>
+            </div>
+
+
+        </div>
+        <strong>Red y teléfono</strong>
+        <div class="row">
+
+            <div class="form-group col-4">
+                <label asp-for="@Model.user.Red" class="control-label"></label>
+                <input asp-for="@Model.user.Red" class="form-control" placeholder="Ej: Huerteros de Bosa" />
+                <span asp-validation-for="@Model.user.Red" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="@Model.user.Telefono" class="control-label"></label>
+                <input asp-for="@Model.user.Telefono" class="form-control" type="tel" required placeholder="3187126721" />
+                <span asp-validation-for="@Model.user.Telefono" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Actualizar" class="btn btn-primary" onclick="alert('Datos actualizados correctamente');" />
+        </div>
+
+    </form>
     <hr />
 
-    
-    <div class="main">
-        <form asp-action="viewPerfil">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <input asp-for="@Model.user.IdusuarioReg" hidden />
+    <br />
 
 
-            <strong>Datos de usuario</strong>
-            <div class="row">
-
-                <div class="form-group col-4">
-                    <label asp-for="@Model.user.Nombre" class="control-label"></label>
-                    <input asp-for="@Model.user.Nombre" class="form-control" required placeholder="Pepe" />
-                    <span asp-validation-for="@Model.user.Nombre" class="text-danger"></span>
-                </div>
-                <div class="form-group col-4">
-                    <label asp-for="@Model.user.Apellido" class="control-label"></label>
-                    <input asp-for="@Model.user.Apellido" class="form-control" required placeholder="Grillo" />
-                    <span asp-validation-for="@Model.user.Apellido" class="text-danger"></span>
-                </div>
-                <div class="form-group col-4">
-                    <label asp-for="@Model.user.Correo" class="control-label"></label>
-                    <input disabled asp-for="@Model.user.Correo" class="form-control" type="email" required placeholder="ejemplo@mail.com" />
-                    <span asp-validation-for="@Model.user.Correo" class="text-danger"></span>
-                </div>
-
-
-            </div>
-            <strong>Red y teléfono</strong>
-            <div class="row">
-
-                <div class="form-group col-4">
-                    <label asp-for="@Model.user.Red" class="control-label"></label>
-                    <input asp-for="@Model.user.Red" class="form-control" placeholder="Ej: Huerteros de Bosa" />
-                    <span asp-validation-for="@Model.user.Red" class="text-danger"></span>
-                </div>
-                <div class="form-group col-4">
-                    <label asp-for="@Model.user.Telefono" class="control-label"></label>
-                    <input asp-for="@Model.user.Telefono" class="form-control" type="tel" required placeholder="3187126721" />
-                    <span asp-validation-for="@Model.user.Telefono" class="text-danger"></span>
-                </div>
-
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Actualizar" class="btn btn-primary" onclick="alert('Datos actualizados correctamente');" />
-            </div>
-
-        </form>
-        <hr />
-
+    <div class="form-group">
+        <label class="h3">Registrar huerta:</label>
         <br />
-
-
-        <div class="form-group">
-            <label class="h3">Registrar huerta:</label>
-            <br />
-            <a class="btn btn-primary" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation" asp-route-id="@Model.userHuerta.IdHuerta">Agregar datos huerta</a>
-        </div>
-        <hr />
-
-
-        <br />
-        <div>
-            <h3>Publicaciones realizadas</h3>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Título
-                        </th>
-                        <th>
-                            Descripción
-                        </th>
-                        <th>
-                            Categoría
-                        </th>
-                        <th>
-                            Fecha de publicación
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.userForo)
-                    {
-                        <tr>
-                            <td>
-                                <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost">@Html.DisplayFor(modelItem => item.TituloPost)</a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DescPost)
-                            </td>
-                            <td>
-                                @if (item.IdCatPublFk == 1)
-                                {
-                                    <div>
-                                        General
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div>
-                                        Comercio
-                                    </div>
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FechaPublicacion)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <br />
-        <a asp-action="IndexForoList" asp-controller="ForoControllerMVC">Regresar</a>
-        <br />
-        <br />
-        <br />
-        <br />
+        <a class="btn btn-primary" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation" asp-route-id="@Model.userHuerta.IdHuerta">Agregar datos huerta</a>
     </div>
+    <hr />
+
+
+    <br />
+    <div>
+        <h3>Publicaciones realizadas</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Título
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th>
+                        Categoría
+                    </th>
+                    <th>
+                        Fecha de publicación
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.userForo)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost">@Html.DisplayFor(modelItem => item.TituloPost)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DescPost)
+                        </td>
+                        <td>
+                            @if (item.IdCatPublFk == 1)
+                            {
+                                <div>
+                                    General
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    Comercio
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaPublicacion)
+                        </td>
+                        <td>
+                            <a asp-action="editPost" asp-route-id="@item.IdPost">Editar</a> |
+                            <a asp-action="" asp-route-id="@item.IdPost">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <a asp-action="IndexForoList" asp-controller="ForoControllerMVC">Regresar</a>
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
 
 
 

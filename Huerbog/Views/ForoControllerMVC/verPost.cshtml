@@ -44,10 +44,10 @@
                 </div>
 
                 <div class=" text-center ">
-                    <label asp-for="TituloPost" class="control-label">
+                    <!--<label asp-for="TituloPost" class="control-label">
                         <input asp-for="TituloPost" class="p-3 h1 border-0 text-center" readonly="readonly" />
-                    </label>
-
+                    </label>-->
+                    <h1 class="text-center">@Model.TituloPost</h1>
                     <span asp-validation-for="TituloPost" class="text-danger"></span>
                 </div>
                 <hr />
@@ -181,9 +181,11 @@
                     {
                         <a class="btn btn-primary" asp-controller="UsuariosControllerMVC" asp-action="viewPerfilPubl" asp-route-id="@Model.IdusuarioReg">Ver perfil</a>
                     }
+
                     <!--<input type="submit" value="Save" class="btn btn-primary" />-->
                 </div>
             </form>
+
         </div>
     </div>
 

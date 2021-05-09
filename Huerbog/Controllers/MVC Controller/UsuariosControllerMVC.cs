@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Huerbog.Models.Login;
 using Huerbog.Models.UserList;
 using Huerbog.Models.Reacciones;
+using Huerbog.Models.ForoView;
 
 namespace Huerbog.Controllers
 {
@@ -146,24 +147,24 @@ namespace Huerbog.Controllers
                     return View();
                 }
 
-                if(userobject.Correo == "dmartinezcifuentes180@gmail.com")
-                {
-                    var identity2 = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    identity2.AddClaim(new Claim(ClaimTypes.Name, userobject.Correo));
+                //if(userobject.Correo == "dmartinezcifuentes180@gmail.com")
+                //{
+                //    var identity2 = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                //    identity2.AddClaim(new Claim(ClaimTypes.Name, userobject.Correo));
 
-                    var principal2 = new ClaimsPrincipal(identity2);
+                //    var principal2 = new ClaimsPrincipal(identity2);
 
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal2);
+                //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal2);
 
-                    HttpContext.Session.SetString("JWToken", userobject.Token);
+                //    HttpContext.Session.SetString("JWToken", userobject.Token);
 
-                    //hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.ToString());
+                //    //hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", login.ToString());
 
-                    return RedirectToAction("indexAdmin", "AdminControllerMVC");
-                }
+                //    return RedirectToAction("indexAdmin", "AdminControllerMVC");
+                //}
 
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.Name, userobject.Correo));
+                identity.AddClaim(new Claim(ClaimTypes.Name, userobject.Roles));
 
                 var principal = new ClaimsPrincipal(identity);
 
@@ -171,17 +172,32 @@ namespace Huerbog.Controllers
 
                 HttpContext.Session.SetString("JWToken", userobject.Token);
 
-                TempData["alert"] = "Bienvenido/a " + userobject.Correo;
-
                 //hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userobject.Token);
 
-                return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                var token = HttpContext.Session.GetString("JWToken");
+                //model.Token = token;
+
+                hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var checkAdmin = await hc.GetAsync("checkAdmin");
+
+                if(checkAdmin.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                }
+
+                if(checkAdmin.StatusCode.ToString() == "BadRequest")
+                {
+                    return RedirectToAction("indexAdmin", "AdminControllerMVC");
+                }
+                
             }
             else
             {
                 return View();
             }
-            
+
+            return View();
         }
 
         //cerrar sesión
@@ -368,6 +384,7 @@ namespace Huerbog.Controllers
             }
         }
 
+        //perfil público para cada usuario
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> viewPerfilPubl(int id)
@@ -397,5 +414,114 @@ namespace Huerbog.Controllers
             }
         }
         
+        //trae la info de la publicación
+        [HttpGet]
+        public async Task<IActionResult> editPost(int id)
+        {
+            ForoTemaModel userForo = new ForoTemaModel();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var token = HttpContext.Session.GetString("JWToken");
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var responseTask = await client.GetAsync("editPost/" + id);
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    var apiResp = await responseTask.Content.ReadAsStringAsync();
+
+                    userForo = JsonConvert.DeserializeObject<ForoTemaModel>(apiResp);
+
+                    return View(userForo);
+                }
+                else
+                {
+                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                }
+            }
+        }
+
+        //actualiza la info de la publicación
+        [HttpPost]
+        public async Task<IActionResult> editPost(ForoTemaModel model)
+        {
+            HttpClient hc = new HttpClient();
+
+            var formContent = new MultipartFormDataContent();
+            
+            if(model.ContentFile == null)
+            {
+                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+                var userPost2 = await hc.GetAsync("getPrevImg/" + model.IdPost);
+
+                if (userPost2.IsSuccessStatusCode)
+                {
+                    ForoTemaModel prevImg = new ForoTemaModel();
+
+                    var apiResp = await userPost2.Content.ReadAsStringAsync();
+
+                    prevImg = JsonConvert.DeserializeObject<ForoTemaModel>(apiResp);
+
+                    var fileName = Path.GetFileName(prevImg.ContentFile.FileName);
+                    var fileExt = Path.GetExtension(fileName);
+                    var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
+
+                    formContent.Add(new StringContent(model.IdPost.ToString()), "IdPost");
+                    formContent.Add(new StringContent(model.TituloPost), "TituloPost");
+                    formContent.Add(new StringContent(model.DescPost), "DescPost");
+                    formContent.Add(new StringContent(model.Contenido), "Contenido");
+                    formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
+                    formContent.Add(new StringContent(newFileName), "FileName");
+                    formContent.Add(new StringContent(fileExt), "FileType");
+
+                    formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
+                }
+                else
+                {
+                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
+                }
+            }
+            else
+            {
+                var fileName = Path.GetFileName(model.ContentFile.FileName);
+                var fileExt = Path.GetExtension(fileName);
+                var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
+
+                formContent.Add(new StringContent(model.IdPost.ToString()), "IdPost");
+                formContent.Add(new StringContent(model.TituloPost), "TituloPost");
+                formContent.Add(new StringContent(model.DescPost), "DescPost");
+                formContent.Add(new StringContent(model.Contenido), "Contenido");
+                formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
+                formContent.Add(new StringContent(newFileName), "FileName");
+                formContent.Add(new StringContent(fileExt), "FileType");
+
+                formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
+            }
+
+
+            var token = HttpContext.Session.GetString("JWToken");
+
+            hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+            var userPost = await hc.PostAsync("editPost", formContent);
+
+            if (userPost.IsSuccessStatusCode == true)
+            {
+                var id = model.IdPost;
+                return RedirectToAction("verPost", "ForoControllerMVC", new {id});
+            }
+            else
+            {
+                return View();
+            }
+        }
+
     }
 }

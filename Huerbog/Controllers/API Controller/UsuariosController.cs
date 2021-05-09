@@ -30,6 +30,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using Huerbog.Models.UserList;
 using Huerbog.Models.Reacciones;
+using Huerbog.Models.ForoView;
 
 
 
@@ -102,7 +103,7 @@ namespace Huerbog.Controllers
                     oUsuar.ActivationCode = model.ActivationCode;
                     oUsuar.IsMailConfirmed = model.IsMailConfirmed;
 
-                    if(model.UbicacionHuerta == null && model.DescHuerta == null && model.AreaCultivo == null)
+                    if (model.UbicacionHuerta == null && model.DescHuerta == null && model.AreaCultivo == null)
                     {
                         tHuerta.UbicacionHuerta = "NO APLICA";
                         tHuerta.DescHuerta = "NO APLICA";
@@ -110,7 +111,7 @@ namespace Huerbog.Controllers
                         tHuerta.Latitud = "0";
                         tHuerta.Longitud = "0";
                     }
-                    
+
                     var uNombre = new SqlParameter("@nombre", oUsuar.Nombre);
                     var uApellido = new SqlParameter("@apellido", oUsuar.Apellido);
                     var uCorreo = new SqlParameter("@correo", oUsuar.Correo);
@@ -158,7 +159,7 @@ namespace Huerbog.Controllers
         [Route("login")]
         public IActionResult login([FromBody] Usuario model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (db.Usuarios.Any(x => x.Correo.Equals(model.Correo)))
                 {
@@ -172,11 +173,11 @@ namespace Huerbog.Controllers
 
                     if (client_post_hash_password.Equals(user.Contraseña))
                     {
-                        var claims = new []
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, user.IdusuarioReg.ToString()),
-                            new Claim(ClaimTypes.Name, user.Correo)
-                        };
+                        var claims = new[]
+                            {
+                                new Claim(ClaimTypes.NameIdentifier, user.IdusuarioReg.ToString()),
+                                new Claim(ClaimTypes.Name, user.Roles.ToString())
+                            };
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
 
@@ -194,9 +195,9 @@ namespace Huerbog.Controllers
 
                         Request.Headers.Add("Authorization", "Bearer " + token);
 
-                        return Ok(new 
-                        { 
-                            Correo = claims[1].Value.ToString(),
+                        return Ok(new
+                        {
+                            Roles = claims[1].Value.ToString(),
                             Token = tokenHandler.WriteToken(token)
                         });
                     }
@@ -214,6 +215,40 @@ namespace Huerbog.Controllers
             else
             {
                 return Ok(ModelState);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("checkAdmin")]
+        public IActionResult checkAdmin()
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
+
+            var realtoken = token.ToString().Substring(7);
+
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "unique_name").Value);
+
+            if(userId == 2)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
             }
         }
 
@@ -289,7 +324,7 @@ namespace Huerbog.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("updatePerfil")]
-        public async Task <ActionResult> updatePerfil([FromBody] UserForoModel model)
+        public async Task<ActionResult> updatePerfil([FromBody] UserForoModel model)
         {
             var userInfo = db.Usuarios.Where(x => x.IdusuarioReg == model.user.IdusuarioReg).FirstOrDefault();
 
@@ -380,7 +415,7 @@ namespace Huerbog.Controllers
         {
             var v = db.Usuarios.Where(a => a.ActivationCode == new Guid(id)).FirstOrDefault();
 
-            if(v != null)
+            if (v != null)
             {
                 v.IsMailConfirmed = true;
                 db.SaveChanges();
@@ -397,7 +432,7 @@ namespace Huerbog.Controllers
         {
             var user = db.Usuarios.Where(x => x.Nombre.ToLower().Contains(Buscar.ToLower()) || x.Apellido.ToLower() == Buscar.ToLower() || x.Red.ToLower() == Buscar.ToLower()).ToList();
 
-            if(user != null)
+            if (user != null)
             {
                 return Ok(user);
             }
@@ -413,7 +448,7 @@ namespace Huerbog.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("createPost")]
-        public async Task<IActionResult> createPost([FromForm]ForoTemaModel model)
+        public async Task<IActionResult> createPost([FromForm] ForoTemaModel model)
         {
             //var u = model.Token;
 
@@ -446,7 +481,7 @@ namespace Huerbog.Controllers
             Tema tema = new Tema();
 
             //convierte el archivo (img, doc, etc) a un arreglo de bytes
-            using(var target = new MemoryStream())
+            using (var target = new MemoryStream())
             {
                 await model.ContentFile.CopyToAsync(target);
                 tema.ContentFile = target.ToArray();
@@ -456,13 +491,13 @@ namespace Huerbog.Controllers
             foro.DescPost = model.DescPost;
             foro.TituloPost = model.TituloPost;
             foro.IdUsuario = userId;
-            foro.IdCatPublFk = (int) model.IdCatPublFk;
+            foro.IdCatPublFk = (int)model.IdCatPublFk;
             tema.FileName = model.FileName;
             tema.FileType = model.FileType;
             tema.Contenido = model.Contenido;
 
             //convierte los valores de los campos a parámetros SQL para la SP
-            var descPost = new SqlParameter("@descPost", foro.DescPost); 
+            var descPost = new SqlParameter("@descPost", foro.DescPost);
             var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
             var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
             var contenido = new SqlParameter("@contenido", tema.Contenido);
@@ -481,13 +516,15 @@ namespace Huerbog.Controllers
                 db.SaveChanges();
 
                 return Ok();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
         }
 
-       [AllowAnonymous]
+        //REPORTA PUBLICACIONES
+        [AllowAnonymous]
         [Route("reportPost")]
         public async Task<IActionResult> reportPost([FromBody] UserReaccionesModel user)
         {
@@ -543,7 +580,133 @@ namespace Huerbog.Controllers
                 return Ok();
             }
         }
-      
+
+        //edita publicaciones
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("editPost/{id}")]
+        public async Task<ActionResult> editPost(int id)
+        {
+            ForoTemaModel foro = new ForoTemaModel();
+
+            var foroInfo = db.Foros.Where(x => x.IdPost == id).FirstOrDefault();
+
+            var foroContent = db.Temas.Where(x => x.IdForo == id).FirstOrDefault();
+
+            var foroUser = db.Usuarios.Where(x => x.IdusuarioReg == foroInfo.IdUsuario).FirstOrDefault();
+
+            //DATOS PUBLICACIONES DE USUARIO
+            foro.IdPost = foroInfo.IdPost;
+            foro.FechaPublicacion = foroInfo.FechaPublicacion;
+            foro.DescPost = foroInfo.DescPost;
+            foro.TituloPost = foroInfo.TituloPost;
+            foro.IdUsuario = foroInfo.IdUsuario;
+            foro.IdCatPublFk = foroInfo.IdCatPublFk;
+
+            //DATOS CONTENIDO DE PUBLICACIÓN
+            foro.Idtema = foroContent.Idtema;
+            foro.Contenido = foroContent.Contenido;
+            foro.IdForo = foroContent.IdForo;
+            foro.FileName = foroContent.FileName;
+            foro.FileType = foroContent.FileType;
+            foro.img = foroContent.ContentFile;
+
+            return Ok(foro);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("editPost")]
+        public async Task<ActionResult> editPost([FromForm] ForoTemaModel model)
+        {
+            //tokenizado
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var SecretKey = config.GetValue<string>("AppSettings:Token");
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+            var token = HttpContext.Request.Headers["Authorization"];
+
+            //quita la palabra "Bearer" del token
+            var realtoken = token.ToString().Substring(7);
+
+            //valida el token
+            tokenHandler.ValidateToken(realtoken, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            //obtiene el valor del almacenado en el token
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+
+            //instancia el modelo de la tabla foro y tema
+
+            var foroUpdt = db.Foros.Where(x => x.IdPost == model.IdPost).FirstOrDefault();
+
+            var temaUpdt = db.Temas.Where(x => x.IdForo == foroUpdt.IdPost).FirstOrDefault();
+
+            if(model.ContentFile != null)
+            {
+                //convierte el archivo (img, doc, etc) a un arreglo de bytes
+                using (var target = new MemoryStream())
+                {
+                    await model.ContentFile.CopyToAsync(target);
+                    temaUpdt.ContentFile = target.ToArray();
+                }
+
+                foroUpdt.DescPost = model.DescPost;
+                foroUpdt.TituloPost = model.TituloPost;
+                foroUpdt.IdUsuario = userId;
+                foroUpdt.IdCatPublFk = (int)model.IdCatPublFk;
+                foroUpdt.FechaActualizacion = DateTime.UtcNow;
+                temaUpdt.FileName = model.FileName;
+                temaUpdt.FileType = model.FileType;
+                temaUpdt.Contenido = model.Contenido;
+
+                db.Update(foroUpdt);
+
+                db.Update(temaUpdt);
+
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+            else
+            {
+                foroUpdt.DescPost = model.DescPost;
+                foroUpdt.TituloPost = model.TituloPost;
+                foroUpdt.IdUsuario = userId;
+                foroUpdt.IdCatPublFk = (int)model.IdCatPublFk;
+                foroUpdt.FechaActualizacion = DateTime.UtcNow;
+
+                db.Update(foroUpdt);
+
+                await db.SaveChangesAsync();
+
+                return Ok();
+            }
+
+            //asigna los valores a los campos de cada modelo
+            
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getPrevImg/{id}")]
+        public async Task<IActionResult> getPrevImg(int id)
+        {
+            ForoTemaModel prevImg = new ForoTemaModel();
+
+            var tema = db.Temas.Where(x => x.IdForo == id).FirstOrDefault();
+
+            var img = Convert.ToBase64String(tema.ContentFile);
+            
+            return Ok();
+        }
+
         //métodos para uso único de la clase actual
         [NonAction]
 
@@ -562,7 +725,7 @@ namespace Huerbog.Controllers
                 " como publicar información general o publicar información con respecto a solicitudes u ofrecimientos" +
                 " de servicios o productos, recuerde publicar contenido con respecto a las huertas y mantenerse apegado" +
                 "a las normas de la comunidad. Por favor haga click en el link de abajo para terminar de verificar su cuenta " +
-                "<br/><br/><a href='https://"+link+"'>"+link+"</a>";
+                "<br/><br/><a href='https://" + link + "'>" + link + "</a>";
 
             var smtp = new SmtpClient
             {
