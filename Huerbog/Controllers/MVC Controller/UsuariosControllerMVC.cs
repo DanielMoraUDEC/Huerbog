@@ -251,28 +251,38 @@ namespace Huerbog.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> createPost(ForoTemaModel model)
         {
-            var formContent = new MultipartFormDataContent();
-            var fileName = Path.GetFileName(model.ContentFile.FileName);
-            var fileExt = Path.GetExtension(fileName);
-            var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
-            
-            formContent.Add(new StringContent(model.TituloPost), "TituloPost");
-            formContent.Add(new StringContent(model.DescPost), "DescPost");
-            formContent.Add(new StringContent(model.Contenido), "Contenido");
-            formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
-            formContent.Add(new StringContent(newFileName), "FileName");
-            formContent.Add(new StringContent(fileExt), "FileType");
-
-            formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
-
             HttpClient hc = new HttpClient();
 
+            var formContent = new MultipartFormDataContent();
+
+            if (model.ContentFile == null)
+            {
+                formContent.Add(new StringContent(model.IdPost.ToString()), "IdPost");
+                formContent.Add(new StringContent(model.TituloPost), "TituloPost");
+                formContent.Add(new StringContent(model.DescPost), "DescPost");
+                formContent.Add(new StringContent(model.Contenido), "Contenido");
+                formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
+            }
+            else
+            {
+                var fileName = Path.GetFileName(model.ContentFile.FileName);
+                var fileExt = Path.GetExtension(fileName);
+                var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
+
+                formContent.Add(new StringContent(model.TituloPost), "TituloPost");
+                formContent.Add(new StringContent(model.DescPost), "DescPost");
+                formContent.Add(new StringContent(model.Contenido), "Contenido");
+                formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
+                formContent.Add(new StringContent(newFileName), "FileName");
+                formContent.Add(new StringContent(fileExt), "FileType");
+
+                formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
+
+            }
+
             var token = HttpContext.Session.GetString("JWToken");
-            //model.Token = token;
 
             hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            //formContent.Add(new StringContent(model.Token), "Token");
 
             hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
 
@@ -455,36 +465,11 @@ namespace Huerbog.Controllers
             
             if(model.ContentFile == null)
             {
-                hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
-
-                var userPost2 = await hc.GetAsync("getPrevImg/" + model.IdPost);
-
-                if (userPost2.IsSuccessStatusCode)
-                {
-                    ForoTemaModel prevImg = new ForoTemaModel();
-
-                    var apiResp = await userPost2.Content.ReadAsStringAsync();
-
-                    prevImg = JsonConvert.DeserializeObject<ForoTemaModel>(apiResp);
-
-                    var fileName = Path.GetFileName(prevImg.ContentFile.FileName);
-                    var fileExt = Path.GetExtension(fileName);
-                    var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExt);
-
-                    formContent.Add(new StringContent(model.IdPost.ToString()), "IdPost");
-                    formContent.Add(new StringContent(model.TituloPost), "TituloPost");
-                    formContent.Add(new StringContent(model.DescPost), "DescPost");
-                    formContent.Add(new StringContent(model.Contenido), "Contenido");
-                    formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
-                    formContent.Add(new StringContent(newFileName), "FileName");
-                    formContent.Add(new StringContent(fileExt), "FileType");
-
-                    formContent.Add(new StreamContent(model.ContentFile.OpenReadStream()), "ContentFile", Path.GetFileName(model.ContentFile.FileName));
-                }
-                else
-                {
-                    return RedirectToAction("IndexForoList", "ForoControllerMVC");
-                }
+                formContent.Add(new StringContent(model.IdPost.ToString()), "IdPost");
+                formContent.Add(new StringContent(model.TituloPost), "TituloPost");
+                formContent.Add(new StringContent(model.DescPost), "DescPost");
+                formContent.Add(new StringContent(model.Contenido), "Contenido");
+                formContent.Add(new StringContent(model.IdCatPublFk.ToString()), "IdCatPublFk");
             }
             else
             {

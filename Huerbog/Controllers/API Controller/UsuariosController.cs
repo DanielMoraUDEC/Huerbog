@@ -480,46 +480,80 @@ namespace Huerbog.Controllers
 
             Tema tema = new Tema();
 
-            //convierte el archivo (img, doc, etc) a un arreglo de bytes
-            using (var target = new MemoryStream())
+            if(model.ContentFile != null)
             {
-                await model.ContentFile.CopyToAsync(target);
-                tema.ContentFile = target.ToArray();
-            }
+                //convierte el archivo (img, doc, etc) a un arreglo de bytes
+                using (var target = new MemoryStream())
+                {
+                    await model.ContentFile.CopyToAsync(target);
+                    tema.ContentFile = target.ToArray();
+                }
 
-            //asigna los valores a los campos de cada modelo
-            foro.DescPost = model.DescPost;
-            foro.TituloPost = model.TituloPost;
-            foro.IdUsuario = userId;
-            foro.IdCatPublFk = (int)model.IdCatPublFk;
-            tema.FileName = model.FileName;
-            tema.FileType = model.FileType;
-            tema.Contenido = model.Contenido;
+                //asigna los valores a los campos de cada modelo
+                foro.DescPost = model.DescPost;
+                foro.TituloPost = model.TituloPost;
+                foro.IdUsuario = userId;
+                foro.IdCatPublFk = (int)model.IdCatPublFk;
+                tema.FileName = model.FileName;
+                tema.FileType = model.FileType;
+                tema.Contenido = model.Contenido;
 
-            //convierte los valores de los campos a parámetros SQL para la SP
-            var descPost = new SqlParameter("@descPost", foro.DescPost);
-            var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-            var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
-            var contenido = new SqlParameter("@contenido", tema.Contenido);
-            var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
-            var content_file = new SqlParameter("@content_file", tema.ContentFile);
-            var file_name_ = new SqlParameter("@file_name_", tema.FileName);
-            var FileType = new SqlParameter("@FileType", tema.FileType);
+                //convierte los valores de los campos a parámetros SQL para la SP
+                var descPost = new SqlParameter("@descPost", foro.DescPost);
+                var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
+                var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
+                var contenido = new SqlParameter("@contenido", tema.Contenido);
+                var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
+                var content_file = new SqlParameter("@content_file", tema.ContentFile);
+                var file_name_ = new SqlParameter("@file_name_", tema.FileName);
+                var FileType = new SqlParameter("@FileType", tema.FileType);
 
-            //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
-            try
-            {
-                db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @idUsuario," +
-                "@contenido, @idCatPublFK, @content_file, @FileType, @file_name_", new[] { descPost,
+                //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
+                try
+                {
+                    db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @idUsuario," +
+                    "@contenido, @idCatPublFK, @content_file, @FileType, @file_name_", new[] { descPost,
                     tituloPost, idUsuario, contenido, idCatPublFK, content_file, FileType, file_name_ });
 
-                db.SaveChanges();
+                    db.SaveChanges();
 
-                return Ok();
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                foro.DescPost = model.DescPost;
+                foro.TituloPost = model.TituloPost;
+                foro.IdUsuario = userId;
+                foro.IdCatPublFk = (int)model.IdCatPublFk;
+                tema.Contenido = model.Contenido;
+
+                //convierte los valores de los campos a parámetros SQL para la SP
+                var descPost = new SqlParameter("@descPost", foro.DescPost);
+                var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
+                var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
+                var contenido = new SqlParameter("@contenido", tema.Contenido);
+                var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
+
+                //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
+                try
+                {
+                    db.Database.ExecuteSqlRaw("Exec CreacionPublNoFile @descPost, @tituloPost, @idUsuario," +
+                    "@contenido, @idCatPublFK", new[] { descPost,
+                    tituloPost, idUsuario, contenido, idCatPublFK});
+
+                    db.SaveChanges();
+
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -681,8 +715,11 @@ namespace Huerbog.Controllers
                 foroUpdt.IdUsuario = userId;
                 foroUpdt.IdCatPublFk = (int)model.IdCatPublFk;
                 foroUpdt.FechaActualizacion = DateTime.UtcNow;
+                temaUpdt.Contenido = model.Contenido;
 
                 db.Update(foroUpdt);
+
+                db.Update(temaUpdt);
 
                 await db.SaveChangesAsync();
 
