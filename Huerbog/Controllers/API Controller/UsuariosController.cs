@@ -730,20 +730,6 @@ namespace Huerbog.Controllers
             
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("getPrevImg/{id}")]
-        public async Task<IActionResult> getPrevImg(int id)
-        {
-            ForoTemaModel prevImg = new ForoTemaModel();
-
-            var tema = db.Temas.Where(x => x.IdForo == id).FirstOrDefault();
-
-            var img = Convert.ToBase64String(tema.ContentFile);
-            
-            return Ok();
-        }
-
         //métodos para uso único de la clase actual
         [NonAction]
 
