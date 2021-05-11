@@ -317,6 +317,7 @@ namespace Huerbog.Controllers.API_Controller
 
             if (userReaccion == null)
             {
+                userForo.Reacciones += 1;
                 userForo.ReaccionDisLike += 1;
 
                 usuariolike.IdForo = userForo.IdPost;
@@ -346,6 +347,7 @@ namespace Huerbog.Controllers.API_Controller
             }
             else
             {
+                userForo.Reacciones -= 1;
                 userForo.ReaccionDisLike -= 1;
                 db.VerificacionReaccions.Remove(userReaccion);
                 db.Update(userForo);
