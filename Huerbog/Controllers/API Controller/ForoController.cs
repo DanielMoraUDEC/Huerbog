@@ -239,9 +239,8 @@ namespace Huerbog.Controllers.API_Controller
 
 
             var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
-            var userReaccion = db.VerificacionReaccions.Where(x => x.IdForo ==user.idForo && x.IdUsuario == userId).FirstOrDefault();
-
-            var usuarioPublicacion = db.Usuarios.Where(x=>x.IdusuarioReg== userForo.IdUsuario).FirstOrDefault();
+            var userReaccion = db.VerificacionReaccions.Where(x => x.IdForo == user.idForo && x.IdUsuario == userId).FirstOrDefault();
+            var usuarioPublicacion = db.Usuarios.Where(x=>x.IdusuarioReg == userForo.IdUsuario).FirstOrDefault();
             
             if (userReaccion == null)
             {
@@ -255,8 +254,12 @@ namespace Huerbog.Controllers.API_Controller
 
                 db.Update(userForo);
                 db.VerificacionReaccions.Add(usuariolike);
+
+                await db.SaveChangesAsync();
+
                 var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
                 usuarioPublicacion.Reputacion = num;
+                
                 db.Update(usuarioPublicacion);
                 await db.SaveChangesAsync();
 
@@ -272,6 +275,14 @@ namespace Huerbog.Controllers.API_Controller
 
                 db.Update(userForo);
                 db.Update(userReaccion);
+
+                await db.SaveChangesAsync();
+
+                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
+                usuarioPublicacion.Reputacion = num;
+
+                db.Update(usuarioPublicacion);
+
                 await db.SaveChangesAsync();
 
                 return Ok();
@@ -282,6 +293,13 @@ namespace Huerbog.Controllers.API_Controller
                 userForo.ReaccionLike -= 1;
                 db.VerificacionReaccions.Remove(userReaccion);
                 db.Update(userForo);
+
+                await db.SaveChangesAsync();
+
+                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
+                usuarioPublicacion.Reputacion = num;
+
+                db.Update(usuarioPublicacion);
                 await db.SaveChangesAsync();
                 return Ok();
             }
