@@ -211,5 +211,32 @@ namespace Huerbog.Controllers.MVC_Controller
             return View(userInfo);
 
         }
+
+        public IActionResult hacerAdmin(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.PostAsJsonAsync<int>("hacerAdmin", id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    ViewBag.message = "Acceso de administrador concedido";
+
+                    return RedirectToAction("listUsers");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+
+                    return RedirectToAction("listUsers");
+                }
+            }
+        }
     }
 }

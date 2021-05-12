@@ -153,5 +153,20 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok(userInfo);
         }
+
+        [HttpPost]
+        [Route("hacerAdmin")]
+        public IActionResult hacerAdmin([FromBody]int id)
+        {
+            var newAdmin = db.Usuarios.Where(x => x.IdusuarioReg == id).FirstOrDefault();
+
+            newAdmin.Roles = 1;
+
+            db.Update(newAdmin);
+
+            db.SaveChanges();
+
+            return Ok();
+        }
     }
 }
