@@ -16,6 +16,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
 
 namespace Huerbog.Controllers.API_Controller
 {
@@ -239,7 +241,8 @@ namespace Huerbog.Controllers.API_Controller
             var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
             var userReaccion = db.VerificacionReaccions.Where(x => x.IdForo ==user.idForo && x.IdUsuario == userId).FirstOrDefault();
 
-
+            var usuarioPublicacion = db.Usuarios.Where(x=>x.IdusuarioReg== userForo.IdUsuario).FirstOrDefault();
+            
             if (userReaccion == null)
             {
                 userForo.Reacciones += 1;
@@ -252,6 +255,9 @@ namespace Huerbog.Controllers.API_Controller
 
                 db.Update(userForo);
                 db.VerificacionReaccions.Add(usuariolike);
+                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
+                usuarioPublicacion.Reputacion = num;
+                db.Update(usuarioPublicacion);
                 await db.SaveChangesAsync();
 
                 return Ok();
@@ -314,6 +320,7 @@ namespace Huerbog.Controllers.API_Controller
             var userForo = db.Foros.Where(x => x.IdPost == user.idForo).FirstOrDefault();
             var userReaccion = db.VerificacionReaccions.Where(x => x.IdForo == user.idForo && x.IdUsuario == userId).FirstOrDefault();
 
+            var usuarioPublicacion = db.Usuarios.Where(x => x.IdusuarioReg == userForo.IdUsuario).FirstOrDefault();
 
             if (userReaccion == null)
             {
@@ -327,6 +334,8 @@ namespace Huerbog.Controllers.API_Controller
 
                 db.Update(userForo);
                 db.VerificacionReaccions.Add(usuariolike);
+                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
+                usuarioPublicacion.Reputacion = num;
                 await db.SaveChangesAsync();
 
                 return Ok();
