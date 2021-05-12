@@ -257,12 +257,6 @@ namespace Huerbog.Controllers.API_Controller
 
                 await db.SaveChangesAsync();
 
-                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
-                usuarioPublicacion.Reputacion = num;
-                
-                db.Update(usuarioPublicacion);
-                await db.SaveChangesAsync();
-
                 return Ok();
             }
             else if (userReaccion.ReaccionDislike == true)
@@ -275,14 +269,7 @@ namespace Huerbog.Controllers.API_Controller
 
                 db.Update(userForo);
                 db.Update(userReaccion);
-
-                await db.SaveChangesAsync();
-
-                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
-                usuarioPublicacion.Reputacion = num;
-
-                db.Update(usuarioPublicacion);
-
+                
                 await db.SaveChangesAsync();
 
                 return Ok();
@@ -296,11 +283,6 @@ namespace Huerbog.Controllers.API_Controller
 
                 await db.SaveChangesAsync();
 
-                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
-                usuarioPublicacion.Reputacion = num;
-
-                db.Update(usuarioPublicacion);
-                await db.SaveChangesAsync();
                 return Ok();
             }
         }
@@ -355,12 +337,6 @@ namespace Huerbog.Controllers.API_Controller
                 
                 await db.SaveChangesAsync();
 
-                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
-                usuarioPublicacion.Reputacion = num;
-
-                db.Update(usuarioPublicacion);
-                await db.SaveChangesAsync();
-
                 return Ok();
             }
             else if (userReaccion.ReaccionDislike == false)
@@ -375,12 +351,6 @@ namespace Huerbog.Controllers.API_Controller
                 db.Update(userReaccion);
                 await db.SaveChangesAsync();
 
-                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
-                usuarioPublicacion.Reputacion = num;
-
-                db.Update(usuarioPublicacion);
-                await db.SaveChangesAsync();
-
                 return Ok();
             }
             else
@@ -389,12 +359,6 @@ namespace Huerbog.Controllers.API_Controller
                 userForo.ReaccionDisLike -= 1;
                 db.VerificacionReaccions.Remove(userReaccion);
                 db.Update(userForo);
-                await db.SaveChangesAsync();
-
-                var num = db.Foros.Where(x => x.IdUsuario == userForo.IdUsuario).Select(x => x.Reacciones).Sum();
-                usuarioPublicacion.Reputacion = num;
-
-                db.Update(usuarioPublicacion);
                 await db.SaveChangesAsync();
 
                 return Ok();
