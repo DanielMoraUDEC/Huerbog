@@ -781,14 +781,22 @@ namespace Huerbog.Controllers
         {
             var userPost = db.Foros.Where(x => x.IdUsuario == id && x.IdCatPublFk == 2).Count();
 
-            if(userPost == 5 && cat == 2)
+            if(userPost != 0)
             {
-                return true;
+                if (userPost == 5 && cat == 2)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
+
         }
 
     }
