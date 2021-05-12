@@ -290,11 +290,13 @@ namespace Huerbog.Controllers
 
             if(userPost.IsSuccessStatusCode == true)
             {
-                
                 return RedirectToAction("IndexForoList", "ForoControllerMVC");
             }
             else
             {
+                ViewBag.Message = "La cantidad de publicaciones ha alcanzado el límite";
+                ViewBag.Status = true;
+
                 return View();
             }
         }
@@ -506,6 +508,33 @@ namespace Huerbog.Controllers
             {
                 return View();
             }
+        }
+
+        //elimina el post
+        [HttpGet]
+        public IActionResult deletePost(int id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44325/api/Admin/");
+
+                var responseTask = client.DeleteAsync("deletePost/" + id);
+
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    ViewBag.message = "Eliminación de post correcta";
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error del servidor");
+                }
+            }
+
+            return RedirectToAction("viewPerfil");
         }
 
     }

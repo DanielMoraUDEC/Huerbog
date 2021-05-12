@@ -475,85 +475,92 @@ namespace Huerbog.Controllers
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
 
-            //instancia el modelo de la tabla foro y tema
-            Foro foro = new Foro();
-
-            Tema tema = new Tema();
-
-            if(model.ContentFile != null)
+            if(checkPubl(userId, (int)model.IdCatPublFk) != true)
             {
-                //convierte el archivo (img, doc, etc) a un arreglo de bytes
-                using (var target = new MemoryStream())
+                //instancia el modelo de la tabla foro y tema
+                Foro foro = new Foro();
+
+                Tema tema = new Tema();
+
+                if (model.ContentFile != null)
                 {
-                    await model.ContentFile.CopyToAsync(target);
-                    tema.ContentFile = target.ToArray();
-                }
+                    //convierte el archivo (img, doc, etc) a un arreglo de bytes
+                    using (var target = new MemoryStream())
+                    {
+                        await model.ContentFile.CopyToAsync(target);
+                        tema.ContentFile = target.ToArray();
+                    }
 
-                //asigna los valores a los campos de cada modelo
-                foro.DescPost = model.DescPost;
-                foro.TituloPost = model.TituloPost;
-                foro.IdUsuario = userId;
-                foro.IdCatPublFk = (int)model.IdCatPublFk;
-                tema.FileName = model.FileName;
-                tema.FileType = model.FileType;
-                tema.Contenido = model.Contenido;
+                    //asigna los valores a los campos de cada modelo
+                    foro.DescPost = model.DescPost;
+                    foro.TituloPost = model.TituloPost;
+                    foro.IdUsuario = userId;
+                    foro.IdCatPublFk = (int)model.IdCatPublFk;
+                    tema.FileName = model.FileName;
+                    tema.FileType = model.FileType;
+                    tema.Contenido = model.Contenido;
 
-                //convierte los valores de los campos a parámetros SQL para la SP
-                var descPost = new SqlParameter("@descPost", foro.DescPost);
-                var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-                var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
-                var contenido = new SqlParameter("@contenido", tema.Contenido);
-                var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
-                var content_file = new SqlParameter("@content_file", tema.ContentFile);
-                var file_name_ = new SqlParameter("@file_name_", tema.FileName);
-                var FileType = new SqlParameter("@FileType", tema.FileType);
+                    //convierte los valores de los campos a parámetros SQL para la SP
+                    var descPost = new SqlParameter("@descPost", foro.DescPost);
+                    var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
+                    var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
+                    var contenido = new SqlParameter("@contenido", tema.Contenido);
+                    var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
+                    var content_file = new SqlParameter("@content_file", tema.ContentFile);
+                    var file_name_ = new SqlParameter("@file_name_", tema.FileName);
+                    var FileType = new SqlParameter("@FileType", tema.FileType);
 
-                //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
-                try
-                {
-                    db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @idUsuario," +
-                    "@contenido, @idCatPublFK, @content_file, @FileType, @file_name_", new[] { descPost,
+                    //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
+                    try
+                    {
+                        db.Database.ExecuteSqlRaw("Exec CreacionPublicaciones @descPost, @tituloPost, @idUsuario," +
+                        "@contenido, @idCatPublFK, @content_file, @FileType, @file_name_", new[] { descPost,
                     tituloPost, idUsuario, contenido, idCatPublFK, content_file, FileType, file_name_ });
 
-                    db.SaveChanges();
+                        db.SaveChanges();
 
-                    return Ok();
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw ex;
+                    foro.DescPost = model.DescPost;
+                    foro.TituloPost = model.TituloPost;
+                    foro.IdUsuario = userId;
+                    foro.IdCatPublFk = (int)model.IdCatPublFk;
+                    tema.Contenido = model.Contenido;
+
+                    //convierte los valores de los campos a parámetros SQL para la SP
+                    var descPost = new SqlParameter("@descPost", foro.DescPost);
+                    var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
+                    var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
+                    var contenido = new SqlParameter("@contenido", tema.Contenido);
+                    var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
+
+                    //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
+                    try
+                    {
+                        db.Database.ExecuteSqlRaw("Exec CreacionPublNoFile @descPost, @tituloPost, @idUsuario," +
+                        "@contenido, @idCatPublFK", new[] { descPost,
+                    tituloPost, idUsuario, contenido, idCatPublFK});
+
+                        db.SaveChanges();
+
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
             else
             {
-                foro.DescPost = model.DescPost;
-                foro.TituloPost = model.TituloPost;
-                foro.IdUsuario = userId;
-                foro.IdCatPublFk = (int)model.IdCatPublFk;
-                tema.Contenido = model.Contenido;
-
-                //convierte los valores de los campos a parámetros SQL para la SP
-                var descPost = new SqlParameter("@descPost", foro.DescPost);
-                var tituloPost = new SqlParameter("@tituloPost", foro.TituloPost);
-                var idUsuario = new SqlParameter("@idUsuario", foro.IdUsuario);
-                var contenido = new SqlParameter("@contenido", tema.Contenido);
-                var idCatPublFK = new SqlParameter("@idCatPublFK", foro.IdCatPublFk);
-
-                //try catch que en realidad no sirve de mucho, lo dejo porque se ve profesional
-                try
-                {
-                    db.Database.ExecuteSqlRaw("Exec CreacionPublNoFile @descPost, @tituloPost, @idUsuario," +
-                    "@contenido, @idCatPublFK", new[] { descPost,
-                    tituloPost, idUsuario, contenido, idCatPublFK});
-
-                    db.SaveChanges();
-
-                    return Ok();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                return Unauthorized();
             }
         }
 
@@ -768,6 +775,20 @@ namespace Huerbog.Controllers
             })
 
                 smtp.Send(message);
+        }
+
+        public bool checkPubl(int id, int cat)
+        {
+            var userPost = db.Foros.Where(x => x.IdUsuario == id && x.IdCatPublFk == 2).Count();
+
+            if(userPost == 5 && cat == 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
