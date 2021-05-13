@@ -173,10 +173,39 @@ namespace Huerbog.Controllers.API_Controller
            
             var userPost = db.Foros.Where(x => x.IdPost == contact.IdPost).FirstOrDefault();
 
-            var userData = db.Usuarios.Where(x => x.IdusuarioReg == userPost.IdUsuario).FirstOrDefault();
+            if(userPost == null)
+            {
+                string body = "<body>" +
+                "<h1>Mensaje Huertbog</h1>" +
+                "<h2>Datos del usuario</h2>" +
+                "<p>Nombre: " + contact.nombre + "</p></n>" +
+                "<p>Apellido: " + contact.apellido + "</p></n>" +
+                "<p>correo: " + contact.correo + "</p></n>" +
+                "<h2>Mensaje:</h2>" +
+                 contact.mensaje + "</n>" +
+                "<p>Sí presenta algún inconveniente con el mensaje dejanoslo saber al siguiente correo: Huertbog@gmail.com</P>" +
+                "</body>";
 
-            string body = "<body>" +
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("huertbog@gmail.com", "udechuertbog");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
 
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(contact.correo, "Huertbog");
+                mail.To.Add(new MailAddress("huertbog@gmail.com"));
+                mail.Subject = "Mensaje de un usuario Huertbog";
+                mail.IsBodyHtml = true;
+                mail.Body = body;
+
+                smtp.Send(mail);
+            }
+            else
+            {
+                var userData = db.Usuarios.Where(x => x.IdusuarioReg == userPost.IdUsuario).FirstOrDefault();
+
+                string body = "<body>" +
                 "<h1>Mensaje Huertbog</h1>" +
                 "<h2>Datos del usuario</h2>" +
                 "<p>Nombre: " + contact.nombre + "</p></n>" +
@@ -188,27 +217,25 @@ namespace Huerbog.Controllers.API_Controller
                 "<p>Sí presenta algún inconveniente con el mensaje dejanoslo saber al siguiente correo: Huertbog@gmail.com</P>" +
                 "</body>";
 
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("huertbog@gmail.com", "udechuertbog");
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.EnableSsl = true;
-            smtp.UseDefaultCredentials = false;
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("huertbog@gmail.com", "udechuertbog");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
 
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress(contact.correo, "Huertbog");
-            mail.To.Add(new MailAddress(userData.Correo));
-            mail.Subject = "Mensaje de un usuario Huertbog";
-            mail.IsBodyHtml = true;
-            mail.Body = body;
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(contact.correo, "Huertbog");
+                mail.To.Add(new MailAddress(userData.Correo));
+                mail.Subject = "Mensaje de un usuario Huertbog";
+                mail.IsBodyHtml = true;
+                mail.Body = body;
 
-            smtp.Send(mail);
-
+                smtp.Send(mail);
+            }
             return Ok();
         }
 
         //reacción like
-        
-        
         [Route("btnLike")]
         public async Task<IActionResult> btnLike([FromBody] UserReaccionesModel user)
         {
@@ -383,6 +410,7 @@ namespace Huerbog.Controllers.API_Controller
             return Ok(userHuerta);
         }
 
+        //actualiza datos de la huerta
         [HttpPost]
         [Route("updateHuerta")]
         public async Task<ActionResult> updateHuerta([FromBody] TablaHuertum model)

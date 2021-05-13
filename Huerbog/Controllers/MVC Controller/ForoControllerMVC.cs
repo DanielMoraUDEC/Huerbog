@@ -236,7 +236,6 @@ namespace Huerbog.Controllers.MVC_Controller
            // contact.IdPost = 1;
             HttpClient client = new HttpClient();
             
-
             client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
 
             var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
@@ -251,7 +250,6 @@ namespace Huerbog.Controllers.MVC_Controller
             {
                 return View();
             }
-
         }
 
         //reacciones
@@ -468,9 +466,37 @@ namespace Huerbog.Controllers.MVC_Controller
             }
         }
 
+        //vista para links sobre información general sobre las huertas
         public IActionResult pagOficiales()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult sendComm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult sendComm(Contactarse contact)
+        {
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("https://localhost:44325/api/Foro/");
+
+            var insertrec = client.PostAsJsonAsync<Contactarse>("sendMail", contact);
+
+            insertrec.Wait();
+
+            if (insertrec.Result.IsSuccessStatusCode == true)
+            {
+                return RedirectToAction("IndexForoList");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
