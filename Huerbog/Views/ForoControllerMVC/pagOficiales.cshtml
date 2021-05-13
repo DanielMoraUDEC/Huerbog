@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Huerbog.Models.UserList.UserListModel>
+﻿
 @{
-    ViewData["Title"] = "indexAdmin";
     Layout = "_Layout";
 }
+
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-<link rel="stylesheet" href="~/css/nav.css" />
+<link rel="stylesheet" href="~/css/nav2.css" />
 <script>
 
     /* Set the width of the side navigation to 250px */
@@ -16,43 +16,43 @@
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
     }
+
 </script>
 
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+
     <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
+
     <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>
+
     <a asp-controller="ForoControllerMVC" asp-action="pagOficiales">Información general</a>
 
     <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
 </div>
 
-<!-- Use any element to open the sidenav -->
-
 <button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
 
+<h1>Huertas para todos</h1>
+<p>
+    Para poder seguir conociendo sobre las huertas e información general invitamos a la comunidad a revisar
+    los links de las páginas oficiales.
+</p>
 
+<h3>Jardín Botánico</h3>
+<p>Página oficial del Jardín Botánico en Bogotá</p>
+<a href="https://www.jbb.gov.co/index.php/agricultura-urbana">https://www.jbb.gov.co/index.php/agricultura-urbana</a>
 
-<div class="main">
-    <form class="form-horizontal" role="form">
-        <center>
-            <br />
-            <h1>Página de administración del sitio</h1>
-        </center>
-        <br /> <hr />
+<hr />
 
-        <div class="container mb-2">
-            <a asp-action="listUsers" class="h3 btn-outline-secondary text-dark ">Ver usuarios registrados</a>
-        </div>
-        <div class="container mb-2">
-            <a asp-action="getReportedPost" class="h3 btn-outline-secondary text-dark ">Ver publicaciones reportadas</a>
-        </div>
-        <div class="container mb-2">
-            <a asp-action="viewDirHuertas" class="h3 btn-outline-secondary text-dark ">Ver directorio de huertas</a>
-        </div>
-    </form>
-</div>
+<h3>Diretorio de huertas en Bogotá</h3>
+<p>¿Sabías que existe un directorio de huertas urbanas en Bogotá? ¡Descúbrelo!</p>
+<a href="https://bogota.gov.co/mi-ciudad/ambiente/directorio-de-huertas-urbanas-en-bogota">https://bogota.gov.co/mi-ciudad/ambiente/directorio-de-huertas-urbanas-en-bogota</a>
 
-<br />
-<br />
+<hr />
+
+<h3>Red de Huertas Comunitarias de Bogotá</h3>
+<p>Página de Facebook oficial de la Red de Huertas Comunitarias de Bogotá</p>
+<a href="https://www.facebook.com/Red-de-Huertas-Comunitarias-Bogotá-181080942431521/">https://www.facebook.com/Red-de-Huertas-Comunitarias-Bogotá-181080942431521/</a>

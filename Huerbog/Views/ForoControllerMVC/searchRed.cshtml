@@ -20,6 +20,8 @@
     }
 </script>
 
+<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
+
 <h1>Lista de redes</h1>
 
 <div id="mySidenav" class="sidenav">
@@ -27,6 +29,9 @@
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
     <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
     <a asp-controller="ForoControllerMVC" asp-action="mapaHuerta">Mapa de huertas</a>
+    <a asp-controller="ForoControllerMVC" asp-action="pagOficiales">Información general</a>
+
+    <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
 </div>
 
 <form class="d-flex mr-4" asp-controller="ForoControllerMVC" asp-action="searchRed">
