@@ -147,7 +147,7 @@ namespace Huerbog.Controllers
                     return View();
                 }
 
-                //if(userobject.Correo == "dmartinezcifuentes180@gmail.com")
+                //if(userobject.Correo == "")
                 //{
                 //    var identity2 = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                 //    identity2.AddClaim(new Claim(ClaimTypes.Name, userobject.Correo));

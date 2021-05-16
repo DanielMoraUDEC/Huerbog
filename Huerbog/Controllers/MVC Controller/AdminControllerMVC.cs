@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Huerbog.Models.ForoList;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Huerbog.Controllers.MVC_Controller
 {
@@ -27,8 +28,29 @@ namespace Huerbog.Controllers.MVC_Controller
         HUERBOGContext db = new HUERBOGContext();
 
         [HttpGet]
-        public IActionResult indexAdmin()
+        public async Task<IActionResult> indexAdminAsync()
         {
+            HttpClient hc = new HttpClient();
+
+            var token = HttpContext.Session.GetString("JWToken");
+
+            hc.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            hc.BaseAddress = new Uri("https://localhost:44325/api/Usuarios/");
+
+            var checkAdmin = await hc.GetAsync("checkAdmin");
+
+            if (checkAdmin.IsSuccessStatusCode)
+            {
+                return RedirectToAction("IndexForoList", "ForoControllerMVC");
+            }
+
+            if (checkAdmin.StatusCode.ToString() == "BadRequest")
+            {
+                return View();
+            }
+
+
             return View();
         }
 
