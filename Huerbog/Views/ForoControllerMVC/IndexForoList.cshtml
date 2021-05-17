@@ -6,15 +6,15 @@
     ViewData["Title"] = "IndexForoList";
 }
 
-
-
+<link rel="stylesheet" href="~/css/mySlides.css" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <link rel="stylesheet" href="~/css/nav2.css" />
+
 <script>
 
     /* Set the width of the side navigation to 250px */
     function openNav() {
-        document.getElementById("mySidenav").style.width = "160px";
+        document.getElementById("mySidenav").style.width = "260px";
     }
 
     /* Set the width of the side navigation to 0 */
@@ -48,6 +48,40 @@
 <!-- Use any element to open the sidenav -->
 
 <button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
+
+<div class="slideshow-container">
+
+    <!-- Full-width images with number and caption text -->
+    <div class="mySlides ">
+        <div class="numbertext"></div>
+        <img src="~/Imagenes/huertas_urb_info.jpg" style="width:100%">
+        <div class="text"><a href="https://www.jbb.gov.co/index.php/agricultura-urbana" target="_blank">Click aquí</a></div>
+    </div>
+
+    <div class="mySlides ">
+        <div class="numbertext"></div>
+        <img src="~/Imagenes/dir_huertas.jpg" style="width:100%">
+        <div class="text"><a href="https://bogota.gov.co/mi-ciudad/ambiente/directorio-de-huertas-urbanas-en-bogota" target="_blank">Click aquí</a></div>
+    </div>
+
+    <div class="mySlides ">
+        <div class="numbertext"></div>
+        <img src="~/Imagenes/pág_oficial.jpg" style="width:100%">
+        <div class="text"><a href="https://www.facebook.com/Red-de-Huertas-Comunitarias-Bogotá-181080942431521/" target="_blank">Click aquí</a></div>
+    </div>
+
+    <!-- Next and previous buttons -->
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<br>
+
+<!-- The dots/circles -->
+<div style="text-align:center">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+</div>
 
 <div class="main">
     <div class="container mb-5">
@@ -146,5 +180,51 @@
     </div>
 </div>
 
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+
+    var slideIndex2 = 0;
+    showSlides2();
+
+    function showSlides2() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex2++;
+        if (slideIndex2 > slides.length) { slideIndex2 = 1 }
+        slides[slideIndex2 - 1].style.display = "block";
+        setTimeout(showSlides2, 10000); // Change image every 10 seconds
+        dots[slideIndex2 - 1].className += " active";
+    }
+</script>
 
 

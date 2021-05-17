@@ -248,7 +248,6 @@ namespace Huerbog.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> createPost(ForoTemaModel model)
         {
             HttpClient hc = new HttpClient();

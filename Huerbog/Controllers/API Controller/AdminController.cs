@@ -168,14 +168,5 @@ namespace Huerbog.Controllers.API_Controller
 
             return Ok();
         }
-
-        [HttpGet]
-        [Route("checkRol")]
-        public IActionResult checkRol()
-        {
-
-
-            return Ok();
-        }
     }
 }
