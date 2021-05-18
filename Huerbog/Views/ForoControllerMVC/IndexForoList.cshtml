@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="~/css/mySlides.css" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <link rel="stylesheet" href="~/css/nav2.css" />
+<link rel="stylesheet" href="~/css/menuLateral.css" />
 
 <script>
 
@@ -38,9 +39,21 @@
     <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
 </div>
 
-<!-- Use any element to open the sidenav -->
+<div class="float-md-none">
+    <form class="d-flex mr-4" asp-controller="ForoControllerMVC" asp-action="IndexForoList">
+        <input class="form-control me-2 mr-2" type="search" placeholder="Search" aria-label="Search" name="Buscar" required>
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+    </form>
+</div>
 
-<button  onclick="openNav()" class="fas fa-align-justify"></button>
+<!-- Use any element to open the sidenav -->
+<br />
+<input type="checkbox" id="btn-menu" onclick="openNav()">
+<label for="btn-menu" class="lbl-menu">
+    <span id="spn1"></span>
+    <span id="spn2"></span>
+    <span id="spn3"></span>
+</label>
 
 <div class="slideshow-container">
 
@@ -48,19 +61,19 @@
     <div class="mySlides ">
         <div class="numbertext"></div>
         <img src="~/Imagenes/huertas_urb_info.jpg" style="width:100%">
-        <div class="text"><a class="btn btn-primary" href="https://www.jbb.gov.co/index.php/agricultura-urbana" target="_blank">Click aquí</a></div>
+        <div class="text"><a href="https://www.jbb.gov.co/index.php/agricultura-urbana" target="_blank">Click aquí</a></div>
     </div>
 
     <div class="mySlides ">
         <div class="numbertext"></div>
         <img src="~/Imagenes/dir_huertas.jpg" style="width:100%">
-        <div class="text"><a class="btn btn-primary" href="https://bogota.gov.co/mi-ciudad/ambiente/directorio-de-huertas-urbanas-en-bogota" target="_blank">Click aquí</a></div>
+        <div class="text"><a href="https://bogota.gov.co/mi-ciudad/ambiente/directorio-de-huertas-urbanas-en-bogota" target="_blank">Click aquí</a></div>
     </div>
 
     <div class="mySlides ">
         <div class="numbertext"></div>
         <img src="~/Imagenes/pág_oficial.jpg" style="width:100%">
-        <div class="text"><a class="btn btn-primary" href="https://www.facebook.com/Red-de-Huertas-Comunitarias-Bogotá-181080942431521/" target="_blank">Click aquí</a></div>
+        <div class="text"><a href="https://www.facebook.com/Red-de-Huertas-Comunitarias-Bogotá-181080942431521/" target="_blank">Click aquí</a></div>
     </div>
 
     <!-- Next and previous buttons -->
@@ -75,15 +88,8 @@
     <span class="dot" onclick="currentSlide(2)"></span>
     <span class="dot" onclick="currentSlide(3)"></span>
 </div>
-<br />
+
 <div class="main">
-    <div class="float-md-none">
-        <form class="d-flex mr-4" asp-controller="ForoControllerMVC" asp-action="IndexForoList">
-            <input class="form-control me-2 mr-2" type="search" placeholder="Search" aria-label="Search" name="Buscar" required>
-            <button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
-    </div>
-    <br />
     <div class="container mb-5">
         <ul class="nav nav-tabs col-12 col-md-9">
             <li class="nav-item">
@@ -158,6 +164,18 @@
                     }
                 </div>
                 <!--Fin articulo-->
+                <!--Barra números-->
+                <div class="btn-toolbar d-flex justify-content-center mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        <a asp-controller="ForoControllerMVC" asp-action="IndexForoList"> Inicio </a>
+                        <button type="button" class="btn btn-primary">2</button>
+                        <button type="button" class="btn btn-primary">3</button>
+                        <button type="button" class="btn btn-primary">4</button>
+                        <button type="button" class="btn btn-primary">Final</button>
+                    </div>
+                </div>
+
+
             </div>
             <!--aside-->
             <div class="col-3">

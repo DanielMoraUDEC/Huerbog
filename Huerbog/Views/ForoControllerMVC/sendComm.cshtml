@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <link rel="stylesheet" href="~/css/nav2.css" />
+<link rel="stylesheet" href="~/css/menuLateral.css" />
 <script>
 
     /* Set the width of the side navigation to 250px */
@@ -34,8 +35,13 @@
     <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
 </div>
 
-<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
-
+<br />
+<input type="checkbox" id="btn-menu" onclick="openNav()">
+<label for="btn-menu" class="lbl-menu">
+    <span id="spn1"></span>
+    <span id="spn2"></span>
+    <span id="spn3"></span>
+</label>
 <h1>Enviar comentarios</h1>
 
 <hr />

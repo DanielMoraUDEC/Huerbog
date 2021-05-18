@@ -53,7 +53,7 @@
 </style>
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
+<link rel="stylesheet" href="~/css/menuLateral.css" />
 
 <script>
 
@@ -84,29 +84,34 @@
 
 <!-- Use any element to open the sidenav -->
 
-<button asp-for="Reacciones" onclick="openNav()" class="fas fa-align-justify"></button>
-
+<br />
+<input type="checkbox" id="btn-menu" onclick="openNav()">
+<label for="btn-menu" class="lbl-menu">
+    <span id="spn1"></span>
+    <span id="spn2"></span>
+    <span id="spn3"></span>
+</label>
 
 <script>
-  /*  // Initialize and add the map
-    function initMap() {
-        // The location of Uluru
-        const uluru = { lat: 4.6097100, lng: -74.0817500 };
-        const marcar = { lat: 4.66667, lng: -74.15 }
-        // The map, centered at Uluru
-        const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 11,
-            center: uluru,
-        });
-        // The marker, positioned at Uluru
-        const marker = new google.maps.Marker({
-            position: marcar,
-            map: map,
-            title: 'Huerta Tomates',
-        });
+    /*  // Initialize and add the map
+      function initMap() {
+          // The location of Uluru
+          const uluru = { lat: 4.6097100, lng: -74.0817500 };
+          const marcar = { lat: 4.66667, lng: -74.15 }
+          // The map, centered at Uluru
+          const map = new google.maps.Map(document.getElementById("map"), {
+              zoom: 11,
+              center: uluru,
+          });
+          // The marker, positioned at Uluru
+          const marker = new google.maps.Marker({
+              position: marcar,
+              map: map,
+              title: 'Huerta Tomates',
+          });
 
-    }
-    */
+      }
+      */
 
     var url = "https://localhost:44325/api/Foro/getHuerta";
 
@@ -137,13 +142,13 @@
             do {
                 let divDireccion = document.createElement("div");
                 divDireccion.innerHTML = data[i].ubicacionHuerta;
-              //  document.getElementById("direccion").appendChild(divDireccion);
+                //  document.getElementById("direccion").appendChild(divDireccion);
                 if (data[i].descHuerta != 'NO APLICA') {
                     let divDescripcion = document.createElement("div");
                     divDescripcion.innerHTML = (i + 1) + ". " + data[i].descHuerta;
                     document.getElementById("descripcion").appendChild(divDescripcion);
                 }
-                
+
 
                 let divLatitud = document.createElement("div");
                 divLatitud.innerHTML = data[i].latitud;
@@ -161,7 +166,7 @@
 
                 i++;
 
-            } while (data[i] != null);   
+            } while (data[i] != null);
 
 
             for (var i = 0; i < descripcion.length; i += 1) {
@@ -188,7 +193,7 @@
                 console.log("En el índice '" + i + "' hay este valor: " + position[i]);
             }
 
-           
+
 
             for (var i = 0; i < descripcion.length; i += 1) {
                 const marker = new google.maps.Marker({
@@ -198,51 +203,51 @@
                     label: `${i + 1}`,
                     optimized: false,
                 });
-               
-                    marker.addListener("click", () => {
-                        infoWindow.close();
-                        infoWindow.setContent(marker.getTitle());
-                        infoWindow.open(marker.getMap(), marker);
-                    });
-                
-            }
 
-           
-
-
-            
-
-
-            
-        /*      const tourStops = [
-                    [{ lat: lati[1], lng: long[1] }, descripcion[1]],
-
-                ];
-            
-            // Create an info window to share between markers.
-            const infoWindow = new google.maps.InfoWindow();
-            // Create the markers.
-            tourStops.forEach(([position, title], i) => {
-                const marker = new google.maps.Marker({
-                    position,
-                    map,
-                    title: `${i + 1}. ${title}`,
-                    label: `${i + 1}`,
-                    optimized: false,
-                });
-                // Add a click listener for each marker, and set up the info window.
                 marker.addListener("click", () => {
                     infoWindow.close();
                     infoWindow.setContent(marker.getTitle());
                     infoWindow.open(marker.getMap(), marker);
                 });
-            });*/
+
+            }
+
+
+
+
+
+
+
+
+            /*      const tourStops = [
+                        [{ lat: lati[1], lng: long[1] }, descripcion[1]],
+
+                    ];
+
+                // Create an info window to share between markers.
+                const infoWindow = new google.maps.InfoWindow();
+                // Create the markers.
+                tourStops.forEach(([position, title], i) => {
+                    const marker = new google.maps.Marker({
+                        position,
+                        map,
+                        title: `${i + 1}. ${title}`,
+                        label: `${i + 1}`,
+                        optimized: false,
+                    });
+                    // Add a click listener for each marker, and set up the info window.
+                    marker.addListener("click", () => {
+                        infoWindow.close();
+                        infoWindow.setContent(marker.getTitle());
+                        infoWindow.open(marker.getMap(), marker);
+                    });
+                });*/
 
 
         })
 
 
-       
+
     }
 </script>
 
