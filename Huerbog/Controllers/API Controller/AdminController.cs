@@ -113,7 +113,8 @@ namespace Huerbog.Controllers.API_Controller
                 TituloPost = s.TituloPost,
                 IdCatPublFk = s.IdCatPublFk,
                 Reportes = s.Reportes,
-                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario && x.Roles == 2).FirstOrDefault()
+                usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario).FirstOrDefault()
+                //usuario = db.Usuarios.Where(x => x.IdusuarioReg == s.IdUsuario && x.Roles == 2).FirstOrDefault()
             }
             ).Where(x => x.Reportes > 0).ToList<ForoListModel>();
 
