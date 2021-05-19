@@ -22,6 +22,8 @@
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
     }
+
+
 </script>
 
 <div id="mySidenav" class="sidenav">
@@ -117,14 +119,22 @@
                         {
                             <br />
                             <div class="row ">
+                                <h4>Debes iniciar sesión para poder reaccionar</h4><br /><br />
                                 <div class="form-group col-3">
-                                    <label class="h4">#Likes: </label>
+                                    
+                                    <button id="LikeDeshabilitado" disabled class="fas fa-thumbs-up"></button>
+                                    
                                 </div>
                                 <div class="form-group col-3">
-                                    <label class="h4">#Dislikes: </label>
+                                    <button id="LikeDeshabilitado" disabled class="fas fa-thumbs-down"></button>
+                                    
                                 </div>
                             </div>
-
+                            <script>
+                                function ingresar() {
+                                    alert("Lo sentimos, debes iniciar sesion para poder reaccionar a esta publicacion ");
+                                }
+                            </script>
                             <div class="row">
                                 <div class="form-group col-3">
                                     <input asp-for="ReaccionLike" class="form-control border-0 " readonly="readonly" />
@@ -237,7 +247,7 @@
     </div>
 
     <div>
-        <a asp-action="IndexForoList">Regresar</a>
+        <a asp-action="IndexForoList" class="btn-regresar">Regresar</a>
     </div>
 
     @section Scripts {

@@ -1,5 +1,6 @@
 ﻿body {
 }
+/*boton like*/
 .btn-neon {
     position: relative;
     display: inline-block;
@@ -10,6 +11,7 @@
     font-size: 12px;
     overflow: hidden;
     transition: 0.2s;
+    border-radius: 15px;
 }
 
     .btn-neon:hover {
@@ -80,7 +82,7 @@
 
 
 
-
+/*boton dislike*/
 .btn-neon2 {
     position: relative;
     display: inline-block;
@@ -91,6 +93,7 @@
     font-size: 12px;
     overflow: hidden;
     transition: 0.2s;
+    border-radius: 15px;
 }
 .btn-neon2:hover {
     background: #e53e33;
@@ -104,20 +107,44 @@
 
 
 
+/*boton reportar*/
 .btn-neon3 {
     position: relative;
     display: inline-block;
     padding: 5px 15px;
     color: #000;
-    
     text-decoration: none;
     font-size: 12px;
     overflow: hidden;
     transition: 0.2s;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 15px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .btn-neon3:hover {
     background: #f3473a;
     /*box-shadow: 0 0 10px #05e3f1, 0 0 40px #0527f1, 0 0 80px #0527f1;*/
     
+}
+/*boton regresar*/
+.btn-regresar {
+    position: relative;
+    display: inline-block;
+    padding: 5px 15px;
+    background: #dcdcdc;
+    color: #080ce0;
+    /*letter-spacing: 4px;*/
+    text-decoration: dotted;
+    font-size: 12px;
+    overflow: hidden;
+    transition: 0.2s;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: medium;
+    border-radius: 15px;
+}
+
+.btn-regresar:hover {
+    background: #544ad9;
+    /*box-shadow: 0 0 10px #05e3f1, 0 0 40px #0527f1, 0 0 80px #0527f1;*/
+    transition-delay: 0.5s;
+    color: #ffffff;
 }
