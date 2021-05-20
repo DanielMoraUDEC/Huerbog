@@ -10,7 +10,12 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
+    <style>
+        .btn-secondary{
+            border-radius:7px;
+        }
 
+    </style>
 </head>
 <body>
     <header>
@@ -28,8 +33,8 @@
                 <div class="navbar-nav ml-auto ">
                     @if (httpAcc.HttpContext.Session.GetString("JWToken") != null && httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
                     {
-                        <a class="nav-link active" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="createPost">Publicar</a>
-                        <div class="dropdown">
+                        <a class="nav-link active  mr-4" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="createPost">Publicar</a>
+                        <div class="dropdown mr-lg-4">
                             <button class="btn btn-dark dropdown-toggle mb-3 form-control" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Menú
                             </button>
@@ -42,8 +47,8 @@
                     }
                     else
                     {
-                        <a class="nav-link active" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Ingresar</a>
-                        <a class="nav-link active mr-4" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="post">Registrarse</a>
+                        <a class="nav-link active mr-4 btn-secondary" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="login">Ingresar</a>
+                        <a class="nav-link active mr-4 btn btn-outline-success" aria-current="page" asp-area="" asp-controller="UsuariosControllerMVC" asp-action="post">Registrarse</a>
                     }
                 </div>
             </div>

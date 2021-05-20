@@ -265,16 +265,3 @@
     transition-delay: 0.5s;
     color: #dcdcdc;
 }
-
-.btn-register {
-    padding: 5px 15px;
-    background: #c0e2c0;
-    color: #4cb64c;
-}
-
-.btn-register:hover {
-    background: #4cb64c;
-    /*box-shadow: 0 0 10px #05e3f1, 0 0 40px #0527f1, 0 0 80px #0527f1;*/
-    transition-delay: 0.5s;
-    color: #dcdcdc;
-}
