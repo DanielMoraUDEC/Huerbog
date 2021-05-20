@@ -472,6 +472,11 @@ namespace Huerbog.Controllers.MVC_Controller
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult sendComm()
         {
