@@ -2,11 +2,52 @@
     ViewData["Title"] = "Privacy";
 }
 
+<link rel="stylesheet" href="~/css/menuLateral.css" />
+<link rel="stylesheet" href="~/css/NavigationPanel.css" />
+
+<script>
+
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "260px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+</script>
+
+<br />
+<input type="checkbox" id="btn-menu" onclick="openNav()">
+<label for="btn-menu" class="lbl-menu">
+    <span id="spn1"></span>
+    <span id="spn2"></span>
+    <span id="spn3"></span>
+</label>
+
+<div id="mySidenav" class="sidenav1">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+
+    <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
+
+    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>
+
+    <a asp-controller="ForoControllerMVC" asp-action="pagOficiales">Información general</a>
+
+    <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
+</div>
+
 <h1>Privacidad</h1>
 <br />
 <div style="text-align:center">
-    <img src="~/Imagenes/logo5.png" height="300"/>
+    <img src="~/Imagenes/logo5.png" height="300" />
 </div>
 <br />
 <br />
 <p style="text-align:center">Página de Huertbog - Softsystems - 2021 - Todos los derechos resevados</p>
+<br />
+<br />
