@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "pruebaGeolocation";
 }
-
+<link rel="stylesheet" href="~/css/neon1.css" />
 
 <div class="container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
@@ -58,7 +58,7 @@
                     <label><strong>Longitud</strong></label>
                     <input asp-for="@Model.Longitud" required readonly type="text" id="txtLng" class="form-control" placeholder="longitud">
                     <br />
-                    <input type="submit" value="Guardar" class="btn btn-primary float-right" onclick="alert('Huerta registrada correctamente');" />
+                    <input type="submit" value="Guardar" class="btn-admin float-right" onclick="alert('Huerta registrada correctamente');" />
                 </div>
             </div>
         </form>

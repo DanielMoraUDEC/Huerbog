@@ -82,7 +82,7 @@
 
         </div>
         <div class="form-group">
-            <input type="submit" value="Actualizar" class="btn btn-primary" onclick="alert('Datos actualizados correctamente');" />
+            <input type="submit" value="Actualizar" class="btn-admin" onclick="alert('Datos actualizados correctamente');" />
         </div>
 
     </form>
@@ -94,7 +94,7 @@
     <div class="form-group">
         <label class="h3">Registrar huerta:</label>
         <br />
-        <a class="btn btn-primary" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation" asp-route-id="@Model.userHuerta.IdHuerta">Agregar datos huerta</a>
+        <a class="btn btn-admin" asp-controller="ForoControllerMVC" asp-action="pruebaGeolocation" asp-route-id="@Model.userHuerta.IdHuerta">Agregar datos huerta</a>
     </div>
     <hr />
 
@@ -125,7 +125,7 @@
                 {
                     <tr>
                         <td>
-                            <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost">@Html.DisplayFor(modelItem => item.TituloPost)</a>
+                            <a asp-controller="ForoControllerMVC" asp-action="verPost" asp-route-id="@item.IdPost" class="lbl-letra1">@Html.DisplayFor(modelItem => item.TituloPost)</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.DescPost)
@@ -148,8 +148,8 @@
                             @Html.DisplayFor(modelItem => item.FechaPublicacion)
                         </td>
                         <td>
-                            <a asp-action="editPost" asp-route-id="@item.IdPost">Editar</a> |
-                            <a asp-action="deletePost" asp-route-id="@item.IdPost">Eliminar</a>
+                            <a asp-action="editPost" asp-route-id="@item.IdPost" class="lbl-letra1">Editar</a> |
+                            <a asp-action="deletePost" asp-route-id="@item.IdPost" class="lbl-letra1">Eliminar</a>
                         </td>
                     </tr>
                 }

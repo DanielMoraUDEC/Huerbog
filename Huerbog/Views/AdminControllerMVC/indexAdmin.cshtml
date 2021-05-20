@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <link rel="stylesheet" href="~/css/nav.css" />
 <link rel="stylesheet" href="~/css/menuLateral.css" />
+<link rel="stylesheet" href="~/css/neon1.css" />
 
 <style>
     .img-container{
@@ -66,7 +67,13 @@
                     <img src="~/Imagenes/user.png" height="95" />
                 </div>
                 <br />
-                <a asp-action="listUsers" class="btn btn-primary">Ver usuarios registrados</a>
+                <a asp-action="listUsers" class="btn btn-primary btn-admin">
+                    <span id="span11"></span>
+                    <span id="span22"></span>
+                    <span id="span33"></span>
+                    <span id="span44"></span>
+                    Ver usuarios registrados
+                </a>
             </div>
         </div>
 
@@ -76,7 +83,13 @@
                     <img src="~/Imagenes/check-box-1294836_1280.png" height="95" />
                 </div>
                 <br />
-                <a asp-action="getReportedPost" class="btn btn-primary">Ver publicaciones reportadas</a>
+                <a asp-action="getReportedPost" class="btn btn-primary btn-admin">
+                    <span id="span11"></span>
+                    <span id="span22"></span>
+                    <span id="span33"></span>
+                    <span id="span44"></span>
+                    Ver publicaciones reportadas
+                </a>
             </div>
         </div>
 
@@ -86,7 +99,13 @@
                     <img src="~/Imagenes/noun_directory_114026.png" height="95" />
                 </div> 
                 <br />
-                <a asp-action="viewDirHuertas" class="btn btn-primary">Ver directorio de huertas</a>
+                <a asp-action="viewDirHuertas" class="btn btn-primary btn-admin">
+                    <span id="span11"></span>
+                    <span id="span22"></span>
+                    <span id="span33"></span>
+                    <span id="span44"></span>
+                    Ver directorio de huertas
+                </a>
             </div>
         </div>
 
