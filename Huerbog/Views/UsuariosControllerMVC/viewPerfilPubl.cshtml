@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="~/css/nav.css" />
 <link rel="stylesheet" href="~/css/menuLateral.css" />
 <link rel="stylesheet" href="~/css/neon1.css" />
+<link rel="stylesheet" href="~/css/NavigationPanel.css" />
+
 <script>
 
     /* Set the width of the side navigation to 250px */
@@ -22,11 +24,11 @@
     }
 </script>
 
-<div id="mySidenav" class="sidenav">
+<div id="mySidenav" class="sidenav1">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
     <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
-    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>>
+    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>
     <a asp-controller="ForoControllerMVC" asp-action="pagOficiales">Información general</a>
 
     <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
@@ -46,46 +48,77 @@
 
     <div>
         <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Nombre)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Nombre)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Apellido)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Apellido)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Correo)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Correo)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Reputacion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Reputacion)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Red)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Red)
-            </dd>
-            <dt class="col-sm-2">
-                Descripción de la huerta
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.userHuerta.DescHuerta)
-            </dd>
-        </dl>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="container mb-2">
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Nombre
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Nombre)
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Apellido
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Apellido)
+                    </div>
+                </div>
+            </div>
 
-        <h4>Publicaciones realizadas</h4>
+            <div class="col-md-4">
+                <div class="container mb-2">
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Correo
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Correo)
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Reputación
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Reputacion)
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="container mb-2">
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Red
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.user.Red)
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Descripción de huerta
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.userHuerta.DescHuerta)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 style="text-align:center">Publicaciones realizadas</h4>
 
         <table class="table">
             <thead>
@@ -140,4 +173,5 @@
         <a asp-controller="ForoControllerMVC" asp-action="searchRed" class="btn-regresar">Regresar</a>
     </div>
 </div>
-
+<br />
+<br />

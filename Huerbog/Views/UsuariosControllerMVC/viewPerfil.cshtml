@@ -4,6 +4,10 @@
     ViewData["Title"] = "viewPerfil";
 }
 
+<link rel="stylesheet" href="~/css/menuLateral.css" />
+<link rel="stylesheet" href="~/css/neon1.css" />
+<link rel="stylesheet" href="~/css/NavigationPanel.css" />
+
 <head>
     <style>
         .column {
@@ -32,10 +36,42 @@
     <link rel="stylesheet" href="~/css/neon1.css" />
 </head>
 
-
 <h1>Editar perfil</h1>
 
 <hr />
+
+<script>
+
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "260px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>
+
+<div id="mySidenav" class="sidenav1">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
+    <a asp-controller="ForoControllerMVC" asp-action="searchRed">Ver lista de redes</a>
+    <a asp-controller="ForoControllerMVC" asp-action="mapaHuertas">Mapa de huertas</a>
+    <a asp-controller="ForoControllerMVC" asp-action="pagOficiales">Información general</a>
+
+    <a asp-controller="ForoControllerMVC" asp-action="sendComm">Envíar comentarios sobre el sitio</a>
+</div>
+
+<!-- Use any element to open the sidenav -->
+
+<br />
+<input type="checkbox" id="btn-menu" onclick="openNav()">
+<label for="btn-menu" class="lbl-menu">
+    <span id="spn1"></span>
+    <span id="spn2"></span>
+    <span id="spn3"></span>
+</label>
 
 
 <div class="main">
@@ -148,8 +184,8 @@
                             @Html.DisplayFor(modelItem => item.FechaPublicacion)
                         </td>
                         <td>
-                            <a asp-action="editPost" asp-route-id="@item.IdPost" class="lbl-letra1">Editar</a> |
-                            <a asp-action="deletePost" asp-route-id="@item.IdPost" class="lbl-letra1">Eliminar</a>
+                            <a asp-action="editPost" asp-route-id="@item.IdPost" class="btn-detalles">Editar</a>
+                            <a asp-action="deletePost" asp-route-id="@item.IdPost" class="alert-danger btn-neon3">Eliminar</a>
                         </td>
                     </tr>
                 }
@@ -157,7 +193,7 @@
         </table>
     </div>
     <br />
-    <a asp-action="IndexForoList" asp-controller="ForoControllerMVC"class="btn-regresar">Regresar</a>
+    <a asp-action="IndexForoList" asp-controller="ForoControllerMVC" class="btn-regresar">Regresar</a>
     <br />
     <br />
     <br />

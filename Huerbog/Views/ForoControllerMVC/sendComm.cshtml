@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="~/css/nav2.css" />
 <link rel="stylesheet" href="~/css/menuLateral.css" />
 <link rel="stylesheet" href="~/css/neon1.css" />
+<link rel="stylesheet" href="~/css/NavigationPanel.css" />
+
 <script>
 
     /* Set the width of the side navigation to 250px */
@@ -22,7 +24,7 @@
 
 </script>
 
-<div id="mySidenav" class="sidenav">
+<div id="mySidenav" class="sidenav1">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
     <a asp-area="" asp-controller="ForoControllerMVC" asp-action="IndexForoList">Inicio</a>
@@ -43,14 +45,16 @@
     <span id="spn2"></span>
     <span id="spn3"></span>
 </label>
-<h1>Enviar comentarios</h1>
+
+<h1 style="text-align:center">Enviar comentarios</h1>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4"></div>
+    <div class="col-md-4" style="text-align:center">
         <form asp-action="sendComm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" style="text-align:center">
                 <label asp-for="nombre" class="control-label">Nombre</label>
                 <input asp-for="nombre" class="form-control" />
                 <span asp-validation-for="nombre" class="text-danger"></span>
@@ -67,7 +71,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="mensaje" class="control-label">Mensaje</label>
-                <input asp-for="mensaje" class="form-control" />
+                <textarea asp-for="mensaje" class="form-control"> </textarea>
                 <span asp-validation-for="mensaje" class="text-danger"></span>
             </div>
             <div class="form-group">

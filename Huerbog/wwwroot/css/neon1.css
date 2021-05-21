@@ -120,6 +120,7 @@
 .btn-neon3:hover {
     background: #f3473a;
     /*box-shadow: 0 0 10px #05e3f1, 0 0 40px #0527f1, 0 0 80px #0527f1;*/
+    color:#000;
     
 }
 /*boton regresar*/
@@ -130,7 +131,7 @@
     background: #dcdcdc;
     color: #4cb64c;
     /*letter-spacing: 4px;*/
-    text-decoration: dotted;
+    /*//text-decoration: dotted;*/
     font-size: 12px;
     overflow: hidden;
     transition: 0.2s;
@@ -229,4 +230,38 @@
 }
 .lbl-letra1 {
     color: #249612;
+}
+.btn-letra1:hover {
+    box-shadow: 0 0 10px #05e3f1, 0 0 40px #8fbc8f, 0 0 80px #3ed33e;
+    color: #249612;
+}
+/*perfil*/
+.btn-detalles {
+    position: relative;
+    display: inline-block;
+    padding: 5px 15px;
+    color: #000;
+    text-decoration: none;
+    font-size: 12px;
+    overflow: hidden;
+    transition: 0.2s;
+    border-radius: 8px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background: #928ce9;
+}
+.btn-detalles:hover {
+    background: #493de2;
+    /*box-shadow: 0 0 10px #05e3f1, 0 0 40px #0527f1, 0 0 80px #0527f1;*/
+    color:#ffffff;
+}
+.btn-haceradmin {
+    padding: 5px 15px;
+    background: #dcdcdc;
+    color: #4cb64c;
+}
+.btn-haceradmin:hover {
+    background: #4cb64c;
+    /*box-shadow: 0 0 10px #05e3f1, 0 0 40px #0527f1, 0 0 80px #0527f1;*/
+    transition-delay: 0.5s;
+    color: #dcdcdc;
 }
