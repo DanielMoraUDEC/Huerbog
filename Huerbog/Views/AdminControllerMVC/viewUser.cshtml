@@ -48,74 +48,109 @@
 
     <div>
         <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Nombre)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Nombre)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Apellido)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Apellido)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Correo)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Correo)
-            </dd>
-            <dt class="col-sm-2">
-                Cantidad de publicaciones
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.CantPublicacion)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Reputacion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Reputacion)
-            </dd>
-            <dt class="col-sm-2">
-                Cantidad de solicitudes
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.CantSolicitudes)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Red)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Red)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.user.Telefono)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.user.Telefono)
-            </dd>
-            <dt class="col-sm-2">
-                Ubicación de la huerta
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.userHuerta.UbicacionHuerta)
-            </dd>
-            <dt class="col-sm-2">
-                Descripción de la huerta
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.userHuerta.DescHuerta)
-            </dd>
-            <dt class="col-sm-2">
-                Área de cultivo
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.userHuerta.AreaCultivo)
-            </dd>
-        </dl>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="container mb-2">
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Nombre
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Nombre)
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Apellido
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Apellido)
+                    </div>
+                    <br/>
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Correo
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Correo)
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="container mb-2">
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Red
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.user.Red)
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                        <label>
+                            <strong>
+                                Reputación
+                            </strong>
+                        </label>
+                        @Html.DisplayFor(model => model.user.Reputacion)
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Cantidad de publicaciones
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.user.CantPublicacion)
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="container mb-2">
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Teléfono
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.user.Telefono)
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Ubicación huerta
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.userHuerta.UbicacionHuerta)
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label>
+                            <strong>
+                                Descripción huerta
+                            </strong>
+                        </label>
+                        <br />
+                        @Html.DisplayFor(model => model.userHuerta.DescHuerta)
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+       
         <table class="table">
             <thead>
                 <tr>
